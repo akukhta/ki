@@ -15,6 +15,7 @@ add_executable(${PROJECT_NAME}
 	src/reader/IFileReader.hpp
 	src/reader/MMapFileReader.hpp
 	src/reader/MMapFileReader.cpp
-	src/writer/IFileWritter.hpp
-
+	src/writer/IFileWriter.hpp
+	src/writer/MMapFileWriter.hpp
+	src/writer/MMapFileWriter.cpp
 )

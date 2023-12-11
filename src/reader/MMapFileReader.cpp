@@ -26,7 +26,7 @@ void MMapFileReader::open()
 
     if (mmappedFile == MAP_FAILED)
     {
-        throw std::runtime_error("can`t create a memory mapping of input file");
+        throw std::runtime_error("Reader: Can`t create a memory mapping of input file");
     }
 
     if (fileSize < currentOffset)
