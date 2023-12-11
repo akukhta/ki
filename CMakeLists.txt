@@ -13,5 +13,8 @@ add_executable(${PROJECT_NAME}
 	src/queue/SynchronizedQueue.hpp
 	src/queue/SynchronizedQueue.cpp
 	src/reader/IFileReader.hpp
+	src/reader/MMapFileReader.hpp
+	src/reader/MMapFileReader.cpp
 	src/writer/IFileWritter.hpp
+
 )

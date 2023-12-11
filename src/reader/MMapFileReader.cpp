@@ -5,32 +5,56 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdexcept>
+#include <algorithm>
+#include <filesystem>
 
-MMapFileReader::MMapFileReader(std::string_view const & fileName)
+MMapFileReader::MMapFileReader(std::string_view fileName) : fileName(fileName)
 {
-    if (fileDesc = ::open(fileName.data(), O_RDONLY) < 0)
+    fileDesc = ::open(fileName.data(), O_RDONLY, S_IRUSR);
+    
+    if (fileDesc == -1)
     {
         throw std::runtime_error("can`t open src file");
-    }
+    }    
 
-    struct stat statvar;
+    fileSize = std::filesystem::file_size(fileName);
+}
 
-    if (fstat(fileDesc, &statvar) < 0)
-    {
-        throw std::runtime_error("can`t query size of src file");
-    }
-
-    fileSize = statvar.st_size;
-
+void MMapFileReader::open()
+{
     mmappedFile = static_cast<unsigned char*>(mmap(0, fileSize, PROT_READ, MAP_SHARED, fileDesc, 0));
 
-    if (!mmappedFile)
+    if (mmappedFile == MAP_FAILED)
     {
         throw std::runtime_error("can`t create a memory mapping of input file");
+    }
+
+    if (fileSize < currentOffset)
+    {
+        readFinished.store(false);
     }
 }
 
 std::vector<unsigned char> MMapFileReader::read()
 {
-    return std::vector<unsigned char>();
+    std::vector<unsigned char> buf;
+    buf.reserve(defaultBufferSize);
+    
+    auto readCount = std::min(currentOffset + defaultBufferSize, fileSize);
+
+    std::copy(mmappedFile + currentOffset, mmappedFile + readCount, std::back_inserter(buf));
+
+    currentOffset = readCount;
+
+    if (currentOffset >= fileSize)
+    {
+        readFinished.store(true);
+    }
+
+    return buf;
+}
+
+bool MMapFileReader::isReadFinished()
+{
+    return readFinished.load();
 }
