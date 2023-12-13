@@ -45,7 +45,7 @@ void MMapFileWriter::create()
     }
 }
 
-void MMapFileWriter::finishWrite(bool)
+void MMapFileWriter::finishWrite()
 {
     writeFinished.store(true);
     fsync(fileDesc);

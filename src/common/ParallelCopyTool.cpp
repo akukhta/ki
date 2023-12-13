@@ -39,4 +39,6 @@ void ParallelCopyTool::writingFunction()
             break;
         }
     }
+
+    fileWriter->finishWrite();
 }

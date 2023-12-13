@@ -10,7 +10,7 @@ public:
 
     virtual void write(std::vector<unsigned char>) override;
     virtual void create() override;
-    virtual void finishWrite(bool) override;
+    virtual void finishWrite() override;
     virtual bool isWriteFinished() override;
     
     virtual ~MMapFileWriter() {};
