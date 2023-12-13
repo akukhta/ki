@@ -1,3 +1,4 @@
+#pragma once
 #include "IFileWriter.hpp"
 #include <string_view>
 #include <atomic>
@@ -10,6 +11,7 @@ public:
     virtual void write(std::vector<unsigned char>) override;
     virtual void create() override;
     virtual void finishWrite(bool) override;
+    virtual bool isWriteFinished() override;
     
     virtual ~MMapFileWriter() {};
 

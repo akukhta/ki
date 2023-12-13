@@ -1,3 +1,4 @@
+#pragma once
 #include "IFileReader.hpp"
 #include <string_view>
 #include <unistd.h>
@@ -11,6 +12,9 @@ public:
     virtual void open() override;
     virtual std::vector<unsigned char> read() override;
     virtual bool isReadFinished() override;
+    virtual void finishRead() override;
+    
+    size_t getFileSize();
 
     ~MMapFileReader(){}
 
@@ -18,7 +22,7 @@ public:
 
 private:
     int fileDesc;
-    size_t fileSize;
+    size_t fileSize = 0;
     unsigned char *mmappedFile;
 
     size_t currentOffset = 0;
