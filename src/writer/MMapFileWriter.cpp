@@ -24,7 +24,7 @@ void MMapFileWriter::write(std::vector<unsigned char> buf)
 
 void MMapFileWriter::create()
 {
-    fileDesc = open(fileName.data(), O_RDWR | O_CREAT);
+    fileDesc = open(fileName.data(), O_RDWR | O_CREAT, 0644);
 
     if (fileDesc == -1)
     {
@@ -45,9 +45,14 @@ void MMapFileWriter::create()
     }
 }
 
-void MMapFileWriter::finishWrite(bool)
+void MMapFileWriter::finishWrite()
 {
     writeFinished.store(true);
     fsync(fileDesc);
     close(fileDesc);
+}
+
+bool MMapFileWriter::isWriteFinished()
+{
+    return writeFinished.load();
 }

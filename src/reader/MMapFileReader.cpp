@@ -58,3 +58,17 @@ bool MMapFileReader::isReadFinished()
 {
     return readFinished.load();
 }
+
+size_t MMapFileReader::getFileSize()
+{
+    return fileSize;
+}
+
+void MMapFileReader::finishRead()
+{
+    // Should i even handle if munmap fails?
+    // man 2 mmap example does not provide any handling,
+    // but for mmap it does
+    munmap(mmappedFile, fileSize);
+    close(fileDesc);
+} 

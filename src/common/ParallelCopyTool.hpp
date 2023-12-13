@@ -1,6 +1,7 @@
+#pragma once
 #include "ICopyTool.hpp"
-#include "../reader/IFileReader.hpp"
-#include "../writer/IFileWriter.hpp"
+#include "../reader/MMapFileReader.hpp"
+#include "../writer/MMapFileWriter.hpp"
 #include "../queue/IQueue.hpp"
 #include <memory>
 #include <thread>
@@ -8,14 +9,18 @@
 class ParallelCopyTool : public ICopyTool
 {
 public:
-    ParallelCopyTool(std::unique_ptr<IFileReader> fileReader,
-        std::unique_ptr<IFileWriter> fileWriter, std::shared_ptr<IQueue> shQueue);
+    ParallelCopyTool(std::unique_ptr<MMapFileReader> fileReader,
+        std::unique_ptr<MMapFileWriter> fileWriter, std::shared_ptr<IQueue> queue);
 
     virtual void copy() override;
 
+    ~ParallelCopyTool() = default;
 private:
+    void writingFunction();
+
+    std::unique_ptr<MMapFileReader> fileReader;
+    std::unique_ptr<MMapFileWriter> fileWriter;
+    std::shared_ptr<IQueue> queue;
+
     std::jthread writingThread;
-    std::unique_ptr<IFileReader> fileReader;
-    std::unique_ptr<IFileWriter> fileWriter;
-    std::shared_ptr<IQueue> shQueue;
 };

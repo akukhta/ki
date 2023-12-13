@@ -1,5 +1,5 @@
-#include "../../src/writer/MMapFileWriter.hpp"
-#include "../Utiles/TmpFile.hpp"
+#include "../../../src/writer/MMapFileWriter.hpp"
+#include "../../Utiles/TmpFile.hpp"
 #define BOOST_TEST_MODULE Test1
 #include <boost/test/included/unit_test.hpp>
 #include <filesystem>
@@ -18,8 +18,7 @@ BOOST_AUTO_TEST_CASE(EntireFileWrite)
         MMapFileWriter writer("result", tmpFile.fileSize);
         writer.create();
         writer.write(tmpFile.content);
-        writer.finishWrite(true);
-
+        writer.finishWrite();
 
         auto writenFileSize = std::filesystem::file_size("result");
         std::vector<unsigned char> resultWritten(writenFileSize);
