@@ -2,10 +2,10 @@
 #include <mutex>
 
 ParallelCopyTool::ParallelCopyTool(std::unique_ptr<MMapFileReader> fileReader,
-        std::unique_ptr<MMapFileWriter> fileWriter, std::shared_ptr<IQueue> queue)
-        : fileReader(std::move(fileReader)), fileWriter(std::move(fileWriter)), queue(queue)
+        std::unique_ptr<MMapFileWriter> fileWriter, std::unique_ptr<IQueue> queue)
+        : fileReader(std::move(fileReader)), fileWriter(std::move(fileWriter)), queue(std::move(queue))
 {
-    queue->open();
+    this->queue->open();
 }
 
 void ParallelCopyTool::copy()
@@ -41,4 +41,11 @@ void ParallelCopyTool::writingFunction()
     }
 
     fileWriter->finishWrite();
+}
+
+ParallelCopyTool::~ParallelCopyTool()
+{
+    fileReader->finishRead();
+    fileWriter->finishWrite();
+    queue->close();
 }

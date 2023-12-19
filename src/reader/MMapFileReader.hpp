@@ -1,13 +1,13 @@
 #pragma once
 #include "IFileReader.hpp"
-#include <string_view>
+#include <string>
 #include <unistd.h>
 #include <atomic>
 
 class MMapFileReader : public IFileReader
 {
 public:
-    MMapFileReader(std::string_view fileName);
+    MMapFileReader(std::string fileName);
 
     virtual void open() override;
     virtual std::vector<unsigned char> read() override;
@@ -28,5 +28,5 @@ private:
     size_t currentOffset = 0;
     std::atomic_bool readFinished;
 
-    std::string_view fileName;
+    std::string fileName;
 };

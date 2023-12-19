@@ -10,17 +10,17 @@ class ParallelCopyTool : public ICopyTool
 {
 public:
     ParallelCopyTool(std::unique_ptr<MMapFileReader> fileReader,
-        std::unique_ptr<MMapFileWriter> fileWriter, std::shared_ptr<IQueue> queue);
+        std::unique_ptr<MMapFileWriter> fileWriter, std::unique_ptr<IQueue> queue);
 
     virtual void copy() override;
 
-    ~ParallelCopyTool() = default;
+    ~ParallelCopyTool();
 private:
     void writingFunction();
 
     std::unique_ptr<MMapFileReader> fileReader;
     std::unique_ptr<MMapFileWriter> fileWriter;
-    std::shared_ptr<IQueue> queue;
+    std::unique_ptr<IQueue> queue;
 
     std::jthread writingThread;
 };

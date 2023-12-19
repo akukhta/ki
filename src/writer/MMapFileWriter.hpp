@@ -1,12 +1,12 @@
 #pragma once
 #include "IFileWriter.hpp"
-#include <string_view>
+#include <string>
 #include <atomic>
 
 class MMapFileWriter : public IFileWriter
 {
 public:
-    MMapFileWriter(std::string_view fileName, size_t fileSize);
+    MMapFileWriter(std::string fileName, size_t fileSize);
 
     virtual void write(std::vector<unsigned char>) override;
     virtual void create() override;
@@ -25,5 +25,5 @@ private:
     
     std::atomic_bool writeFinished;
 
-    std::string_view fileName;
+    std::string fileName;
 };

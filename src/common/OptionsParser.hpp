@@ -1,10 +1,11 @@
 #pragma once
+#include "IOptionsParser.hpp"
 #include <boost/program_options.hpp>
 #include <iostream>
 
 using namespace boost::program_options;
 
-class OptionsParser
+class OptionsParser : public IOptionsParser
 {
 public:
     OptionsParser(int argc, char ** argv)
@@ -31,16 +32,17 @@ public:
         }
     }
 
-    std::string getSrc()
+    virtual std::string getSrc() const override
     {
         return src;
     } 
 
-    std::string getDst()
+    virtual std::string getDst() const override
     {
         return dst;
     }
     
+    virtual ~OptionsParser() = default;
 private:
     options_description desc{"Kopieren Instrument"};
     

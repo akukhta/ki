@@ -8,16 +8,16 @@
 #include <algorithm>
 #include <filesystem>
 
-MMapFileReader::MMapFileReader(std::string_view fileName) : fileName(fileName)
+MMapFileReader::MMapFileReader(std::string fileName) : fileName(std::move(fileName))
 {
-    fileDesc = ::open(fileName.data(), O_RDONLY, S_IRUSR);
+    fileDesc = ::open(this->fileName.data(), O_RDONLY, S_IRUSR);
     
     if (fileDesc == -1)
     {
         throw std::runtime_error("can`t open src file");
     }    
 
-    fileSize = std::filesystem::file_size(fileName);
+    fileSize = std::filesystem::file_size(this->fileName);
 }
 
 void MMapFileReader::open()

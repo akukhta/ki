@@ -4,8 +4,8 @@
 #include <stdexcept>
 #include <sys/mman.h>
 
-MMapFileWriter::MMapFileWriter(std::string_view fileName, size_t fileSize) 
-    : fileName(fileName), fileSize(fileSize), currentOffset(0), writeFinished(false)
+MMapFileWriter::MMapFileWriter(std::string fileName, size_t fileSize) 
+    : fileName(std::move(fileName)), fileSize(fileSize), currentOffset(0), writeFinished(false)
 {
     ;
 }

@@ -25,7 +25,8 @@ public:
     
     static TmpFile createEmpty()
     {
-        auto fName = std::to_string(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+        auto fName = getRandomName();
+
         std::ofstream out(fName, std::ios_base::binary);
         out.close();
         return TmpFile(fName);
@@ -33,7 +34,7 @@ public:
 
     static TmpFile create(size_t fileSize = 500000)
     {
-        auto fName = std::to_string(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+        auto fName = getRandomName();
 
         std::vector<unsigned char> content;
 
@@ -50,6 +51,12 @@ public:
         out.close();
 
         return TmpFile(fName, std::move(content));
+    }
+
+
+    static std::string getRandomName()
+    {
+        return std::to_string(std::chrono::high_resolution_clock::now().time_since_epoch().count());
     }
 
     std::string fileName;
