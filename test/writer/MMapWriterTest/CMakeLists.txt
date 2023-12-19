@@ -1,1 +1,2 @@
 add_subdirectory(entireFileWrite)
+add_subdirectory(zeroSizeFileWrite)

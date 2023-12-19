@@ -33,7 +33,7 @@ void MMapFileWriter::create()
 
     if (ftruncate(fileDesc, fileSize) == -1)
     {
-        throw std::runtime_error("can`t create a file");
+        throw std::runtime_error("can`t resize a file");
     }
 
     mmappedFile = static_cast<unsigned char*>(mmap(0, fileSize,

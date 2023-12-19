@@ -8,3 +8,4 @@ enable_testing()
 
 add_subdirectory(reader/MMapReaderTest)
 add_subdirectory(writer/MMapWriterTest)
+add_subdirectory(queue/SyncQueue)

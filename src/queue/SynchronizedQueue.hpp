@@ -25,5 +25,5 @@ private:
     std::queue<std::vector<unsigned char>> queue;
     std::mutex qm;
     std::condition_variable cv;
-    bool isQueueOpen;
+    bool isQueueOpen = false;
 };

@@ -19,8 +19,11 @@ BOOST_AUTO_TEST_CASE(OnePageRead)
         MMapFileReader reader(tmpFile.fileName);
         reader.open();
 
+        BOOST_ASSERT(reader.getFileSize() == MMapFileReader::defaultBufferSize);
+        
         auto b = reader.read();
-
+        
+        BOOST_ASSERT(reader.isReadFinished() == true);
         BOOST_ASSERT(b == onePageBuf);
     }
     catch(std::runtime_error const& err)

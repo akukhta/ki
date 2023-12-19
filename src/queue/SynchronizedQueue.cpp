@@ -27,7 +27,7 @@ void SynchronizedQueue::push(std::vector<unsigned char> buffer)
 
 bool SynchronizedQueue::isEmpty()
 {
-    return !queue.empty();
+    return queue.empty();
 }
 
 void SynchronizedQueue::close()

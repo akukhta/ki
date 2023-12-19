@@ -22,6 +22,14 @@ public:
     {
         std::filesystem::remove(fileName);
     }
+    
+    static TmpFile createEmpty()
+    {
+        auto fName = std::to_string(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+        std::ofstream out(fName, std::ios_base::binary);
+        out.close();
+        return TmpFile(fName);
+    }
 
     static TmpFile create(size_t fileSize = 500000)
     {
