@@ -54,7 +54,7 @@ std::vector<unsigned char> MMapFileReader::read()
     return buf;
 }
 
-bool MMapFileReader::isReadFinished()
+bool MMapFileReader::isReadFinished() const
 {
     return readFinished.load();
 }

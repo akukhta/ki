@@ -17,7 +17,7 @@ public:
 
     virtual void push(std::vector<unsigned char>) override;
     virtual std::optional<std::vector<unsigned char>> pop() override;
-    virtual bool isEmpty() override;
+    virtual bool isEmpty() const override;
 
     virtual void close() override;
     virtual void open() override;

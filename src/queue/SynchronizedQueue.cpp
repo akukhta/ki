@@ -25,7 +25,7 @@ void SynchronizedQueue::push(std::vector<unsigned char> buffer)
     cv.notify_one();
  }
 
-bool SynchronizedQueue::isEmpty()
+bool SynchronizedQueue::isEmpty() const
 {
     return queue.empty();
 }

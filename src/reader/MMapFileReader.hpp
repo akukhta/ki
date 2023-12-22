@@ -11,7 +11,7 @@ public:
 
     virtual void open() override;
     virtual std::vector<unsigned char> read() override;
-    virtual bool isReadFinished() override;
+    virtual bool isReadFinished() const override;
     virtual void finishRead() override;
     
     size_t getFileSize();
