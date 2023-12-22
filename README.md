@@ -17,7 +17,9 @@ Second thread should write the data to the target file.
  
 
 Hints before start:
-> Start the project as a prove of concept.
-> no need to process all possible errors. Just check the count of parameters so 'source' and 'destination' parameters are present and source exists. (start with POC - prove of concept)
-> safety hint - do not overwrite destination file by default - but it is up to you.
-> If you enjoy process or wants to continue: Create complete functional tool for backup process. Just pick up technical requirements for your tool from "copy /?" (windows) or "cp -man" (linux)
+* Start the project as a prove of concept.
+* no need to process all possible errors. Just check the count of parameters so 'source' and 'destination' parameters are present and source exists. (start with POC - prove of concept)
+* safety hint - do not overwrite destination file by default - but it is up to you.
+* If you enjoy process or wants to continue: Create complete functional tool for backup process. Just pick up technical requirements for your tool from "copy /?" (windows) or "cp -man" (linux)
+
+![alt text](diagram.png "Title")
