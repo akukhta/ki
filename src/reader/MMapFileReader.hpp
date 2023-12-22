@@ -7,7 +7,7 @@
 class MMapFileReader : public IFileReader
 {
 public:
-    MMapFileReader(std::string fileName);
+    explicit MMapFileReader(std::string fileName);
 
     virtual void open() override;
     virtual std::vector<unsigned char> read() override;
@@ -21,12 +21,12 @@ public:
     static inline size_t defaultBufferSize = sysconf(_SC_PAGESIZE);
 
 private:
-    int fileDesc;
+    int fileDesc = -1;
     size_t fileSize = 0;
     unsigned char *mmappedFile;
 
     size_t currentOffset = 0;
-    std::atomic_bool readFinished;
+    std::atomic_bool readFinished{false};
 
-    std::string fileName;
+    std::string fileName{""};
 };

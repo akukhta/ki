@@ -6,7 +6,7 @@
 class MMapFileWriter : public IFileWriter
 {
 public:
-    MMapFileWriter(std::string fileName, size_t fileSize);
+    explicit MMapFileWriter(std::string fileName, size_t fileSize);
 
     virtual void write(std::vector<unsigned char>) override;
     virtual void create() override;
@@ -16,14 +16,14 @@ public:
     virtual ~MMapFileWriter() {};
 
 private:
-    int fileDesc;
-    size_t fileSize;
+    int fileDesc = -1;
+    size_t fileSize = 0;
 
-    unsigned char *mmappedFile;
+    unsigned char *mmappedFile = nullptr;
 
     size_t currentOffset = 0;
     
-    std::atomic_bool writeFinished;
+    std::atomic_bool writeFinished{false};
 
-    std::string fileName;
+    std::string fileName{""};
 };
