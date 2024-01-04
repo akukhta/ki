@@ -11,14 +11,6 @@ find_package(Boost REQUIRED)
 
 add_executable(${PROJECT_NAME} 
     ../../../../src/common/ParallelCopyTool.hpp
-    ../../../../src/common/ParallelCopyTool.cpp
-    ../../../../src/common/IOptionsParser.hpp
-    ../../../../src/reader/MMapFileReader.hpp
-    ../../../../src/reader/MMapFileReader.cpp
-    ../../../../src/writer/MMapFileWriter.hpp
-    ../../../../src/writer/MMapFileWriter.cpp
-    ../../../../src/queue/SynchronizedQueue.cpp
-    ../../../../src/common/PseudoToolFactory.hpp
     ../../../Utiles/TmpFile.hpp
     ../../../Utiles/MockedOptionsParser.hpp
     main.cpp

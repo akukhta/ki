@@ -5,7 +5,8 @@
 #include <mutex>
 #include <condition_variable>
 
-class SynchronizedQueue : public IQueue
+template <class ChunkType> 
+class SynchronizedQueue : public IQueue<ChunkType>
 {
 public:
     SynchronizedQueue() = default;
@@ -15,14 +16,50 @@ public:
     SynchronizedQueue& operator=(SynchronizedQueue const &) = delete;
     SynchronizedQueue& operator=(SynchronizedQueue &&) = delete;
 
-    virtual void push(std::vector<unsigned char>) override;
-    virtual std::optional<std::vector<unsigned char>> pop() override;
-    virtual bool isEmpty() const override;
+    virtual void push(ChunkType buffer) override
+    {
+        {
+            std::unique_lock l(qm);
+            queue.push(std::move(buffer));
+        }
+    
+        cv.notify_one();
+    }
+    
+    virtual std::optional<ChunkType> pop() override
+    {
+        std::unique_lock l(qm);
+        cv.wait(l, [this](){ return queue.empty() == false || isQueueOpen == false;});
 
-    virtual void close() override;
-    virtual void open() override;
+        if (isQueueOpen == false && queue.empty())
+        {
+            return std::nullopt;
+        }
+        
+        auto buffer = std::move(queue.front());
+        queue.pop();
+        return buffer;
+    }
+    
+    virtual bool isEmpty() const override
+    {
+        return queue.empty();
+    }
+
+    virtual void close() override
+    {
+        std::scoped_lock l(qm);
+        isQueueOpen = false;
+    }
+
+    virtual void open() override
+    {
+        std::scoped_lock l(qm);
+        isQueueOpen = true;
+    }
+
 private:
-    std::queue<std::vector<unsigned char>> queue;
+    std::queue<ChunkType> queue;
     std::mutex qm;
     std::condition_variable cv;
     bool isQueueOpen = false;

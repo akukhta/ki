@@ -7,7 +7,7 @@
 #include "IOptionsParser.hpp"
 #include <memory>
 #include <iostream>
-
+#include <vector>
 class ToolFactory
 {
 public:
@@ -22,15 +22,16 @@ public:
         {
             case ToolType::PARALLEL:
             {
-                	auto reader = std::make_unique<MMapFileReader>(std::move(parser.getSrc()));
+                	auto reader = std::make_unique<MMapFileReader<std::vector<unsigned char>>>(std::move(parser.getSrc()));
 	                
-                    auto writer = std::make_unique<MMapFileWriter>(std::move(parser.getDst()),
+                    auto writer = std::make_unique<MMapFileWriter<std::vector<unsigned char>>>(std::move(parser.getDst()),
                         reader->getFileSize());
 	                
-                    std::unique_ptr<IQueue> queue = std::make_unique<SynchronizedQueue>();
+                    std::unique_ptr<IQueue<std::vector<unsigned char>>> queue =
+                         std::make_unique<SynchronizedQueue<std::vector<unsigned char>>>();
 
-                    tool = std::make_unique<ParallelCopyTool>(std::move(reader),
-                        std::move(writer), std::move(queue));
+                    tool = std::make_unique<ParallelCopyTool<std::vector<unsigned char>>>(
+                        std::move(reader), std::move(writer), std::move(queue));
                     break;
             }
 

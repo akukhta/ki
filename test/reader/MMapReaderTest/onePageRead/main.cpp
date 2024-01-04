@@ -12,14 +12,14 @@ BOOST_AUTO_TEST_CASE(OnePageRead)
 {
     auto tmpFile = TmpFile::create();
 
-	auto onePageBuf = std::vector<unsigned char>(tmpFile.content.data(), tmpFile.content.data() + MMapFileReader::defaultBufferSize);
+	auto onePageBuf = std::vector<unsigned char>(tmpFile.content.data(), tmpFile.content.data() + MMapFileReader<std::vector<unsigned char>>::defaultBufferSize);
     
     try
     {
-        MMapFileReader reader(tmpFile.fileName);
+        MMapFileReader<std::vector<unsigned char>> reader(tmpFile.fileName);
         reader.open();
 
-        BOOST_ASSERT(reader.getFileSize() == MMapFileReader::defaultBufferSize);
+        BOOST_ASSERT(reader.getFileSize() == MMapFileReader<std::vector<unsigned char>>::defaultBufferSize);
         
         auto b = reader.read();
         

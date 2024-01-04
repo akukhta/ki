@@ -11,7 +11,6 @@ find_package(Boost REQUIRED)
 
 add_executable(${PROJECT_NAME} 
     ../../../../src/writer/MMapFileWriter.hpp
-    ../../../../src/writer/MMapFileWriter.cpp
     ../../../Utiles/TmpFile.hpp
     main.cpp
 )

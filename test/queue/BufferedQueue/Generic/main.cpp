@@ -1,5 +1,5 @@
 #define BOOST_TEST_MODULE Test1
-#include "../../../../src/queue/SynchronizedQueue.hpp"
+#include "../../../../src/queue/BufferedQueue.hpp"
 #include "../../../Utiles/TmpFile.hpp"
 #include <boost/test/included/unit_test.hpp>
 #include <chrono>
@@ -10,8 +10,8 @@
 
 BOOST_AUTO_TEST_CASE(NonEmptyQueue)
 {
-    SynchronizedQueue<std::vector<unsigned char>> q;
-    q.push(std::vector<unsigned char>{});
+    FixedBufferQueue<Buffer> q;
+    
 
     BOOST_ASSERT(q.isEmpty() == false);
     BOOST_ASSERT(q.pop().has_value() == true);
