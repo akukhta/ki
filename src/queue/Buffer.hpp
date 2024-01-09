@@ -3,46 +3,43 @@
 #include <deque>
 
 #define BUFFER_BLOCKS_AMOUNT 4
-#define BUFFER_SIZE (S_BLKSIZE * BUFFER_BLOCKS_AMOUNT)
+#define BUFFER_SIZE ((S_BLKSIZE) * BUFFER_BLOCKS_AMOUNT)
+
+enum class BufferType : char { READ, WRITE };
 
 class Buffer
 {
 public:
-    Buffer() = default;
+    Buffer(std::deque<Buffer>& readBuffers, std::deque<Buffer>& writeBuffers, std::condition_variable &cv, BufferType type = BufferType::READ)
+        :   type(type), mreadBuffers(readBuffers), mwriteBuffers(writeBuffers), cv(cv) {}
 
-    char unsigned data[BUFFER_SIZE];
-    size_t size;
-    bool isFree = true;
-};
-
-enum class BufferType : char { READ, WRITE };
-
-class BufferWrapper
-{
-public:
-    BufferWrapper(BufferType type, Buffer& buffer, std::deque<Buffer&>& readBuffers, std::deque<Buffer&>& writeBuffers, std::condition_variable &cv)
-        :   type(type),buffer(buffer), mreadBuffers(readBuffers), mwriteBuffers(writeBuffers), cv(cv) {}
-    
-    Buffer& buffer;
-
-    ~BufferWrapper()
+    ~Buffer()
     {
         cv.notify_all();
 
         if (type == BufferType::READ)
         {
-            buffer.isFree = false;
-            mwriteBuffers.push_back(buffer); 
+            isFree = false;
+            mwriteBuffers.push_back(*this); 
         }
         else if (type == BufferType::WRITE)
         {
-            buffer.isFree = true;
-            mreadBuffers.push_back(buffer);  
+            isFree = true;
+            mreadBuffers.push_back(*this);  
         }
     }
 
+    void setType(BufferType type)
+    {
+        this->type = type;
+    }
+
+    char unsigned data[BUFFER_SIZE];
+    size_t size;
+    bool isFree = true;
+
 protected:
-    std::deque<Buffer&>& mreadBuffers, mwriteBuffers;
+    std::deque<Buffer>& mreadBuffers, mwriteBuffers;
     
 private:
     std::condition_variable &cv;

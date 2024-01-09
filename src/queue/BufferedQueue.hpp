@@ -29,30 +29,36 @@ class FixedBufferQueue<Buffer> : public IQueue<Buffer>
 public:
     FixedBufferQueue()
     {
-        for (auto &buffer : buffers)
+
+        for (size_t i = 0; i < BUFFERS_IN_QUEUE; i++)
         {
-            readBuffers.push_back(buffer);
+            readBuffers.emplace_back(readBuffers, writeBuffers, cv);
         }
     }
 
-    BufferWrapper getFreeBuffer()
+    Buffer getFreeBuffer()
     {
         std::unique_lock lm(queueMutex);
-        cv.wait(lm, readBuffers.size() > 0);
+        cv.wait(lm, [this](){ return readBuffers.size() > 0; });
 
         auto &buffer = readBuffers.back();
         readBuffers.pop_back();
-        return BufferWrapper{ BufferType::READ, buffer, readBuffers, writeBuffers, cv};
+
+        buffer.setType(BufferType::READ);
+        
+        return buffer;
     }
 
-    BufferWrapper getFilledBuffer()
+    Buffer getFilledBuffer()
     {
         std::unique_lock lm(queueMutex);
-        cv.wait(lm, writeBuffers.size() > 0);
+        cv.wait(lm, [this](){ return writeBuffers.size() > 0;});
 
         auto &buffer = writeBuffers.back();
         writeBuffers.pop_back();
-        return BufferWrapper{BufferType::WRITE, buffer, readBuffers, writeBuffers, cv};
+        
+        buffer.setType(BufferType::WRITE);
+        return buffer;
     }
 
     virtual void push(Buffer buffer) override
@@ -84,9 +90,8 @@ private:
     }
 
 private:    
-    std::array<Buffer, BUFFERS_IN_QUEUE> buffers;  
-    std::deque<Buffer&> readBuffers, writeBuffers;
+    std::deque<Buffer> readBuffers, writeBuffers;
 
-    std::mutex queueMutex;
+    mutable std::mutex queueMutex;
     std::condition_variable cv;
 };

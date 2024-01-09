@@ -4,11 +4,7 @@
 #include <filesystem>
 #include <cstdio>
 
-template <class ChunkType>
-class BufferedReader;
-
-template <>
-class BufferedReader<Buffer>: public IFileReader<Buffer>
+class BufferedReader
 {
 public:
     explicit BufferedReader(std::string fileName, std::shared_ptr<FixedBufferQueue<Buffer>> queue) : fileName(std::move(fileName))
@@ -16,7 +12,7 @@ public:
         fileSize = std::filesystem::file_size(this->fileName);
     }
 
-    virtual void open() override
+    virtual void open()
     {
         fileDesc = std::fopen(fileName.c_str(), "rb");
 
@@ -31,13 +27,13 @@ public:
         }
     }
 
-    virtual Buffer read() override
+    virtual void read()
     {
-        BufferWrapper buf = queue->getFreeBuffer();
+        auto buf = queue->getFreeBuffer();
 
         auto readCount = std::min(currentOffset + BUFFER_SIZE, fileSize);
 
-        if (setvbuf(fileDesc, &buf.buffer.data, _IOFBF, BUFFER_SIZE))
+        if (setvbuf(fileDesc, reinterpret_cast<char*>(&buf.data), _IOFBF, BUFFER_SIZE))
         {
             throw std::runtime_error("can`t set buffering mode");
         }
@@ -54,19 +50,16 @@ public:
         {
             readFinished.store(true);
         }
-        
-        return buf;
     }
 
-    virtual bool isReadFinished() const override
+    virtual bool isReadFinished() const
     {
         return readFinished.load();
     }
 
-    virtual void finishRead() override
+    virtual void finishRead()
     {
-        munmap(mmappedFile, fileSize);
-        close(fileDesc);
+        std::fclose(fileDesc);
     }
     
     size_t getFileSize()
@@ -74,7 +67,7 @@ public:
         return fileSize;
     }
 
-    ~MMapFileReader(){}
+    ~BufferedReader(){}
 
     static inline size_t defaultBufferSize = sysconf(_SC_PAGESIZE);
 
