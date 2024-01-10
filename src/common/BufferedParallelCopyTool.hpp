@@ -19,7 +19,7 @@ public:
         fileReader->open();
         fileWriter->create();
 
-        writingThread = std::jthread(&BPCopyTool::writingFunction, this);
+        //writingThread = std::jthread(&BPCopyTool::writingFunction, this);
 
         while (!fileReader->isReadFinished())
         {

@@ -3,11 +3,12 @@
 #include "../queue/BufferedQueue.hpp"
 #include <filesystem>
 #include <cstdio>
+#include <utility>
 
 class BufferedReader
 {
 public:
-    explicit BufferedReader(std::string fileName, std::shared_ptr<FixedBufferQueue<Buffer>> queue) : fileName(std::move(fileName))
+    explicit BufferedReader(std::string fileName, std::shared_ptr<FixedBufferQueue<Buffer>> queue) : fileName(std::move(fileName)), queue(std::move(queue))
     {
         fileSize = std::filesystem::file_size(this->fileName);
     }

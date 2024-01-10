@@ -1,8 +1,4 @@
-
 #!/bin/sh
 
-conan install . --output-folder=bin 
-cmake . -B bin --preset conan-release
-cd bin
-make
-cd ..
+conan install . --build=missing --output-folder=debug --profile=debugprofile.txt --profile:b=debugprofile.txt
+

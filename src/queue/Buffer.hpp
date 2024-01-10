@@ -10,38 +10,53 @@ enum class BufferType : char { READ, WRITE };
 class Buffer
 {
 public:
-    Buffer(std::deque<Buffer>& readBuffers, std::deque<Buffer>& writeBuffers, std::condition_variable &cv, BufferType type = BufferType::READ)
-        :   type(type), mreadBuffers(readBuffers), mwriteBuffers(writeBuffers), cv(cv) {}
+    Buffer(std::deque<Buffer>& readBuffers, std::deque<Buffer>& writeBuffers, std::condition_variable &cv, unsigned char *data, BufferType type = BufferType::READ)
+        : bufferType(type), readBuffers(readBuffers), writeBuffers(writeBuffers), cv(cv), bytesUsed{0}, data(data) {}
+
+    Buffer(Buffer && other) noexcept
+        : readBuffers(other.readBuffers), writeBuffers(other.writeBuffers), cv(other.cv),
+            data(other.data), bytesUsed(0), bufferType(other.bufferType)
+    {
+        other.data = nullptr;
+        other.bufferHasBeenMoved = true;
+    }
+
+    Buffer(Buffer const&) = delete;
 
     ~Buffer()
     {
+        if (bufferHasBeenMoved)
+        {
+            return;
+        }
+
         cv.notify_all();
 
-        if (type == BufferType::READ)
+        if (bufferType == BufferType::READ)
         {
-            isFree = false;
-            mwriteBuffers.push_back(*this); 
+            writeBuffers.push_back(std::move(*this));
         }
-        else if (type == BufferType::WRITE)
+        else if (bufferType == BufferType::WRITE)
         {
-            isFree = true;
-            mreadBuffers.push_back(*this);  
+            readBuffers.push_back(std::move(*this));
         }
     }
 
     void setType(BufferType type)
     {
-        this->type = type;
+        this->bufferType = type;
     }
 
-    char unsigned data[BUFFER_SIZE];
-    size_t size;
-    bool isFree = true;
+    char unsigned *data;
+    size_t bytesUsed;
 
 protected:
-    std::deque<Buffer>& mreadBuffers, mwriteBuffers;
+    std::deque<Buffer>& readBuffers;
+    std::deque<Buffer>& writeBuffers;
     
 private:
     std::condition_variable &cv;
-    BufferType type;
+    BufferType bufferType;
+
+    bool bufferHasBeenMoved = false;
 };

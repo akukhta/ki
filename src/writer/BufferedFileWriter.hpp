@@ -12,7 +12,7 @@ public:
     virtual void write()
     {
         auto buf = queue->getFilledBuffer();
-        fwrite(buf.data, BUFFER_SIZE, 1, fileDesc);
+        fwrite(buf.data, buf.bytesUsed, 1, fileDesc);
     }
 
     virtual void create()

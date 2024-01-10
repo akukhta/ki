@@ -54,7 +54,7 @@ public:
 
             default:
             {
-                std::cerr << "Unknown tool type" << std::endl;
+                std::cerr << "Unknown tool bufferType" << std::endl;
                 break;
             }
         }

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0)
 
 project(ki)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 
@@ -23,4 +23,4 @@ add_executable(${PROJECT_NAME}
 	src/writer/MMapFileWriter.hpp
 )
 
-target_link_libraries(${PROJECT_NAME} Boost::program_options)
+target_link_libraries(${PROJECT_NAME} Boost::program_options stdc++fs)

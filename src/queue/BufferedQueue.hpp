@@ -29,19 +29,20 @@ class FixedBufferQueue<Buffer> : public IQueue<Buffer>
 public:
     FixedBufferQueue()
     {
-
-        for (size_t i = 0; i < BUFFERS_IN_QUEUE; i++)
+        for (auto & buffer : buffers)
         {
-            readBuffers.emplace_back(readBuffers, writeBuffers, cv);
+            readBuffers.emplace_back(readBuffers, writeBuffers, cv, buffer.data());
         }
     }
+
+    ~FixedBufferQueue() override = default;
 
     Buffer getFreeBuffer()
     {
         std::unique_lock lm(queueMutex);
-        cv.wait(lm, [this](){ return readBuffers.size() > 0; });
+        cv.wait(lm, [this](){ return !readBuffers.empty(); });
 
-        auto &buffer = readBuffers.back();
+        auto buffer = std::move(readBuffers.back());
         readBuffers.pop_back();
 
         buffer.setType(BufferType::READ);
@@ -52,46 +53,46 @@ public:
     Buffer getFilledBuffer()
     {
         std::unique_lock lm(queueMutex);
-        cv.wait(lm, [this](){ return writeBuffers.size() > 0;});
+        cv.wait(lm, [this](){ return !writeBuffers.empty();});
 
         auto &buffer = writeBuffers.back();
         writeBuffers.pop_back();
         
         buffer.setType(BufferType::WRITE);
-        return buffer;
+        return std::move(buffer);
     }
 
-    virtual void push(Buffer buffer) override
+    void push(Buffer buffer) override
     {
         throw std::runtime_error("not implemented"); 
     }
 
-    virtual std::optional<Buffer> pop() override
+    std::optional<Buffer> pop() override
     {
         throw std::runtime_error("not implemented");
     }
 
-    virtual bool isEmpty() const override
+    bool isEmpty() const override
     {
-        std::unique_lock lm(queueMutex);
+        //std::unique_lock lm(queueMutex);
         return writeBuffers.empty();
     }
     
 private:
-    // Are those interfaces apliable to queue itself? Should i segregate interfaces? 
-    virtual void close() override
+    // Are those interfaces applicable to queue itself? Should i segregate interfaces?
+    void close() override
     {
         ;
     }
 
-    virtual void open() override
+    void open() override
     {
         ;
     }
 
 private:    
     std::deque<Buffer> readBuffers, writeBuffers;
-
-    mutable std::mutex queueMutex;
+    std::array<std::array<unsigned char, BUFFER_SIZE>, BUFFERS_IN_QUEUE> buffers{};
+    std::mutex queueMutex;
     std::condition_variable cv;
 };

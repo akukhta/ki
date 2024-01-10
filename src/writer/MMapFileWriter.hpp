@@ -3,7 +3,7 @@
 #include <string>
 #include <atomic>
 #include <fcntl.h>
-#include <stdio.h>
+#include <cstdio>
 #include <stdexcept>
 #include <sys/mman.h>
 
@@ -15,7 +15,7 @@ public:
         : fileName(std::move(fileName)), fileSize(fileSize), currentOffset(0), writeFinished(false)
     {}
 
-    virtual void write(ChunkType buf) override
+    void write(ChunkType buf) override
     {
         if (currentOffset + buf.size() > fileSize)
         {
@@ -27,7 +27,7 @@ public:
         currentOffset += buf.size();
     }
 
-    virtual void create() override
+    void create() override
     {
         fileDesc = open(fileName.data(), O_RDWR | O_CREAT, 0644);
 
@@ -50,19 +50,19 @@ public:
         }
     }
 
-    virtual void finishWrite() override
+    void finishWrite() override
     {
         writeFinished.store(true);
         fsync(fileDesc);
         close(fileDesc);
     }
 
-    virtual bool isWriteFinished() override
+    bool isWriteFinished() override
     {
         return writeFinished.load();
     }
     
-    virtual ~MMapFileWriter() {};
+    virtual ~MMapFileWriter() = default;
 
 private:
     int fileDesc = -1;
@@ -74,5 +74,5 @@ private:
     
     std::atomic_bool writeFinished{false};
 
-    std::string fileName{""};
+    std::string fileName;
 };
