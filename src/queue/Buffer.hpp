@@ -15,7 +15,7 @@ public:
 
     Buffer(Buffer && other) noexcept
         : readBuffers(other.readBuffers), writeBuffers(other.writeBuffers), cv(other.cv),
-            data(other.data), bytesUsed(0), bufferType(other.bufferType)
+            data(other.data), bytesUsed(other.bytesUsed), bufferType(other.bufferType)
     {
         other.data = nullptr;
         other.bufferHasBeenMoved = true;

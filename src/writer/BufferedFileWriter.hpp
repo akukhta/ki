@@ -12,7 +12,10 @@ public:
     virtual void write()
     {
         auto buf = queue->getFilledBuffer();
-        fwrite(buf.data, buf.bytesUsed, 1, fileDesc);
+
+        if (buf) {
+                fwrite(buf->data, buf->bytesUsed, 1, fileDesc);
+        }
     }
 
     virtual void create()
@@ -32,8 +35,13 @@ public:
 
     virtual void finishWrite()
     {
-        writeFinished.store(true);
-        std::fclose(fileDesc);
+        if (fileDesc)
+        {
+            writeFinished.store(true);
+            fsync(fileDesc->_fileno);
+            std::fclose(fileDesc);
+            fileDesc = nullptr;
+        }
     }
 
     virtual bool isWriteFinished()
@@ -41,7 +49,10 @@ public:
         return writeFinished.load();
     }
     
-    virtual ~BufferedFileWriter() {};
+    virtual ~BufferedFileWriter()
+    {
+        finishWrite();
+    };
 
 private:
     std::FILE* fileDesc;

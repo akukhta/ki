@@ -30,11 +30,20 @@ public:
 
     virtual void read()
     {
-        auto buf = queue->getFreeBuffer();
+        auto buf = queue->getFreeBuffer().value();
+
+        if (currentOffset + BUFFER_SIZE <= fileSize)
+        {
+            buf.bytesUsed = BUFFER_SIZE;
+        }
+        else
+        {
+            buf.bytesUsed = fileSize - currentOffset;
+        }
 
         auto readCount = std::min(currentOffset + BUFFER_SIZE, fileSize);
 
-        if (setvbuf(fileDesc, reinterpret_cast<char*>(&buf.data), _IOFBF, BUFFER_SIZE))
+        if (setvbuf(fileDesc, reinterpret_cast<char*>(buf.data), _IOFBF, BUFFER_SIZE))
         {
             throw std::runtime_error("can`t set buffering mode");
         }
@@ -60,7 +69,11 @@ public:
 
     virtual void finishRead()
     {
-        std::fclose(fileDesc);
+        if (fileDesc)
+        {
+            std::fclose(fileDesc);
+            fileDesc = nullptr;
+        }
     }
     
     size_t getFileSize()
@@ -68,7 +81,10 @@ public:
         return fileSize;
     }
 
-    ~BufferedReader(){}
+    ~BufferedReader()
+    {
+        finishRead();
+    }
 
     static inline size_t defaultBufferSize = sysconf(_SC_PAGESIZE);
 

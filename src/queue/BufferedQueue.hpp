@@ -37,10 +37,15 @@ public:
 
     ~FixedBufferQueue() override = default;
 
-    Buffer getFreeBuffer()
+    std::optional<Buffer> getFreeBuffer()
     {
         std::unique_lock lm(queueMutex);
-        cv.wait(lm, [this](){ return !readBuffers.empty(); });
+        cv.wait(lm, [this](){ return !readBuffers.empty() || !isOpen.load(); });
+
+        if (readBuffers.empty() && !isOpen.load())
+        {
+            return std::nullopt;
+        }
 
         auto buffer = std::move(readBuffers.back());
         readBuffers.pop_back();
@@ -50,49 +55,54 @@ public:
         return buffer;
     }
 
-    Buffer getFilledBuffer()
+    std::optional<Buffer> getFilledBuffer()
     {
         std::unique_lock lm(queueMutex);
-        cv.wait(lm, [this](){ return !writeBuffers.empty();});
+        cv.wait(lm, [this](){ return !writeBuffers.empty() || !isOpen.load(); });
 
-        auto &buffer = writeBuffers.back();
-        writeBuffers.pop_back();
+        if (writeBuffers.empty() && !isOpen.load())
+        {
+            return std::nullopt;
+        }
+
+        auto buffer = std::move(writeBuffers.front());
+        writeBuffers.pop_front();
         
         buffer.setType(BufferType::WRITE);
-        return std::move(buffer);
+        return buffer;
     }
+
+    bool isEmpty() const override
+    {
+        //std::unique_lock lm(queueMutex);
+        return writeBuffers.empty() && isOpen.load() == false;
+    }
+
+    void close() override
+    {
+        isOpen.store(false);
+    }
+
+    void open() override
+    {
+        isOpen.store(true);
+    }
+
+private:
 
     void push(Buffer buffer) override
     {
-        throw std::runtime_error("not implemented"); 
+        throw std::runtime_error("not implemented");
     }
 
     std::optional<Buffer> pop() override
     {
         throw std::runtime_error("not implemented");
     }
-
-    bool isEmpty() const override
-    {
-        //std::unique_lock lm(queueMutex);
-        return writeBuffers.empty();
-    }
-    
-private:
-    // Are those interfaces applicable to queue itself? Should i segregate interfaces?
-    void close() override
-    {
-        ;
-    }
-
-    void open() override
-    {
-        ;
-    }
-
 private:    
     std::deque<Buffer> readBuffers, writeBuffers;
     std::array<std::array<unsigned char, BUFFER_SIZE>, BUFFERS_IN_QUEUE> buffers{};
     std::mutex queueMutex;
     std::condition_variable cv;
+    std::atomic_bool isOpen{false};
 };
