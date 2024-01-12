@@ -21,6 +21,8 @@ add_executable(${PROJECT_NAME}
 	src/reader/MMapFileReader.hpp
 	src/writer/IFileWriter.hpp
 	src/writer/MMapFileWriter.hpp
+		src/common/StopWatch.cpp
+		src/common/StopWatch.h
 )
 
 target_link_libraries(${PROJECT_NAME} Boost::program_options stdc++fs)

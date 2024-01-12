@@ -3,6 +3,7 @@
 #include "../reader/BufferedFileReader.hpp"
 #include "../writer/BufferedFileWriter.hpp"
 #include "../queue/BufferedQueue.hpp"
+#include "StopWatch.h"
 #include <memory>
 #include <thread>
 
@@ -11,7 +12,10 @@ class BPCopyTool : public ICopyTool
 public:
     BPCopyTool(std::unique_ptr<BufferedReader> fileReader,
         std::unique_ptr<BufferedFileWriter> fileWriter, std::shared_ptr<FixedBufferQueue<Buffer>> queue) :
-            fileReader(std::move(fileReader)), fileWriter(std::move(fileWriter)), queue(std::move(queue))
+            fileReader(std::move(fileReader)),
+            fileWriter(std::move(fileWriter)),
+            queue(std::move(queue)),
+            sw(StopWatch::createAutoStartWatch("copy tool benchmark"))
         {}
 
     virtual void copy() override
@@ -41,6 +45,8 @@ private:
             fileWriter->write();
         }
     }
+
+    StopWatch sw;
 
     std::unique_ptr<BufferedReader> fileReader;
     std::unique_ptr<BufferedFileWriter> fileWriter;
