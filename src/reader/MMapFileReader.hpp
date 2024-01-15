@@ -11,8 +11,16 @@
 #include <stdexcept>
 #include <algorithm>
 #include <filesystem>
+#include <concepts>
+
+template<class ChunkType>
+concept BackInsertable = requires (ChunkType c)
+{
+    {std::back_insert_iterator<ChunkType>(c)};
+};
 
 template <class ChunkType>
+    requires BackInsertable<ChunkType>
 class MMapFileReader : public IFileReader<ChunkType>
 {
 public:

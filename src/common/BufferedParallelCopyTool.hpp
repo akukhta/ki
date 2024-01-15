@@ -6,12 +6,13 @@
 #include "StopWatch.h"
 #include <memory>
 #include <thread>
+#include <unordered_map>
 
 class BPCopyTool : public ICopyTool
 {
 public:
     BPCopyTool(std::unique_ptr<BufferedReader> fileReader,
-        std::unique_ptr<BufferedFileWriter> fileWriter, std::shared_ptr<FixedBufferQueue<Buffer>> queue) :
+        std::unique_ptr<BufferedFileWriter> fileWriter, std::shared_ptr<FixedBufferQueue> queue) :
             fileReader(std::move(fileReader)),
             fileWriter(std::move(fileWriter)),
             queue(std::move(queue)),
@@ -50,7 +51,7 @@ private:
 
     std::unique_ptr<BufferedReader> fileReader;
     std::unique_ptr<BufferedFileWriter> fileWriter;
-    std::shared_ptr<FixedBufferQueue<Buffer>> queue;
+    std::shared_ptr<FixedBufferQueue> queue;
     
     std::jthread writingThread;
 };

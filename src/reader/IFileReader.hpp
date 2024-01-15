@@ -10,5 +10,5 @@ public:
     virtual bool isReadFinished() const = 0;
     virtual void finishRead() = 0;
     
-    virtual ~IFileReader() {}
+    virtual ~IFileReader() = default;
 };

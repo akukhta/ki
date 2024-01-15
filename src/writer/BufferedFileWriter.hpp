@@ -1,65 +1,32 @@
 #pragma once
+#include <utility>
+
 #include "IFileWriter.hpp"
 #include "../queue/BufferedQueue.hpp"
 
-class BufferedFileWriter
+class BufferedFileWriter : IFileWriter<void>
 {
 public:
+
     explicit BufferedFileWriter(std::string fileName, 
-        std::shared_ptr<FixedBufferQueue<Buffer>> queue)
-        :   fileName(fileName), queue(queue) {}
+        std::shared_ptr<FixedBufferQueue> queue);
 
-    virtual void write()
-    {
-        auto buf = queue->getFilledBuffer();
+    void write() override;
 
-        if (buf) {
-                fwrite(buf->data, buf->bytesUsed, 1, fileDesc);
-        }
-    }
+    void create() override;
 
-    virtual void create()
-    {
-        fileDesc = std::fopen(fileName.c_str(), "wb");
+    void finishWrite() override;
 
-        if (fileDesc == nullptr)
-        {
-            throw std::runtime_error("can`t create output file");
-        }
-
-        if (setvbuf(fileDesc, nullptr, _IOFBF, BUFFER_SIZE))
-        {
-            throw std::runtime_error("can`t set buffering mode for output file");
-        }
-    }
-
-    virtual void finishWrite()
-    {
-        if (fileDesc)
-        {
-            writeFinished.store(true);
-            fsync(fileDesc->_fileno);
-            std::fclose(fileDesc);
-            fileDesc = nullptr;
-        }
-    }
-
-    virtual bool isWriteFinished()
-    {
-        return writeFinished.load();
-    }
+    bool isWriteFinished() override;
     
-    virtual ~BufferedFileWriter()
-    {
-        finishWrite();
-    };
+    virtual ~BufferedFileWriter();
 
 private:
-    std::FILE* fileDesc;
+    std::FILE* fileDesc{};
 
     std::atomic_bool writeFinished{false};
 
-    std::string fileName{""};
+    std::string fileName;
 
-    std::shared_ptr<FixedBufferQueue<Buffer>> queue;
+    std::shared_ptr<FixedBufferQueue> queue;
 };

@@ -8,6 +8,19 @@
 #include <sys/mman.h>
 
 template <class ChunkType>
+concept STDLikeContainer = requires (ChunkType c)
+{
+    typename ChunkType::iterator;
+    typename ChunkType::const_iterator;
+
+    requires std::same_as<decltype(std::declval<ChunkType>().begin()), typename ChunkType::iterator>
+                || std::same_as<decltype(std::declval<ChunkType>().begin()), typename ChunkType::const_iterator>;
+
+    requires std::same_as<decltype(std::declval<ChunkType>().end()), typename ChunkType::iterator>
+             || std::same_as<decltype(std::declval<ChunkType>().end()), typename ChunkType::const_iterator>;
+};
+
+template <class ChunkType>
 class MMapFileWriter : public IFileWriter<ChunkType>
 {
 public:

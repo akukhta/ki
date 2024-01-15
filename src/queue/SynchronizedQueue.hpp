@@ -4,8 +4,10 @@
 #include <queue>
 #include <mutex>
 #include <condition_variable>
+#include <concepts>
 
-template <class ChunkType> 
+template <class ChunkType>
+    requires std::movable<ChunkType>
 class SynchronizedQueue : public IQueue<ChunkType>
 {
 public:
@@ -16,7 +18,7 @@ public:
     SynchronizedQueue& operator=(SynchronizedQueue const &) = delete;
     SynchronizedQueue& operator=(SynchronizedQueue &&) = delete;
 
-    virtual void push(ChunkType buffer) override
+    void push(ChunkType buffer) override
     {
         {
             std::unique_lock l(qm);
@@ -26,12 +28,12 @@ public:
         cv.notify_one();
     }
     
-    virtual std::optional<ChunkType> pop() override
+    std::optional<ChunkType> pop() override
     {
         std::unique_lock l(qm);
-        cv.wait(l, [this](){ return queue.empty() == false || isQueueOpen == false;});
+        cv.wait(l, [this](){ return queue.empty() == false || !isQueueOpen;});
 
-        if (isQueueOpen == false && queue.empty())
+        if (!isQueueOpen && queue.empty())
         {
             return std::nullopt;
         }
@@ -41,18 +43,18 @@ public:
         return buffer;
     }
     
-    virtual bool isEmpty() const override
+    bool isEmpty() const override
     {
         return queue.empty();
     }
 
-    virtual void close() override
+    void close() override
     {
         std::scoped_lock l(qm);
         isQueueOpen = false;
     }
 
-    virtual void open() override
+    void open() override
     {
         std::scoped_lock l(qm);
         isQueueOpen = true;
