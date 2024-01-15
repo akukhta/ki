@@ -6,7 +6,6 @@
 #include "StopWatch.h"
 #include <memory>
 #include <thread>
-#include <unordered_map>
 
 class BPCopyTool : public ICopyTool
 {
