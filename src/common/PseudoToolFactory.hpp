@@ -41,7 +41,7 @@ public:
 
             case ToolType::BUFFERED_PARALLEL:
             {
-                auto queue = std::make_shared<FixedBufferQueue<Buffer>>();
+                auto queue = std::make_shared<FixedBufferQueue>();
 
                 auto reader = std::make_unique<BufferedReader>(std::move(parser.getSrc()), queue);
 
