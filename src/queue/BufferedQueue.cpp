@@ -4,7 +4,7 @@ FixedBufferQueue::FixedBufferQueue()
 {
     for (auto & buffer : buffers)
     {
-        readBuffers.emplace_back(readBuffers, writeBuffers, cv, buffer.data());
+        readBuffers.emplace_back(readBuffers, writeBuffers, cv, queueMutex, buffer.data());
     }
 }
 

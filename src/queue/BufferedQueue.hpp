@@ -9,7 +9,7 @@
 #include <mutex>
 #include <deque>
 
-#define BUFFERS_IN_QUEUE 2
+#define BUFFERS_IN_QUEUE 100
 
 class FixedBufferQueue
 {

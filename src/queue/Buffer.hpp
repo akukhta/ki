@@ -10,12 +10,15 @@ enum class BufferType : char { READ, WRITE };
 class Buffer
 {
 public:
-    Buffer(std::deque<Buffer>& readBuffers, std::deque<Buffer>& writeBuffers, std::condition_variable &cv, unsigned char *data, BufferType type = BufferType::READ)
-        : bufferType(type), readBuffers(readBuffers), writeBuffers(writeBuffers), cv(cv), bytesUsed{0}, data(data) {}
+    Buffer(std::deque<Buffer> &readBuffers, std::deque<Buffer> &writeBuffers, std::condition_variable &cv,
+           std::mutex &parentMutex, unsigned char *data, BufferType type = BufferType::READ)
+        : bufferType(type), readBuffers(readBuffers), writeBuffers(writeBuffers),
+        cv(cv), parentMtx(parentMutex), bytesUsed{0}, data(data) {}
 
     Buffer(Buffer && other) noexcept
-        : readBuffers(other.readBuffers), writeBuffers(other.writeBuffers), cv(other.cv),
-            data(other.data), bytesUsed(other.bytesUsed), bufferType(other.bufferType)
+        :   readBuffers(other.readBuffers), writeBuffers(other.writeBuffers), cv(other.cv),
+            parentMtx(other.parentMtx), data(other.data), bytesUsed(other.bytesUsed),
+            bufferType(other.bufferType)
     {
         other.data = nullptr;
         other.bufferHasBeenMoved = true;
@@ -30,16 +33,20 @@ public:
             return;
         }
 
-        cv.notify_all();
+        {
+            std::unique_lock lm(parentMtx);
 
-        if (bufferType == BufferType::READ)
-        {
-            writeBuffers.push_back(std::move(*this));
+            if (bufferType == BufferType::READ)
+            {
+                writeBuffers.push_back(std::move(*this));
+            }
+            else if (bufferType == BufferType::WRITE)
+            {
+                readBuffers.push_back(std::move(*this));
+            }
         }
-        else if (bufferType == BufferType::WRITE)
-        {
-            readBuffers.push_back(std::move(*this));
-        }
+
+        cv.notify_all();
     }
 
     void setType(BufferType type)
@@ -55,6 +62,7 @@ protected:
     std::deque<Buffer>& writeBuffers;
     
 private:
+    std::mutex& parentMtx;
     std::condition_variable &cv;
     BufferType bufferType;
 
