@@ -11,7 +11,7 @@
 void f()
 {
     auto tmpFile = TmpFile::createEmpty();
-    MMapFileWriter writer(tmpFile.fileName, tmpFile.fileSize);
+    MMapFileWriter<std::vector<unsigned char>> writer(tmpFile.fileName, tmpFile.fileSize);
     writer.create();
 }
 

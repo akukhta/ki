@@ -10,7 +10,7 @@
 
 BOOST_AUTO_TEST_CASE(EmptyQueue)
 {
-    SynchronizedQueue q;
+    SynchronizedQueue<std::vector<unsigned char>> q;
     
     BOOST_ASSERT(q.isEmpty() == true);
     BOOST_ASSERT(q.pop().has_value() == false);

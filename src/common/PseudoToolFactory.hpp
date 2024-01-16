@@ -1,13 +1,17 @@
 #pragma once 
 #include "../reader/MMapFileReader.hpp"
+#include "../reader/BufferedFileReader.hpp"
 #include "../writer/MMapFileWriter.hpp"
+#include "../writer/BufferedFileWriter.hpp"
 #include "../queue/SynchronizedQueue.hpp"
+#include "../queue/BufferedQueue.hpp"
 #include "ParallelCopyTool.hpp"
+#include "BufferedParallelCopyTool.hpp"
 #include "ToolTypeEnum.hpp"
 #include "IOptionsParser.hpp"
 #include <memory>
 #include <iostream>
-
+#include <vector>
 class ToolFactory
 {
 public:
@@ -22,21 +26,35 @@ public:
         {
             case ToolType::PARALLEL:
             {
-                	auto reader = std::make_unique<MMapFileReader>(std::move(parser.getSrc()));
+                	auto reader = std::make_unique<MMapFileReader<std::vector<unsigned char>>>(std::move(parser.getSrc()));
 	                
-                    auto writer = std::make_unique<MMapFileWriter>(std::move(parser.getDst()),
+                    auto writer = std::make_unique<MMapFileWriter<std::vector<unsigned char>>>(std::move(parser.getDst()),
                         reader->getFileSize());
 	                
-                    std::unique_ptr<IQueue> queue = std::make_unique<SynchronizedQueue>();
+                    std::unique_ptr<IQueue<std::vector<unsigned char>>> queue =
+                         std::make_unique<SynchronizedQueue<std::vector<unsigned char>>>();
 
-                    tool = std::make_unique<ParallelCopyTool>(std::move(reader),
-                        std::move(writer), std::move(queue));
+                    tool = std::make_unique<ParallelCopyTool<std::vector<unsigned char>>>(
+                        std::move(reader), std::move(writer), std::move(queue));
                     break;
+            }
+
+            case ToolType::BUFFERED_PARALLEL:
+            {
+                auto queue = std::make_shared<FixedBufferQueue>();
+
+                auto reader = std::make_unique<BufferedReader>(std::move(parser.getSrc()), queue);
+
+                auto writer = std::make_unique<BufferedFileWriter>(std::move(parser.getDst()), queue);
+
+                tool = std::make_unique<BPCopyTool>(std::move(reader), std::move(writer), queue);
+                
+                break;
             }
 
             default:
             {
-                std::cerr << "Unknown tool type" << std::endl;
+                std::cerr << "Unknown tool bufferType" << std::endl;
                 break;
             }
         }

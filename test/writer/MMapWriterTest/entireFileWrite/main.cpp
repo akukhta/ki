@@ -15,7 +15,7 @@ BOOST_AUTO_TEST_CASE(EntireFileWrite)
     try
     {
         TmpFile resultFileWrapper("result");
-        MMapFileWriter writer("result", tmpFile.fileSize);
+        MMapFileWriter<std::vector<unsigned char>> writer("result", tmpFile.fileSize);
         writer.create();
         writer.write(tmpFile.content);
         writer.finishWrite();

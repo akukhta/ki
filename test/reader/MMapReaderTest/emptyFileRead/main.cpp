@@ -10,7 +10,7 @@
 void f()
 {
     auto tmpFile = TmpFile::createEmpty();
-    MMapFileReader reader(tmpFile.fileName);
+    MMapFileReader<std::vector<unsigned char>> reader(tmpFile.fileName);
     reader.open();
 }
 

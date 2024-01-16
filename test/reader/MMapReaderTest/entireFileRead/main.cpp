@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_CASE(EntireFileRead)
     auto tmpFile = TmpFile::create();
     try
     {
-        MMapFileReader reader(tmpFile.fileName);
+        MMapFileReader<std::vector<unsigned char>> reader(tmpFile.fileName);
         reader.open();
 
         std::vector<unsigned char> fileBuffer;

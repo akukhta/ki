@@ -2,11 +2,12 @@
 #include <vector>
 #include <optional>
 
+template <class ChunkType>
 class IQueue
 {
 public:
-    virtual void push(std::vector<unsigned char>) = 0;
-    virtual std::optional<std::vector<unsigned char>> pop() = 0;
+    virtual void push(ChunkType) = 0;
+    virtual std::optional<ChunkType> pop() = 0;
     virtual bool isEmpty() const = 0;
     
     // Are those interfaces apliable to queue itself? Should i segregate interfaces? 

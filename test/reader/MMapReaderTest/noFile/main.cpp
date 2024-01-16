@@ -9,7 +9,7 @@
 
 BOOST_AUTO_TEST_CASE(NoFileToRead)
 {
-    BOOST_CHECK_EXCEPTION(MMapFileReader("nofile"), std::runtime_error, 
+    BOOST_CHECK_EXCEPTION(MMapFileReader<std::vector<unsigned char>>("nofile"), std::runtime_error, 
         [](std::runtime_error const &e)
             { return std::string_view(e.what()) == std::string_view("can`t open src file");});
 }

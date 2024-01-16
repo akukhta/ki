@@ -11,7 +11,6 @@ find_package(Boost REQUIRED)
 
 add_executable(${PROJECT_NAME} 
     ../../../../src/reader/MMapFileReader.hpp
-    ../../../../src/reader/MMapFileReader.cpp
     ../../../Utiles/TmpFile.hpp
     main.cpp
 )
