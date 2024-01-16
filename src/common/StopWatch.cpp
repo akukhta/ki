@@ -1,6 +1,7 @@
 #include "StopWatch.h"
 #include <stdexcept>
 #include <iostream>
+#include <format>
 
 StopWatch StopWatch::createAutoStartWatch(std::string_view desc)
 {
@@ -49,6 +50,9 @@ StopWatch::~StopWatch()
     if (isAutoMode)
     {
         mEnd = std::chrono::high_resolution_clock::now();
-        std::cout << "StopWatch: [" << desc << "]: "<< getStamp<std::chrono::milliseconds>() << std::endl;
+        auto dur = getStamp<std::chrono::milliseconds>();
+
+        std::cout << std::format("StopWatch[{}] : {}/{}\n", desc,
+                                 std::chrono::duration_cast<std::chrono::seconds >(dur), dur);
     }
 }
