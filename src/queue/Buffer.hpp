@@ -2,8 +2,9 @@
 #include <condition_variable>
 #include <deque>
 
-#define BUFFER_BLOCKS_AMOUNT 4
-#define BUFFER_SIZE ((S_BLKSIZE) * BUFFER_BLOCKS_AMOUNT)
+//#define BUFFER_BLOCKS_AMOUNT 8
+//#define BUFFER_SIZE ((S_BLKSIZE) * BUFFER_BLOCKS_AMOUNT)
+#define BUFFER_SIZE 4096
 
 enum class BufferType : char { READ, WRITE };
 
