@@ -7,7 +7,7 @@ int main(int argc, char ** argv)
 {	
 	OptionsParser parser(argc, argv);
 	
-	ToolFactory toolFactory(parser, ToolType::BUFFERED_PARALLEL);
+	ToolFactory toolFactory(parser, parser.getToolType());
 	
 	auto cp = toolFactory.createTool();
 

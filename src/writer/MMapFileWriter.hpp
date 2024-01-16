@@ -65,9 +65,14 @@ public:
 
     void finishWrite() override
     {
-        writeFinished.store(true);
-        fsync(fileDesc);
-        close(fileDesc);
+        if (mmappedFile)
+        {
+            writeFinished.store(true);
+            fsync(fileDesc);
+            munmap(mmappedFile, fileSize);
+            close(fileDesc);
+            mmappedFile = nullptr;
+        }
     }
 
     bool isWriteFinished() override

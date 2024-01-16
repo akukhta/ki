@@ -79,6 +79,7 @@ public:
     {
         munmap(mmappedFile, fileSize);
         close(fileDesc);
+        readFinished.store(true);
     }
     
     size_t getFileSize()

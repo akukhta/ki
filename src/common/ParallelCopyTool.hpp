@@ -3,6 +3,7 @@
 #include "../reader/MMapFileReader.hpp"
 #include "../writer/MMapFileWriter.hpp"
 #include "../queue/IQueue.hpp"
+#include "StopWatch.h"
 #include <memory>
 #include <thread>
 
@@ -34,17 +35,12 @@ public:
         fileReader->finishRead();
     }
 
-    ~ParallelCopyTool()
-    {
-        fileReader->finishRead();
-        fileWriter->finishWrite();
-        queue->close();
-    }
-    
+    ~ParallelCopyTool() = default;
+
 private:
     void writingFunction()
     {
-        while (true)
+        while (!fileReader->isReadFinished() || !queue->isEmpty())
         {
             auto buf = queue->pop();
             
@@ -64,6 +60,8 @@ private:
     std::unique_ptr<MMapFileReader<ChunkType>> fileReader;
     std::unique_ptr<MMapFileWriter<ChunkType>> fileWriter;
     std::unique_ptr<IQueue<ChunkType>> queue;
+
+    StopWatch sw = StopWatch::createAutoStartWatch("mmap copy tool benchmark");
 
     std::jthread writingThread;
 };

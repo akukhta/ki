@@ -1,6 +1,4 @@
-//
-// Created by alex on 12.01.24.
-//
+#pragma once
 #include <chrono>
 
 class StopWatch

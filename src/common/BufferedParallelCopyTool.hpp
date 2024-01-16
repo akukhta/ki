@@ -15,7 +15,7 @@ public:
             fileReader(std::move(fileReader)),
             fileWriter(std::move(fileWriter)),
             queue(std::move(queue)),
-            sw(StopWatch::createAutoStartWatch("copy tool benchmark"))
+            sw(StopWatch::createAutoStartWatch("vbuf copy tool benchmark"))
         {}
 
     virtual void copy() override

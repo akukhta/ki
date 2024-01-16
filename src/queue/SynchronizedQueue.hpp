@@ -45,7 +45,8 @@ public:
     
     bool isEmpty() const override
     {
-        return queue.empty();
+        std::unique_lock lm(qm);
+        return queue.empty() && isQueueOpen == false;
     }
 
     void close() override
@@ -62,7 +63,7 @@ public:
 
 private:
     std::queue<ChunkType> queue;
-    std::mutex qm;
+    mutable std::mutex qm;
     std::condition_variable cv;
     bool isQueueOpen = false;
 };
