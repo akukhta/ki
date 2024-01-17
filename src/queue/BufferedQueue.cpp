@@ -58,3 +58,16 @@ void FixedBufferQueue::open()
 {
     isOpen.store(true);
 }
+
+FixedBufferQueue::~FixedBufferQueue()
+{
+    for(auto &b : readBuffers)
+    {
+        b.isActive = false;
+    }
+
+    for (auto &b : writeBuffers)
+    {
+        b.isActive = false;
+    }
+}

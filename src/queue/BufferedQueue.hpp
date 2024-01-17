@@ -16,7 +16,7 @@ class FixedBufferQueue
 public:
     FixedBufferQueue();
 
-    ~FixedBufferQueue() = default;
+    ~FixedBufferQueue();
 
     std::optional<Buffer> getFreeBuffer();
 

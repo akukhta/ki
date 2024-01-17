@@ -29,7 +29,7 @@ public:
 
     ~Buffer()
     {
-        if (bufferHasBeenMoved)
+        if (bufferHasBeenMoved || !isActive)
         {
             return;
         }
@@ -57,6 +57,7 @@ public:
 
     char unsigned *data;
     size_t bytesUsed;
+    bool isActive = true;
 
 protected:
     std::deque<Buffer>& readBuffers;
