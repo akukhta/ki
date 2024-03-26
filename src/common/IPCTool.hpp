@@ -15,9 +15,9 @@ class IPCTool : public ICopyTool
 public:
     IPCTool(std::unique_ptr<BufferedReader<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> fileReader,
             std::unique_ptr<BufferedFileWriter<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> fileWriter,
-            std::shared_ptr<FixedBufferQueue<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> queue,
+            FixedBufferQueue<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>* queue,
             std::shared_ptr<SharedMemoryManager> SharedMemManager)
-            : fileReader(std::move(fileReader)), fileWriter(std::move(fileWriter)), queue(std::move(queue)), SharedMemManager(std::move(SharedMemManager)),
+            : fileReader(std::move(fileReader)), fileWriter(std::move(fileWriter)), queue(queue), SharedMemManager(std::move(SharedMemManager)),
                 sw(StopWatch::createAutoStartWatch("ipc copy tool benchmark"))
             {}
 
@@ -25,6 +25,11 @@ public:
     {
         if (SharedMemManager->isFirstProcess())
         {
+            if (!fileReader)
+            {
+                throw std::string("FileReader is nullptr");
+            }
+
             queue->open();
             fileReader->open();
 
@@ -37,6 +42,13 @@ public:
         }
         else
         {
+            if (!fileWriter)
+            {
+                throw std::string("FileWriter is nullptr");
+            }
+
+            fileWriter->create();
+
             while(true)
             {
                 if (queue->isReadFinished() && queue->isEmpty())
@@ -49,11 +61,28 @@ public:
         }
     }
 
+    ~IPCTool()
+    {
+        if (fileWriter)
+        {
+            fileWriter->finishWrite();
+            fileWriter = nullptr;
+        }
+
+        if (fileReader)
+        {
+            fileReader->finishRead();
+            fileReader = nullptr;
+        }
+
+        queue = nullptr;
+    }
+
 private:
 
     StopWatch sw;
     std::unique_ptr<BufferedReader<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> fileReader;
     std::unique_ptr<BufferedFileWriter<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> fileWriter;
-    std::shared_ptr<FixedBufferQueue<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> queue;
+    FixedBufferQueue<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>* queue;
     std::shared_ptr<SharedMemoryManager> SharedMemManager;
 };

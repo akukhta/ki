@@ -10,8 +10,7 @@
 #include <deque>
 #include <boost/interprocess/offset_ptr.hpp>
 #include "../IPC/SharedMemoryManager.hpp"
-
-#define BUFFERS_IN_QUEUE 500
+#include "Buffer/BufferConfiguration.hpp"
 
 struct NonIPCBase
 {

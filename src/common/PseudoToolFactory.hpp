@@ -61,9 +61,19 @@ public:
 
                 auto queue = shMemManager->getQueue("shQueue");
 
-                auto reader = std::make_unique<BufferedReader<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>>(std::move(parser.getSrc()), queue);
+                std::unique_ptr<BufferedReader<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> reader = nullptr;
 
-                auto writer = std::make_unique<BufferedFileWriter<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>>(std::move(parser.getDst()), queue);
+                std::unique_ptr<BufferedFileWriter<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> writer = nullptr;
+
+                if (shMemManager->isFirstProcess())
+                {
+                    reader = std::make_unique<BufferedReader<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>>(
+                            std::move(parser.getSrc()), queue);
+                }
+                else {
+                    writer = std::make_unique<BufferedFileWriter<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>>(
+                            std::move(parser.getDst()), queue);
+                }
 
                 tool = std::make_unique<IPCTool>(std::move(reader), std::move(writer), queue, shMemManager);
 

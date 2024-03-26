@@ -24,7 +24,7 @@ public:
     SharedMemoryManager(std::string const& shObjName);
     ~SharedMemoryManager();
 
-    std::shared_ptr<Queue> getQueue(std::string const& name);
+    Queue* getQueue(std::string const& name);
 
     std::shared_ptr<ShmemAllocator<SharedDeque>> getDequeAllocator();
 

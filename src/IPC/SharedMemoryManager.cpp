@@ -5,7 +5,7 @@ SharedMemoryManager::SharedMemoryManager(const std::string &shObjName) : shObjNa
     {
         try
         {
-            segment = boost::interprocess::managed_shared_memory(boost::interprocess::create_only, this->shObjName.c_str(), 1000000);
+            segment = boost::interprocess::managed_shared_memory(boost::interprocess::create_only, this->shObjName.c_str(), 10000000);
             isFirstProcess_ = true;
             dequeAllocator = std::make_shared<ShmemAllocator<SharedDeque>>(ShmemAllocator<SharedDeque>(segment.get_segment_manager()));
             rawAllocator = std::make_shared<ShmemAllocator<unsigned char>>(ShmemAllocator<unsigned char>(segment.get_segment_manager()));
@@ -24,18 +24,15 @@ std::shared_ptr<ShmemAllocator<SharedDeque>> SharedMemoryManager::getDequeAlloca
     return dequeAllocator;
 }
 
-std::shared_ptr<Queue>
-SharedMemoryManager::getQueue(const std::string &name)
+Queue* SharedMemoryManager::getQueue(const std::string &name)
 {
     if (isFirstProcess_)
     {
-        Queue *queue = segment.construct<Queue>("dataQueue")(shared_from_this());
-        return std::shared_ptr<Queue>{queue};
+        return segment.construct<Queue>("dataQueue")(shared_from_this());
     }
     else
     {
-        Queue *queue = segment.find<Queue>("dataQueue").first;
-        return std::shared_ptr<Queue>{queue};
+        return segment.find<Queue>("dataQueue").first;
     }
 }
 

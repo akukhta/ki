@@ -8,9 +8,11 @@
 template <class MutexType, class ConditionType, template<class> class RAIILockType, template<class> class DequeType>
 class BufferedReader : public IFileReader<void>
 {
+private:
+    using QueueType = FixedBufferQueue<MutexType, ConditionType, RAIILockType, DequeType>;
 public:
     explicit BufferedReader(std::string fileName,
-        std::shared_ptr<FixedBufferQueue<MutexType, ConditionType, RAIILockType, DequeType>> queue) :
+                            std::conditional_t<std::is_same_v<MutexType, std::mutex>, std::shared_ptr<QueueType>, QueueType*> queue) :
         fileName(std::move(fileName)), queue(std::move(queue))
     {
         fileSize = std::filesystem::file_size(this->fileName);
@@ -104,5 +106,5 @@ private:
     std::atomic_bool readFinished{false};
 
     std::string fileName;
-    std::shared_ptr<FixedBufferQueue<MutexType, ConditionType, RAIILockType, DequeType>> queue;
+    std::conditional_t<std::is_same_v<MutexType, std::mutex>, std::shared_ptr<QueueType>, QueueType*> queue;
 };

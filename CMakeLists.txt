@@ -30,6 +30,7 @@ add_executable(${PROJECT_NAME}
 		src/IPC/SharedMemoryManager.cpp
 		src/IPC/SharedMemoryManager.hpp
 		src/common/IPCTool.hpp
+		src/queue/Buffer/BufferConfiguration.hpp
 )
 
 target_link_libraries(${PROJECT_NAME} Boost::program_options stdc++fs)

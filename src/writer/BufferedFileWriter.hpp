@@ -7,10 +7,13 @@
 template <class MutexType, class ConditionType, template<class> class RAIILockType, template<class> class DequeType>
 class BufferedFileWriter : IFileWriter<void>
 {
+private:
+    using QueueType = FixedBufferQueue<MutexType, ConditionType, RAIILockType, DequeType>;
+
 public:
 
-    explicit BufferedFileWriter(std::string fileName, 
-        std::shared_ptr<FixedBufferQueue<MutexType, ConditionType, RAIILockType, DequeType>> queue):   fileName(std::move(fileName)), queue(std::move(queue)) {}
+    explicit BufferedFileWriter(std::string fileName,
+        std::conditional_t<std::is_same_v<MutexType, std::mutex>, std::shared_ptr<QueueType>, QueueType*> queue):   fileName(std::move(fileName)), queue(std::move(queue)) {}
 
     void write() override
     {
@@ -65,5 +68,5 @@ private:
 
     std::string fileName;
 
-    std::shared_ptr<FixedBufferQueue<MutexType, ConditionType, RAIILockType, DequeType>> queue;
+    std::conditional_t<std::is_same_v<MutexType, std::mutex>, std::shared_ptr<QueueType>, QueueType*> queue;
 };

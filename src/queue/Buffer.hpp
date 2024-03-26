@@ -3,8 +3,6 @@
 #include <deque>
 #include <boost/interprocess/offset_ptr.hpp>
 
-#define BUFFER_SIZE 4096
-
 enum class BufferType : char { READ, WRITE };
 
 template <class DataType>
