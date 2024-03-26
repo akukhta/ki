@@ -10,8 +10,8 @@
 class BPCopyTool : public ICopyTool
 {
 public:
-    BPCopyTool(std::unique_ptr<BufferedReader> fileReader,
-        std::unique_ptr<BufferedFileWriter> fileWriter, std::shared_ptr<FixedBufferQueue> queue) :
+    BPCopyTool(std::unique_ptr<BufferedReader<std::mutex, std::condition_variable, std::unique_lock, std::deque>> fileReader,
+        std::unique_ptr<BufferedFileWriter<std::mutex, std::condition_variable, std::unique_lock, std::deque>> fileWriter, std::shared_ptr<FixedBufferQueue<std::mutex, std::condition_variable, std::unique_lock, std::deque>> queue) :
             fileReader(std::move(fileReader)),
             fileWriter(std::move(fileWriter)),
             queue(std::move(queue)),
@@ -48,9 +48,9 @@ private:
 
     StopWatch sw;
 
-    std::unique_ptr<BufferedReader> fileReader;
-    std::unique_ptr<BufferedFileWriter> fileWriter;
-    std::shared_ptr<FixedBufferQueue> queue;
+    std::unique_ptr<BufferedReader<std::mutex, std::condition_variable, std::unique_lock, std::deque>> fileReader;
+    std::unique_ptr<BufferedFileWriter<std::mutex, std::condition_variable, std::unique_lock, std::deque>> fileWriter;
+    std::shared_ptr<FixedBufferQueue<std::mutex, std::condition_variable, std::unique_lock, std::deque>> queue;
     
     std::jthread writingThread;
 };

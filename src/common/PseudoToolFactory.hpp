@@ -41,11 +41,11 @@ public:
 
             case ToolType::BUFFERED_PARALLEL:
             {
-                auto queue = std::make_shared<FixedBufferQueue>();
+                auto queue = std::make_shared<FixedBufferQueue<std::mutex, std::condition_variable, std::unique_lock, std::deque>>();
 
-                auto reader = std::make_unique<BufferedReader>(std::move(parser.getSrc()), queue);
+                auto reader = std::make_unique<BufferedReader<std::mutex, std::condition_variable, std::unique_lock, std::deque>>(std::move(parser.getSrc()), queue);
 
-                auto writer = std::make_unique<BufferedFileWriter>(std::move(parser.getDst()), queue);
+                auto writer = std::make_unique<BufferedFileWriter<std::mutex, std::condition_variable, std::unique_lock, std::deque>>(std::move(parser.getDst()), queue);
 
                 tool = std::make_unique<BPCopyTool>(std::move(reader), std::move(writer), queue);
                 

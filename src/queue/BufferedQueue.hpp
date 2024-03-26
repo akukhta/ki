@@ -11,27 +11,86 @@
 
 #define BUFFERS_IN_QUEUE 500
 
+template <class MutexType, class ConditionType, template<class> class RAIILockType, template<class> class DequeType>
 class FixedBufferQueue
 {
 public:
-    FixedBufferQueue();
+    FixedBufferQueue()
+    {
+        for (auto & buffer : buffers)
+        {
+            readBuffers.emplace_back(readBuffers, writeBuffers, cv, queueMutex, buffer.data());
+        }
+    }
 
-    ~FixedBufferQueue();
+    ~FixedBufferQueue()
+    {
+        for(auto &b : readBuffers)
+        {
+            b.isActive = false;
+        }
 
-    std::optional<Buffer> getFreeBuffer();
+        for (auto &b : writeBuffers)
+        {
+            b.isActive = false;
+        }
+    }
 
-    std::optional<Buffer> getFilledBuffer();
+    std::optional<Buffer> getFreeBuffer()
+    {
+        RAIILockType lm(queueMutex);
+        cv.wait(lm, [this](){ return !readBuffers.empty() || !isOpen.load(); });
 
-    bool isEmpty() const;
+        if (readBuffers.empty() && !isOpen.load())
+        {
+            return std::nullopt;
+        }
 
-    void close();
+        auto buffer = std::move(readBuffers.back());
+        readBuffers.pop_back();
 
-    void open();
+        buffer.setType(BufferType::READ);
+
+        return buffer;
+    }
+
+    std::optional<Buffer> getFilledBuffer()
+    {
+        RAIILockType lm(queueMutex);
+        cv.wait(lm, [this](){ return !writeBuffers.empty() || !isOpen.load(); });
+
+        if (writeBuffers.empty() && !isOpen.load())
+        {
+            return std::nullopt;
+        }
+
+        auto buffer = std::move(writeBuffers.front());
+        writeBuffers.pop_front();
+
+        buffer.setType(BufferType::WRITE);
+        return buffer;
+    }
+
+    bool isEmpty() const
+    {
+        RAIILockType lm(queueMutex);
+        return writeBuffers.empty() && !isOpen.load();
+    }
+
+    void close()
+    {
+        isOpen.store(false);
+    }
+
+    void open()
+    {
+        isOpen.store(true);
+    }
 
 private:    
-    std::deque<Buffer> readBuffers, writeBuffers;
+    DequeType<Buffer> readBuffers, writeBuffers;
     std::array<std::array<unsigned char, BUFFER_SIZE>, BUFFERS_IN_QUEUE> buffers{};
-    mutable std::mutex queueMutex;
-    std::condition_variable cv;
+    mutable MutexType queueMutex;
+    ConditionType cv;
     std::atomic_bool isOpen{false};
 };
