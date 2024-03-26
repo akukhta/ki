@@ -8,7 +8,7 @@
 #include <array>
 #include <mutex>
 #include <deque>
-#include <boost/interprocess/sync/interprocess_mutex.hpp>
+#include <boost/interprocess/offset_ptr.hpp>
 
 #define BUFFERS_IN_QUEUE 500
 
@@ -23,37 +23,30 @@ struct IPCBase
 };
 
 template <class T>
-concept IsNonIPC = std::derived_from<T, NonIPCBase>;
+concept IsNonIPC = std::is_same_v<T, std::mutex>;
 
 template <class MutexType, class ConditionType, template<class> class RAIILockType, template<class> class DequeType>
 class FixedBufferQueue : public std::conditional_t<std::is_same_v<MutexType, std::mutex>, NonIPCBase, IPCBase>
 {
+private:
+    using QueueType = FixedBufferQueue<MutexType, ConditionType, RAIILockType, DequeType>;
+    using BufType = Buffer<std::conditional_t<std::is_same_v<MutexType, std::mutex>, unsigned char*, boost::interprocess::offset_ptr<unsigned char>>>;
+
 public:
 
-    template<typename T = FixedBufferQueue<MutexType, ConditionType, RAIILockType, DequeType>>
-        requires IsNonIPC<T>
+    template<typename T = MutexType>
+        requires IsNonIPC<MutexType>
     FixedBufferQueue()
     {
         for (auto &buffer : NonIPCBase::buffers)
         {
-            readBuffers.emplace_back(readBuffers, writeBuffers, cv, queueMutex, buffer.data());
+            readBuffers.emplace_back(buffer.data());
         }
     }
 
-    ~FixedBufferQueue()
-    {
-        for(auto &b : readBuffers)
-        {
-            b.isActive = false;
-        }
+    ~FixedBufferQueue() = default;
 
-        for (auto &b : writeBuffers)
-        {
-            b.isActive = false;
-        }
-    }
-
-    std::optional<Buffer> getFreeBuffer()
+    std::optional<BufType> getFreeBuffer()
     {
         RAIILockType lm(queueMutex);
         cv.wait(lm, [this](){ return !readBuffers.empty() || !isOpen.load(); });
@@ -71,7 +64,7 @@ public:
         return buffer;
     }
 
-    std::optional<Buffer> getFilledBuffer()
+    std::optional<BufType> getFilledBuffer()
     {
         RAIILockType lm(queueMutex);
         cv.wait(lm, [this](){ return !writeBuffers.empty() || !isOpen.load(); });
@@ -104,8 +97,9 @@ public:
         isOpen.store(true);
     }
 
-private:    
-    DequeType<Buffer> readBuffers, writeBuffers;
+private:
+    DequeType<BufType> readBuffers, writeBuffers;
+
     mutable MutexType queueMutex;
     ConditionType cv;
     std::atomic_bool isOpen{false};

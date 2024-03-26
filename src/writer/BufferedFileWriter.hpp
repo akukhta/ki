@@ -17,7 +17,7 @@ public:
         auto buf = queue->getFilledBuffer();
 
         if (buf) {
-            fwrite(buf->data, buf->bytesUsed, 1, fileDesc);
+            fwrite(buf->getData(), buf->bytesUsed, 1, fileDesc);
         }
     }
 

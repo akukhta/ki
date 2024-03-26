@@ -47,7 +47,7 @@ public:
 
         auto readCount = std::min(currentOffset + BUFFER_SIZE, fileSize);
 
-        if (setvbuf(fileDesc, reinterpret_cast<char*>(buf.data), _IOFBF, BUFFER_SIZE))
+        if (setvbuf(fileDesc, reinterpret_cast<char*>(buf.getData()), _IOFBF, BUFFER_SIZE))
         {
             throw std::runtime_error("can`t set buffering mode");
         }
