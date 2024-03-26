@@ -1,6 +1,4 @@
 #pragma once
-#include "IQueue.hpp"
-#include "Buffer.hpp"
 #include <condition_variable>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -9,6 +7,8 @@
 #include <mutex>
 #include <deque>
 #include <boost/interprocess/offset_ptr.hpp>
+#include "IQueue.hpp"
+#include "Buffer.hpp"
 #include "../IPC/SharedMemoryManager.hpp"
 #include "Buffer/BufferConfiguration.hpp"
 
@@ -17,10 +17,7 @@ struct NonIPCBase
     std::array<std::array<unsigned char, BUFFER_SIZE>, BUFFERS_IN_QUEUE> buffers{};
 };
 
-struct IPCBase
-{
-
-};
+struct IPCBase {};
 
 template <class T>
 concept IsNonIPC = std::is_same_v<T, std::mutex>;

@@ -4,6 +4,7 @@
 #include <boost/interprocess/sync/interprocess_mutex.hpp>
 #include <boost/interprocess/containers/deque.hpp>
 #include <utility>
+#include <stdexcept>
 #include "ICopyTool.hpp"
 #include "../reader/BufferedFileReader.hpp"
 #include "../writer/BufferedFileWriter.hpp"
@@ -27,7 +28,7 @@ public:
         {
             if (!fileReader)
             {
-                throw std::string("FileReader is nullptr");
+                throw std::runtime_error("FileReader is nullptr");
             }
 
             queue->open();
@@ -44,7 +45,7 @@ public:
         {
             if (!fileWriter)
             {
-                throw std::string("FileWriter is nullptr");
+                throw std::runtime_error("FileWriter is nullptr");
             }
 
             fileWriter->create();
@@ -59,23 +60,6 @@ public:
                 fileWriter->write();
             }
         }
-    }
-
-    ~IPCTool()
-    {
-        if (fileWriter)
-        {
-            fileWriter->finishWrite();
-            fileWriter = nullptr;
-        }
-
-        if (fileReader)
-        {
-            fileReader->finishRead();
-            fileReader = nullptr;
-        }
-
-        queue = nullptr;
     }
 
 private:

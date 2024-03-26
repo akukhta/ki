@@ -5,7 +5,7 @@ SharedMemoryManager::SharedMemoryManager(const std::string &shObjName) : shObjNa
     {
         try
         {
-            segment = boost::interprocess::managed_shared_memory(boost::interprocess::create_only, this->shObjName.c_str(), 10000000);
+            segment = boost::interprocess::managed_shared_memory(boost::interprocess::create_only, this->shObjName.c_str(), calculateNeededSize());
             isFirstProcess_ = true;
             dequeAllocator = std::make_shared<ShmemAllocator<SharedDeque>>(ShmemAllocator<SharedDeque>(segment.get_segment_manager()));
             rawAllocator = std::make_shared<ShmemAllocator<unsigned char>>(ShmemAllocator<unsigned char>(segment.get_segment_manager()));
@@ -28,11 +28,11 @@ Queue* SharedMemoryManager::getQueue(const std::string &name)
 {
     if (isFirstProcess_)
     {
-        return segment.construct<Queue>("dataQueue")(shared_from_this());
+        return segment.construct<Queue>(name.c_str())(shared_from_this());
     }
     else
     {
-        return segment.find<Queue>("dataQueue").first;
+        return segment.find<Queue>(name.c_str()).first;
     }
 }
 
@@ -44,4 +44,9 @@ bool SharedMemoryManager::isFirstProcess() const
 SharedMemoryManager::~SharedMemoryManager()
 {
     boost::interprocess::shared_memory_object::remove(shObjName.c_str());
+}
+
+size_t SharedMemoryManager::calculateNeededSize() {
+    return (BUFFER_SIZE * BUFFERS_IN_QUEUE + sizeof(FixedBufferQueue<boost::interprocess::interprocess_mutex,
+            boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>)) * 1.7;
 }
