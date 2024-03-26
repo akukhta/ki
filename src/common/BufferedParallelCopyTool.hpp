@@ -18,7 +18,7 @@ public:
             sw(StopWatch::createAutoStartWatch("vbuf copy tool benchmark"))
         {}
 
-    virtual void copy() override
+    void copy() override
     {
         queue->open();
 
@@ -35,7 +35,7 @@ public:
         queue->close();
     }
 
-    ~BPCopyTool() = default;
+    ~BPCopyTool() override = default;
     
 private:
     void writingFunction()

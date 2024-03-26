@@ -37,12 +37,12 @@ public:
         }
     }
 
-    virtual std::string getSrc() const override
+    std::string getSrc() const override
     {
         return src;
     } 
 
-    virtual std::string getDst() const override
+    std::string getDst() const override
     {
         return dst;
     }
@@ -72,7 +72,7 @@ public:
         return sharedObjName;
     }
 
-    virtual ~OptionsParser() = default;
+    ~OptionsParser() override = default;
 private:
     options_description desc{"Kopieren Instrument"};
     

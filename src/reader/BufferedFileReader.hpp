@@ -90,12 +90,12 @@ public:
         return fileSize;
     }
 
-    ~BufferedReader()
+    ~BufferedReader() override
     {
-        finishRead();
+        BufferedReader::finishRead();
     }
 
-    static inline size_t defaultBufferSize = sysconf(_SC_PAGESIZE);
+    //static inline size_t defaultBufferSize = sysconf(_SC_PAGESIZE);
 
 private:
     std::FILE* fileDesc = nullptr;

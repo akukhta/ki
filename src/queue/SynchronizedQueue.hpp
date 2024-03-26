@@ -46,7 +46,7 @@ public:
     bool isEmpty() const override
     {
         std::unique_lock lm(qm);
-        return queue.empty() && isQueueOpen == false;
+        return queue.empty() && !isQueueOpen;
     }
 
     void close() override

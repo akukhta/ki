@@ -1,5 +1,3 @@
-#include <iostream>
-#include "ParallelCopyTool.hpp"
 #include "OptionsParser.hpp"
 #include "PseudoToolFactory.hpp"
 

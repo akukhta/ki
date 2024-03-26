@@ -7,7 +7,6 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
 #include <fcntl.h>
-#include <stdio.h>
 #include <stdexcept>
 #include <algorithm>
 #include <filesystem>
@@ -36,9 +35,9 @@ public:
         fileSize = std::filesystem::file_size(this->fileName);
     }
 
-    virtual void open() override
+    void open() override
     {
-        mmappedFile = static_cast<unsigned char*>(mmap(0, fileSize, PROT_READ, MAP_SHARED, fileDesc, 0));
+        mmappedFile = static_cast<unsigned char*>(mmap(nullptr, fileSize, PROT_READ, MAP_SHARED, fileDesc, 0));
 
         if (mmappedFile == MAP_FAILED)
         {
@@ -51,7 +50,7 @@ public:
         }
     }
 
-    virtual ChunkType read() override
+    ChunkType read() override
     {
         ChunkType buf;
         buf.reserve(defaultBufferSize);
@@ -70,12 +69,12 @@ public:
         return buf;
     }
 
-    virtual bool isReadFinished() const override
+    [[nodiscard]] bool isReadFinished() const override
     {
         return readFinished.load();
     }
 
-    virtual void finishRead() override
+    void finishRead() override
     {
         munmap(mmappedFile, fileSize);
         close(fileDesc);
@@ -87,17 +86,17 @@ public:
         return fileSize;
     }
 
-    ~MMapFileReader(){}
+    ~MMapFileReader() = default;
 
     static inline size_t defaultBufferSize = sysconf(_SC_PAGESIZE);
 
 private:
     int fileDesc = -1;
     size_t fileSize = 0;
-    unsigned char *mmappedFile;
+    unsigned char *mmappedFile = nullptr;
 
     size_t currentOffset = 0;
     std::atomic_bool readFinished{false};
 
-    std::string fileName{""};
+    std::string fileName;
 };

@@ -19,7 +19,7 @@ public:
             this->queue->open();
         }
 
-    virtual void copy() override
+    void copy() override
     {
         fileReader->open();
         fileWriter->create();
@@ -35,7 +35,7 @@ public:
         fileReader->finishRead();
     }
 
-    ~ParallelCopyTool() = default;
+    ~ParallelCopyTool() override = default;
 
 private:
     void writingFunction()

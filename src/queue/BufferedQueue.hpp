@@ -29,8 +29,7 @@ template <class MutexType, class ConditionType, template<class> class RAIILockTy
 class FixedBufferQueue : public std::conditional_t<std::is_same_v<MutexType, std::mutex>, NonIPCBase, IPCBase>
 {
 private:
-    using QueueType = FixedBufferQueue<MutexType, ConditionType, RAIILockType, DequeType>;
-    using BufType = Buffer<std::conditional_t<std::is_same_v<MutexType, std::mutex>, unsigned char*, boost::interprocess::offset_ptr<unsigned char>>>;
+   using BufType = Buffer<std::conditional_t<std::is_same_v<MutexType, std::mutex>, unsigned char*, boost::interprocess::offset_ptr<unsigned char>>>;
 
 public:
 
@@ -46,7 +45,7 @@ public:
 
     template<typename T = MutexType>
         requires IsIPC<T>
-    FixedBufferQueue(std::shared_ptr<SharedMemoryManager> shMemManager) :
+    explicit FixedBufferQueue(std::shared_ptr<SharedMemoryManager> shMemManager) :
         readBuffers(*shMemManager->getDequeAllocator()), writeBuffers(*shMemManager->getDequeAllocator())
     {
             auto rawAllocator = shMemManager->getRawAllocator();

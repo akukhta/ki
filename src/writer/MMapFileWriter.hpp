@@ -8,19 +8,6 @@
 #include <sys/mman.h>
 
 template <class ChunkType>
-concept STDLikeContainer = requires (ChunkType c)
-{
-    typename ChunkType::iterator;
-    typename ChunkType::const_iterator;
-
-    requires std::same_as<decltype(std::declval<ChunkType>().begin()), typename ChunkType::iterator>
-                || std::same_as<decltype(std::declval<ChunkType>().begin()), typename ChunkType::const_iterator>;
-
-    requires std::same_as<decltype(std::declval<ChunkType>().end()), typename ChunkType::iterator>
-             || std::same_as<decltype(std::declval<ChunkType>().end()), typename ChunkType::const_iterator>;
-};
-
-template <class ChunkType>
 class MMapFileWriter : public IFileWriter<ChunkType>
 {
 public:
@@ -54,7 +41,7 @@ public:
             throw std::runtime_error("can`t resize a file");
         }
 
-        mmappedFile = static_cast<unsigned char*>(mmap(0, fileSize,
+        mmappedFile = static_cast<unsigned char*>(mmap(nullptr, fileSize,
             PROT_READ | PROT_WRITE, MAP_SHARED, fileDesc, 0));
         
         if (mmappedFile == MAP_FAILED)

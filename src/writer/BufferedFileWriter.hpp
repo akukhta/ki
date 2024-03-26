@@ -56,9 +56,9 @@ public:
         return writeFinished.load();
     }
     
-    virtual ~BufferedFileWriter()
+    ~BufferedFileWriter() override
     {
-        finishWrite();
+        BufferedFileWriter::finishWrite();
     }
 
 private:

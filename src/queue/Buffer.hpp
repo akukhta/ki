@@ -9,7 +9,7 @@ template <class DataType>
 class Buffer
 {
 public:
-    Buffer(DataType data, BufferType type = BufferType::READ)
+    explicit Buffer(DataType data, BufferType type = BufferType::READ)
         : bytesUsed{0}, data(data), bufferType(type) {}
 
     Buffer(Buffer && other) noexcept
