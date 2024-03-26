@@ -1,0 +1,59 @@
+#pragma once
+#include <memory>
+#include <boost/interprocess/sync/interprocess_condition.hpp>
+#include <boost/interprocess/sync/interprocess_mutex.hpp>
+#include <boost/interprocess/containers/deque.hpp>
+#include <utility>
+#include "ICopyTool.hpp"
+#include "../reader/BufferedFileReader.hpp"
+#include "../writer/BufferedFileWriter.hpp"
+#include "../queue/BufferedQueue.hpp"
+#include "StopWatch.h"
+
+class IPCTool : public ICopyTool
+{
+public:
+    IPCTool(std::unique_ptr<BufferedReader<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> fileReader,
+            std::unique_ptr<BufferedFileWriter<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> fileWriter,
+            std::shared_ptr<FixedBufferQueue<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> queue,
+            std::shared_ptr<SharedMemoryManager> SharedMemManager)
+            : fileReader(std::move(fileReader)), fileWriter(std::move(fileWriter)), queue(std::move(queue)), SharedMemManager(std::move(SharedMemManager)),
+                sw(StopWatch::createAutoStartWatch("ipc copy tool benchmark"))
+            {}
+
+    virtual void copy() override
+    {
+        if (SharedMemManager->isFirstProcess())
+        {
+            queue->open();
+            fileReader->open();
+
+            while(!fileReader->isReadFinished())
+            {
+                fileReader->read();
+            }
+
+            queue->close();
+        }
+        else
+        {
+            while(true)
+            {
+                if (queue->isReadFinished() && queue->isEmpty())
+                {
+                    break;
+                }
+
+                fileWriter->write();
+            }
+        }
+    }
+
+private:
+
+    StopWatch sw;
+    std::unique_ptr<BufferedReader<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> fileReader;
+    std::unique_ptr<BufferedFileWriter<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> fileWriter;
+    std::shared_ptr<FixedBufferQueue<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> queue;
+    std::shared_ptr<SharedMemoryManager> SharedMemManager;
+};

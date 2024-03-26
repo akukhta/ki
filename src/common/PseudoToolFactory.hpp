@@ -9,9 +9,12 @@
 #include "BufferedParallelCopyTool.hpp"
 #include "ToolTypeEnum.hpp"
 #include "IOptionsParser.hpp"
+#include "IPCTool.hpp"
 #include <memory>
 #include <iostream>
 #include <vector>
+#include <boost/interprocess/interprocess_fwd.hpp>
+
 class ToolFactory
 {
 public:
@@ -49,6 +52,21 @@ public:
 
                 tool = std::make_unique<BPCopyTool>(std::move(reader), std::move(writer), queue);
                 
+                break;
+            }
+
+            case ToolType::IPC:
+            {
+                auto shMemManager = std::make_shared<SharedMemoryManager>(parser.getSharedObjName());
+
+                auto queue = shMemManager->getQueue("shQueue");
+
+                auto reader = std::make_unique<BufferedReader<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>>(std::move(parser.getSrc()), queue);
+
+                auto writer = std::make_unique<BufferedFileWriter<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>>(std::move(parser.getDst()), queue);
+
+                tool = std::make_unique<IPCTool>(std::move(reader), std::move(writer), queue, shMemManager);
+
                 break;
             }
 

@@ -9,6 +9,7 @@
 #include <mutex>
 #include <deque>
 #include <boost/interprocess/offset_ptr.hpp>
+#include "../IPC/SharedMemoryManager.hpp"
 
 #define BUFFERS_IN_QUEUE 500
 
@@ -25,6 +26,9 @@ struct IPCBase
 template <class T>
 concept IsNonIPC = std::is_same_v<T, std::mutex>;
 
+template <class T>
+concept IsIPC = std::is_same_v<T, boost::interprocess::interprocess_mutex>;
+
 template <class MutexType, class ConditionType, template<class> class RAIILockType, template<class> class DequeType>
 class FixedBufferQueue : public std::conditional_t<std::is_same_v<MutexType, std::mutex>, NonIPCBase, IPCBase>
 {
@@ -35,7 +39,7 @@ private:
 public:
 
     template<typename T = MutexType>
-        requires IsNonIPC<MutexType>
+        requires IsNonIPC<T>
     FixedBufferQueue()
     {
         for (auto &buffer : NonIPCBase::buffers)
@@ -43,6 +47,21 @@ public:
             readBuffers.emplace_back(buffer.data());
         }
     }
+
+    template<typename T = MutexType>
+        requires IsIPC<T>
+    FixedBufferQueue(std::shared_ptr<SharedMemoryManager> shMemManager) :
+        readBuffers(*shMemManager->getDequeAllocator()), writeBuffers(*shMemManager->getDequeAllocator())
+    {
+            auto rawAllocator = shMemManager->getRawAllocator();
+
+            for (size_t i = 0; i < BUFFERS_IN_QUEUE; i++)
+            {
+                auto allocated = rawAllocator->allocate(BUFFER_SIZE);
+                readBuffers.emplace_back(allocated);
+            }
+    };
+
 
     ~FixedBufferQueue() = default;
 
@@ -97,10 +116,37 @@ public:
         isOpen.store(true);
     }
 
-private:
-    DequeType<BufType> readBuffers, writeBuffers;
+    void returnBuffer(BufType buffer)
+    {
+        {
+            RAIILockType lm(queueMutex);
+
+            auto typeToSet = buffer.getType() == BufferType::READ ? BufferType::WRITE : BufferType::READ;
+            auto &dequeToPush = typeToSet == BufferType::READ ? readBuffers : writeBuffers;
+
+            dequeToPush.emplace_back(std::move(buffer)).setType(typeToSet);
+        }
+
+        cv.notify_all();
+    }
+
+    bool isReadFinished() const
+    {
+        RAIILockType lm(queueMutex);
+        return isReadFinished_;
+    }
+
+    void finishRead()
+    {
+        RAIILockType lm(queueMutex);
+        isReadFinished_ = true;
+    }
+
+protected:
+    std::conditional_t<std::is_same_v<MutexType, std::mutex>, DequeType<BufType>, SharedDeque> readBuffers, writeBuffers;
 
     mutable MutexType queueMutex;
     ConditionType cv;
     std::atomic_bool isOpen{false};
+    bool isReadFinished_ = false;
 };

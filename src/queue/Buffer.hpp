@@ -11,8 +11,8 @@ template <class DataType>
 class Buffer
 {
 public:
-    Buffer(unsigned char *data, BufferType type = BufferType::READ)
-        : bytesUsed{0}, data(data) {}
+    Buffer(DataType data, BufferType type = BufferType::READ)
+        : bytesUsed{0}, data(data), bufferType(type) {}
 
     Buffer(Buffer && other) noexcept
         :   data(other.data), bytesUsed(other.bytesUsed),
@@ -25,6 +25,11 @@ public:
     void setType(BufferType type)
     {
         this->bufferType = type;
+    }
+
+    BufferType getType()
+    {
+        return bufferType;
     }
 
     unsigned char* getData()

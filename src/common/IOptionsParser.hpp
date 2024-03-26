@@ -11,5 +11,7 @@ public:
 
     virtual ToolType getToolType() const = 0;
 
+    virtual std::string getSharedObjName() const = 0;
+
     virtual ~IOptionsParser() = default;
 };

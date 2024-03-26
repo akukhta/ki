@@ -63,7 +63,10 @@ public:
         else
         {
             readFinished.store(true);
+            queue->finishRead();
         }
+
+        queue->returnBuffer(std::move(buf));
     }
 
     bool isReadFinished() const override

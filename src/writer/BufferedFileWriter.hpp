@@ -18,6 +18,7 @@ public:
 
         if (buf) {
             fwrite(buf->getData(), buf->bytesUsed, 1, fileDesc);
+            queue->returnBuffer(std::move(*buf));
         }
     }
 

@@ -14,12 +14,15 @@ public:
             ("help,h", "ki /path/to/srcFile path/to/dstFile")
             ("src", value(&src), "Input file")
             ("dst", value(&dst), "Output file")
-            ("type", value(&type)->default_value("vbuf"), "Type of tool");
+            ("type", value(&type)->default_value("vbuf"), "Type of tool")
+            ("shobj", value(&sharedObjName)->default_value(""), "Name of shared object");
+
 
         positional_options_description positionals;
         positionals.add("src", 1);
         positionals.add("dst", 1);
         positionals.add("type", 1);
+        positionals.add("shobj", 1);
 
         variables_map vm;
 
@@ -55,9 +58,18 @@ public:
         {
             return PARALLEL;
         }
+        else if (type == "ipc")
+        {
+            return IPC;
+        }
         else {
             throw std::runtime_error("incorrect tool type");
         }
+    }
+
+    std::string getSharedObjName() const override
+    {
+        return sharedObjName;
     }
 
     virtual ~OptionsParser() = default;
@@ -67,4 +79,5 @@ private:
     std::string src;
     std::string dst;
     std::string type;
+    std::string sharedObjName;
 };
