@@ -8,8 +8,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 
 find_package(Boost 1.82.0 REQUIRED)
 
-add_executable(${PROJECT_NAME} 
-		src/common/main.cpp
+add_executable(${PROJECT_NAME}
+		src/main.cpp
 		src/common/ICopyTool.hpp
 		src/common/ParallelCopyTool.hpp
 		src/common/OptionsParser.hpp

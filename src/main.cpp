@@ -1,5 +1,5 @@
-#include "OptionsParser.hpp"
-#include "PseudoToolFactory.hpp"
+#include "common/OptionsParser.hpp"
+#include "common/PseudoToolFactory.hpp"
 
 int main(int argc, char ** argv)
 {	

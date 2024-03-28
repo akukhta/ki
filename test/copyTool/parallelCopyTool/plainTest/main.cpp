@@ -15,7 +15,7 @@ BOOST_AUTO_TEST_CASE(PlainTest)
 {
     auto srcFile = TmpFile::create();
     auto dstFile = TmpFile(TmpFile::getRandomName());
-    MockedOptionsParser parser(srcFile.fileName, dstFile.fileName);
+    MockedOptionsParser parser(srcFile.fileName, dstFile.fileName, ToolType::PARALLEL);
     
     try
     {

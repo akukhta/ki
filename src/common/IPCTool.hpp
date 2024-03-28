@@ -5,6 +5,7 @@
 #include <boost/interprocess/containers/deque.hpp>
 #include <utility>
 #include <stdexcept>
+#include <iostream>
 #include "ICopyTool.hpp"
 #include "../reader/BufferedFileReader.hpp"
 #include "../writer/BufferedFileWriter.hpp"

@@ -9,9 +9,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 
 find_package(Boost REQUIRED)
 
-add_executable(${PROJECT_NAME} 
-    ../../../../src/queue/SynchronizedQueue.hpp
-    ../../../Utiles/TmpFile.hpp
+add_executable(${PROJECT_NAME}
+    ${KI_SRC}
     main.cpp
 )
 
