@@ -53,4 +53,6 @@ jobs:
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
        run: |
         cd test
+        g++ --version
+        g++-12 --version
         ./bootstrap.sh
