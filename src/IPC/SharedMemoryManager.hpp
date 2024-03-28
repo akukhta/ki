@@ -42,6 +42,7 @@ private:
     std::shared_ptr<ShmemAllocator<SharedDeque>> dequeAllocator = nullptr;
     std::shared_ptr<ShmemAllocator<unsigned char>> rawAllocator = nullptr;
     std::shared_ptr<CharAllocator> charAllocator = nullptr;
+    ProcInfo* procInfo = nullptr;
 
     std::string shObjName;
 

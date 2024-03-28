@@ -10,10 +10,12 @@ SharedMemoryManager::SharedMemoryManager(const std::string &shObjName) : shObjNa
             dequeAllocator = std::make_shared<ShmemAllocator<SharedDeque>>(ShmemAllocator<SharedDeque>(segment.get_segment_manager()));
             rawAllocator = std::make_shared<ShmemAllocator<unsigned char>>(ShmemAllocator<unsigned char>(segment.get_segment_manager()));
             charAllocator = std::make_shared<CharAllocator>(CharAllocator(segment.get_segment_manager()));
+            procInfo = segment.construct<ProcInfo>("kiProcInfo")(charAllocator);
         }
         catch (boost::interprocess::interprocess_exception const&)
         {
             segment = boost::interprocess::managed_shared_memory(boost::interprocess::open_only, this->shObjName.c_str());
+            procInfo = segment.find<ProcInfo>("kiProcInfo").first;
         }
     }
 
@@ -44,7 +46,10 @@ bool SharedMemoryManager::isFirstProcess() const
 
 SharedMemoryManager::~SharedMemoryManager()
 {
-    boost::interprocess::shared_memory_object::remove(shObjName.c_str());
+    if (procInfo->isWritingStarted)
+    {
+        boost::interprocess::shared_memory_object::remove(shObjName.c_str());
+    }
 }
 
 size_t SharedMemoryManager::calculateNeededSize() {
@@ -54,12 +59,5 @@ size_t SharedMemoryManager::calculateNeededSize() {
 
 ProcInfo* SharedMemoryManager::getProcInfo()
 {
-    if (isFirstProcess_)
-    {
-        return segment.construct<ProcInfo>("kiProcInfo")(charAllocator);
-    }
-    else
-    {
-        return segment.find<ProcInfo>("kiProcInfo").first;
-    }
+    return procInfo;
 }

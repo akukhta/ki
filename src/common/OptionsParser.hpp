@@ -32,8 +32,11 @@ public:
 
         notify (vm);
 
-        if (vm.count ("help") || !vm.count ("src") || !vm.count("dst")) {
+        if (vm.count ("help") || ((!vm.count ("src") || !vm.count("dst")) && type != "ipc") || (vm.count("type") && !vm.count("shobj")))
+        {
             std::cerr << desc << "\n";
+
+            throw std::runtime_error("Too few arguments were passed");
         }
     }
 

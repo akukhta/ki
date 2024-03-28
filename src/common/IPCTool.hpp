@@ -31,6 +31,8 @@ public:
                 throw std::runtime_error("FileReader is nullptr");
             }
 
+            std::cout << "IPC: Reading the file...\n";
+
             queue->open();
             fileReader->open();
 
@@ -47,6 +49,8 @@ public:
             {
                 throw std::runtime_error("FileWriter is nullptr");
             }
+
+            std::cout << "IPC: Writing the file...\n";
 
             fileWriter->create();
 

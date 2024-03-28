@@ -73,6 +73,7 @@ public:
                     auto procInfo = shMemManager->getProcInfo();
                     procInfo->lock();
                     procInfo->dst = parser.getDst();
+                    procInfo->isWritingStarted = false;
                     procInfo->unlock();
                 }
                 else {
@@ -81,6 +82,8 @@ public:
 
                     writer = std::make_unique<BufferedFileWriter<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>>(
                             procInfo->getDst(), queue);
+
+                    procInfo->isWritingStarted = true;
 
                     procInfo->unlock();
                 }

@@ -33,4 +33,5 @@ struct ProcInfo
 
     boost::interprocess::interprocess_mutex mutex;
     SharedString dst;
+    bool isWritingStarted = false;
 };
