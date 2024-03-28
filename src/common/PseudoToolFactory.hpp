@@ -69,10 +69,20 @@ public:
                 {
                     reader = std::make_unique<BufferedReader<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>>(
                             std::move(parser.getSrc()), queue);
+
+                    auto procInfo = shMemManager->getProcInfo();
+                    procInfo->lock();
+                    procInfo->dst = parser.getDst();
+                    procInfo->unlock();
                 }
                 else {
+                    auto procInfo = shMemManager->getProcInfo();
+                    procInfo->lock();
+
                     writer = std::make_unique<BufferedFileWriter<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>>(
-                            std::move(parser.getDst()), queue);
+                            procInfo->getDst(), queue);
+
+                    procInfo->unlock();
                 }
 
                 tool = std::make_unique<IPCTool>(std::move(reader), std::move(writer), queue, shMemManager);

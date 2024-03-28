@@ -4,6 +4,7 @@
 #include <boost/interprocess/containers/deque.hpp>
 #include <boost/interprocess/sync/interprocess_condition.hpp>
 #include "../queue/Buffer.hpp"
+#include "IPCProcInfo.hpp"
 
 template <class T>
 using ShmemAllocator =  boost::interprocess::allocator<T, boost::interprocess::managed_shared_memory::segment_manager>;
@@ -30,6 +31,8 @@ public:
 
     std::shared_ptr<ShmemAllocator<unsigned char>> getRawAllocator();
 
+    ProcInfo* getProcInfo();
+
     bool isFirstProcess() const;
 
 private:
@@ -38,6 +41,8 @@ private:
 
     std::shared_ptr<ShmemAllocator<SharedDeque>> dequeAllocator = nullptr;
     std::shared_ptr<ShmemAllocator<unsigned char>> rawAllocator = nullptr;
+    std::shared_ptr<CharAllocator> charAllocator = nullptr;
+
     std::string shObjName;
 
     static size_t calculateNeededSize();
