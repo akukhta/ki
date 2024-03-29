@@ -10,14 +10,13 @@ class Buffer
 {
 public:
     explicit Buffer(DataType data, BufferType type = BufferType::READ)
-        : bytesUsed{0}, data(data), bufferType(type) {}
+        : bytesUsed{0z}, data(data), bufferType(type) {}
 
     Buffer(Buffer && other) noexcept
         :   data(other.data), bytesUsed(other.bytesUsed),
             bufferType(other.bufferType)
     {
         other.data = nullptr;
-        other.bufferHasBeenMoved = true;
     }
 
     void setType(BufferType type)
@@ -50,6 +49,4 @@ public:
 
 private:
     BufferType bufferType;
-
-    bool bufferHasBeenMoved = false;
 };

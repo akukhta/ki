@@ -71,7 +71,7 @@ public:
         queue->returnBuffer(std::move(buf));
     }
 
-    bool isReadFinished() const override
+    [[nodiscard]] bool isReadFinished() const override
     {
         return readFinished.load();
     }
@@ -85,7 +85,7 @@ public:
         }
     }
     
-    size_t getFileSize() const
+    [[nodiscard]] size_t getFileSize() const
     {
         return fileSize;
     }

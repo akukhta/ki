@@ -9,7 +9,7 @@ using SharedString = boost::interprocess::basic_string<char, std::char_traits<ch
 
 struct ProcInfo
 {
-    ProcInfo(std::shared_ptr<CharAllocator> alloc) : dst(*alloc) {}
+    explicit ProcInfo(std::shared_ptr<CharAllocator> alloc) : dst(*alloc) {}
 
     void lock()
     {
@@ -26,7 +26,7 @@ struct ProcInfo
         unlock();
     }
 
-    std::string getDst()
+    std::string getDst() const
     {
         return dst;
     }

@@ -40,17 +40,17 @@ public:
         }
     }
 
-    std::string getSrc() const override
+    [[nodiscard]] std::string getSrc() const override
     {
         return src;
     } 
 
-    std::string getDst() const override
+    [[nodiscard]] std::string getDst() const override
     {
         return dst;
     }
 
-    ToolType getToolType() const override
+    [[nodiscard]] ToolType getToolType() const override
     {
 
         if (type == "vbuf")
@@ -70,7 +70,7 @@ public:
         }
     }
 
-    std::string getSharedObjName() const override
+    [[nodiscard]] std::string getSharedObjName() const override
     {
         return sharedObjName;
     }

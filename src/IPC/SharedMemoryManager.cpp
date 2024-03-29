@@ -1,7 +1,7 @@
 #include "SharedMemoryManager.hpp"
 #include "../queue/BufferedQueue.hpp"
 
-SharedMemoryManager::SharedMemoryManager(const std::string &shObjName) : shObjName(std::move(shObjName))
+SharedMemoryManager::SharedMemoryManager(const std::string &shObjName) : shObjName(shObjName)
     {
         try
         {

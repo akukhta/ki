@@ -23,7 +23,7 @@ public:
                 sw(StopWatch::createAutoStartWatch("ipc copy tool benchmark"))
             {}
 
-    virtual void copy() override
+    void copy() override
     {
         if (SharedMemManager->isFirstProcess())
         {
