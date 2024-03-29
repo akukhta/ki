@@ -78,3 +78,6 @@ jobs:
              indicators: true
              output: both
              thresholds: '30 80'
+
+     - name: Update Coverage Badge
+       uses: we-cli/coverage-badge-action@main
