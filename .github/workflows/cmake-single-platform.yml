@@ -67,9 +67,6 @@ jobs:
         ./bootstrap.sh
         ls
 
-     - name: Update Coverage Badge
-       uses: we-cli/coverage-badge-action@main
-
      - name: CodeCoverageReport
        uses: irongut/CodeCoverageSummary@v1.3.0
        with:
@@ -82,3 +79,8 @@ jobs:
              indicators: true
              output: both
              thresholds: '30 80'
+
+     - name: Create commit comment
+       uses: peter-evans/commit-comment@v3
+       with:
+          body-path: 'code-coverage-results.md'
