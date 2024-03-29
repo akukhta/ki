@@ -41,6 +41,16 @@ jobs:
     steps:
      - uses: actions/checkout@v2
 
+     - name: gcc/g++
+       run: |
+         sudo apt-get install gcc-13
+         sudo apt-get install g++-13
+         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 130 --slave /usr/bin/g++ g++ /usr/bin/g++-13  
+
+     - name: install gcovr
+       run: |
+         pip install --user -U gcovr
+
      - name: Install Conan
        id: conan
        uses: turtlebrowser/get-conan@main
@@ -53,6 +63,4 @@ jobs:
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
        run: |
         cd test
-        g++ --version
-        g++-12 --version
         ./bootstrap.sh

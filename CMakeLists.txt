@@ -16,17 +16,14 @@ add_executable(${PROJECT_NAME}
 		src/queue/IQueue.hpp
 		src/queue/SynchronizedQueue.hpp
 		src/queue/BufferedQueue.hpp
-		src/queue/BufferedQueue.cpp
-		src/queue/Buffer.hpp
+        src/queue/Buffer.hpp
 		src/reader/IFileReader.hpp
 		src/reader/MMapFileReader.hpp
 		src/writer/IFileWriter.hpp
 		src/writer/MMapFileWriter.hpp
 		src/common/StopWatch.cpp
 		src/common/StopWatch.h
-		src/reader/BufferedFileReader.cpp
 		src/writer/BufferedFileWriter.hpp
-		src/writer/BufferedFileWriter.cpp
 		src/IPC/SharedMemoryManager.cpp
 		src/IPC/SharedMemoryManager.hpp
 		src/common/IPCTool.hpp
