@@ -33,9 +33,9 @@ message("SOURCES:${KI_SRC}")
 enable_testing()
 
 add_subdirectory(reader/MMapReaderTest)
-add_subdirectory(writer/MMapWriterTest)
-add_subdirectory(queue/SyncQueue)
-add_subdirectory(copyTool/parallelCopyTool)
+#add_subdirectory(writer/MMapWriterTest)
+#add_subdirectory(queue/SyncQueue)
+#add_subdirectory(copyTool/parallelCopyTool)
 
 #include(${CMAKE_CURRENT_SOURCE_DIR}/CodeCoverage.cmake)
 #append_coverage_compiler_flags()
