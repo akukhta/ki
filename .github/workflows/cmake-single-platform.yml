@@ -65,6 +65,7 @@ jobs:
         cd test
         ls
         ./bootstrap.sh
+        ls
 
      - name: CodeCoverageReport
        uses: irongut/CodeCoverageSummary@v1.3.0
