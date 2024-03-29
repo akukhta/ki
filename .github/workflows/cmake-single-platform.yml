@@ -64,3 +64,16 @@ jobs:
        run: |
         cd test
         ./bootstrap.sh
+
+      - name: Code Coverage Report
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+           filename: test/coverage/coverage.cobertura.xml
+           badge: true
+           fail_below_min: true
+           format: markdown
+           hide_branch_rate: false
+           hide_complexity: true
+           indicators: true
+           output: both
+           thresholds: '30 80'
