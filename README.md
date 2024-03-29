@@ -1,6 +1,4 @@
-# ki 
-+ [![cov](https://akukhta.github.io/ki/badges/coverage.svg)](https://github.com/akukhta/ki/actions)
-
+# ki
 Materials
 Before you start (or after) It is recommended to go through everything what modern C++ offers in multithreading here https://en.cppreference.com/w/cpp/thread
 
