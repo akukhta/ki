@@ -10,3 +10,5 @@ add_subdirectory(reader/MMapReaderTest)
 add_subdirectory(writer/MMapWriterTest)
 add_subdirectory(queue/SyncQueue)
 add_subdirectory(copyTool/parallelCopyTool)
+
+target_compile_features(kiTests PUBLIC cxx_std_23)
