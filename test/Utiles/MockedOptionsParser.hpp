@@ -21,7 +21,7 @@ public:
 
     std::string getSharedObjName() const override
     {
-        return {};
+        return shobjName;
     }
 
 private:

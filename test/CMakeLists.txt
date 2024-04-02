@@ -34,8 +34,10 @@ enable_testing()
 
 add_subdirectory(reader/MMapReaderTest)
 add_subdirectory(writer/MMapWriterTest)
+add_subdirectory(queue/IPCQueue)
 add_subdirectory(queue/SyncQueue)
 add_subdirectory(copyTool/parallelCopyTool)
+add_subdirectory(copyTool/IPCTool)
 
 set(COVERAGE_MAIN "coverage")
 
@@ -47,7 +49,7 @@ set(COVERAGE_EXCLUDES
 
 set(COVERAGE_EXTRA_FLAGS)
 
-set(COVERAGE_DEPENDENCIES "plainTest")
+set(COVERAGE_DEPENDENCIES "IPCQueue")
 
 setup_target_for_coverage_gcovr_html(
         NAME
