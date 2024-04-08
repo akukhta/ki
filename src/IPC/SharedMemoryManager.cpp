@@ -1,5 +1,6 @@
 #include "SharedMemoryManager.hpp"
 #include "../queue/BufferedQueue.hpp"
+#include <iostream>
 
 SharedMemoryManager::SharedMemoryManager(const std::string &shObjName) : shObjName(shObjName)
     {
@@ -46,8 +47,10 @@ bool SharedMemoryManager::isFirstProcess() const
 
 SharedMemoryManager::~SharedMemoryManager()
 {
-    if (procInfo->isWritingStarted)
+    if (procInfo->writerProcessCount == 0 && procInfo->readerProcessCount == 0)
     {
+        std::cout <<"Clearing shared memory\n";
+
         boost::interprocess::shared_memory_object::remove(shObjName.c_str());
     }
 }

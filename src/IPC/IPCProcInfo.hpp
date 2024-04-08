@@ -34,4 +34,6 @@ struct ProcInfo
     boost::interprocess::interprocess_mutex mutex;
     SharedString dst;
     bool isWritingStarted = false;
+    size_t readerProcessCount = 0;
+    size_t writerProcessCount = 0;
 };
