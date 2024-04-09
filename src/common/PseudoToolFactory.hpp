@@ -65,30 +65,40 @@ public:
 
                 std::unique_ptr<BufferedFileWriter<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> writer = nullptr;
 
+                auto procInfo = shMemManager->getProcInfo();
+
                 if (shMemManager->isFirstProcess())
                 {
-                    reader = std::make_unique<BufferedReader<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>>(
-                            std::move(parser.getSrc()), queue);
-
-                    auto procInfo = shMemManager->getProcInfo();
-                    procInfo->lock();
+                    auto lock = procInfo->createScopedLock();
                     procInfo->dst = parser.getDst();
                     procInfo->isWritingStarted = false;
-                    procInfo->unlock();
                 }
-                else {
-                    auto procInfo = shMemManager->getProcInfo();
-                    procInfo->lock();
-
-                    writer = std::make_unique<BufferedFileWriter<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>>(
-                            procInfo->getDst(), queue);
-
+                else
+                {
+                    auto lock = procInfo->createScopedLock();
                     procInfo->isWritingStarted = true;
-
-                    procInfo->unlock();
                 }
 
-                tool = std::make_unique<IPCTool>(std::move(reader), std::move(writer), queue, shMemManager);
+                IPCTool::ProcessType toolType = IPCTool::ProcessType::Invalid;
+
+                {
+                    auto lock =  procInfo->createScopedLock();
+
+                    if (procInfo->readerProcessCount <= procInfo->writerProcessCount)
+                    {
+                        reader = std::make_unique<BufferedReader<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>>(
+                                std::move(parser.getSrc()), queue);
+                        toolType = IPCTool::ProcessType::ReaderProcess;
+                    }
+                    else
+                    {
+                        writer = std::make_unique<BufferedFileWriter<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>>(
+                                procInfo->getDst(), queue);
+                        toolType = IPCTool::ProcessType::WriterProcess;
+                    }
+                }
+
+                tool = std::make_unique<IPCTool>(std::move(reader), std::move(writer), queue, shMemManager, toolType);
 
                 break;
             }

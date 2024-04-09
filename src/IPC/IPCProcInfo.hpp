@@ -11,19 +11,9 @@ struct ProcInfo
 {
     explicit ProcInfo(std::shared_ptr<CharAllocator> alloc) : dst(*alloc) {}
 
-    void lock()
+    boost::interprocess::scoped_lock<boost::interprocess::interprocess_mutex> createScopedLock()
     {
-        mutex.lock();
-    }
-
-    void unlock()
-    {
-        mutex.unlock();
-    }
-
-    ~ProcInfo()
-    {
-        unlock();
+        return boost::interprocess::scoped_lock(mutex);
     }
 
     std::string getDst() const

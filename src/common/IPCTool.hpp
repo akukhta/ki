@@ -15,34 +15,31 @@
 class IPCTool : public ICopyTool
 {
 public:
+
+    enum class ProcessType : char {ReaderProcess, WriterProcess, Invalid};
+
     IPCTool(std::unique_ptr<BufferedReader<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> fileReader,
             std::unique_ptr<BufferedFileWriter<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> fileWriter,
             FixedBufferQueue<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>* queue,
-            std::shared_ptr<SharedMemoryManager> SharedMemManager)
+            std::shared_ptr<SharedMemoryManager> SharedMemManager, ProcessType toolType)
             : fileReader(std::move(fileReader)), fileWriter(std::move(fileWriter)), queue(queue), SharedMemManager(std::move(SharedMemManager)),
-                sw(StopWatch::createAutoStartWatch("ipc copy tool benchmark"))
+                sw(StopWatch::createAutoStartWatch("ipc copy tool benchmark")), ipcToolType(toolType)
             {
                 size_t ProcInfo::* counterToIncrease = nullptr;
 
-                if (this->fileWriter)
+                if (ipcToolType == ProcessType::WriterProcess)
                 {
-                    ipcToolType = ProcessType::WriterProcess;
                     counterToIncrease = &ProcInfo::writerProcessCount;
                 }
-                else if (this->fileReader)
+                else if (ipcToolType == ProcessType::ReaderProcess)
                 {
-                    ipcToolType = ProcessType::ReaderProcess;
                     counterToIncrease = &ProcInfo::readerProcessCount;
-                }
-                else
-                {
-                    ipcToolType = ProcessType::Invalid;
                 }
 
                 procInfo = this->SharedMemManager->getProcInfo();
 
                 {
-                    boost::interprocess::scoped_lock lk(procInfo->mutex);
+                    auto lock = procInfo->createScopedLock();
 
                     if (!counterToIncrease || (procInfo->*counterToIncrease)) {
                         ipcToolType = ProcessType::Invalid;
@@ -58,7 +55,7 @@ public:
             {
                 if (procInfo)
                 {
-                    boost::interprocess::scoped_lock lk(procInfo->mutex);
+                    auto lk = procInfo->createScopedLock();
 
                     if (ipcToolType == ProcessType::ReaderProcess) {
                         procInfo->readerProcessCount--;
@@ -119,9 +116,6 @@ public:
     }
 
 private:
-
-    enum class ProcessType : char {ReaderProcess, WriterProcess, Invalid};
-
     StopWatch sw;
     std::unique_ptr<BufferedReader<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> fileReader;
     std::unique_ptr<BufferedFileWriter<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> fileWriter;
