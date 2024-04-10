@@ -29,7 +29,14 @@ void SiblingProcessObserver::observeSiblings(std::stop_token token)
             continue;
         }
 
-        if (auto lock = processInfo->createScopedLock(); (processInfo->*counterMember))
+        bool siblingAreRunning = false;
+
+        {
+            auto lock = processInfo->createScopedLock();
+            siblingAreRunning = (processInfo->*counterMember) > 0;
+        }
+
+        if (siblingAreRunning)
         {
             // Siblings are running
             // Stop the stopwatch
@@ -67,9 +74,9 @@ void SiblingProcessObserver::observeSiblings(std::stop_token token)
 
                 return;
             }
-
-            std::this_thread::sleep_for(pollInterval);
         }
+
+        std::this_thread::sleep_for(pollInterval);
     }
 }
 
