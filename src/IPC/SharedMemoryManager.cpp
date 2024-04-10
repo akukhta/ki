@@ -1,6 +1,7 @@
 #include "SharedMemoryManager.hpp"
 #include "../queue/BufferedQueue.hpp"
 #include <iostream>
+#include <format>
 
 SharedMemoryManager::SharedMemoryManager(const std::string &shObjName) : shObjName(shObjName)
     {
@@ -63,4 +64,12 @@ size_t SharedMemoryManager::calculateNeededSize() {
 ProcInfo* SharedMemoryManager::getProcInfo()
 {
     return procInfo;
+}
+
+void SharedMemoryManager::tryRemoveActiveSharedMemoryObject()
+{
+    if (boost::interprocess::shared_memory_object::remove(shObjName.c_str()))
+    {
+        std::cout << std::format("Shared Memory Object {} sucessfully removed", shObjName) <<std::endl;
+    }
 }

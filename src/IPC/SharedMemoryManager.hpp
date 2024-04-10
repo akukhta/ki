@@ -35,6 +35,8 @@ public:
 
     bool isFirstProcess() const;
 
+    void tryRemoveActiveSharedMemoryObject();
+
 private:
     boost::interprocess::managed_shared_memory segment;
     bool isFirstProcess_ = false;

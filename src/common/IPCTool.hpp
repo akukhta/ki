@@ -10,14 +10,12 @@
 #include "../reader/BufferedFileReader.hpp"
 #include "../writer/BufferedFileWriter.hpp"
 #include "../queue/BufferedQueue.hpp"
+#include "../IPC/SiblingProcessObserver.hpp"
 #include "StopWatch.h"
 
 class IPCTool : public ICopyTool
 {
 public:
-
-    enum class ProcessType : char {ReaderProcess, WriterProcess, Invalid};
-
     IPCTool(std::unique_ptr<BufferedReader<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> fileReader,
             std::unique_ptr<BufferedFileWriter<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> fileWriter,
             FixedBufferQueue<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>* queue,
@@ -49,6 +47,10 @@ public:
 
                     (procInfo->*counterToIncrease)++;
                 }
+
+                timer = std::make_unique<SiblingProcessObserver>(procInfo,
+                    ipcToolType == ProcessType::ReaderProcess ? ProcessType::WriterProcess : ProcessType::ReaderProcess,
+                    std::bind(&IPCTool::timeout, this));
             }
 
             ~IPCTool()
@@ -80,13 +82,15 @@ public:
             queue->open();
             fileReader->open();
 
+            timer->startObserver();
+
             while(!fileReader->isReadFinished())
             {
-
                 fileReader->read();
             }
 
             queue->close();
+            timer = nullptr;
         }
         else if (ipcToolType == ProcessType::WriterProcess)
         {
@@ -99,6 +103,8 @@ public:
 
             fileWriter->create();
 
+            timer->startObserver();
+
             while(true)
             {
                 if (queue->isReadFinished() && queue->isEmpty())
@@ -108,6 +114,8 @@ public:
 
                 fileWriter->write();
             }
+
+            timer = nullptr;
         }
         else
         {
@@ -116,6 +124,7 @@ public:
     }
 
 private:
+
     StopWatch sw;
     std::unique_ptr<BufferedReader<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> fileReader;
     std::unique_ptr<BufferedFileWriter<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> fileWriter;
@@ -123,4 +132,12 @@ private:
     std::shared_ptr<SharedMemoryManager> SharedMemManager;
     ProcInfo *procInfo = nullptr;
     ProcessType ipcToolType;
+    std::unique_ptr<SiblingProcessObserver> timer;
+
+    void timeout()
+    {
+        std::cout << std::format("Exit because of the time out: no running {} process", ipcToolType == ProcessType::ReaderProcess ? "writer" : "reader") << std::endl;
+        SharedMemManager->tryRemoveActiveSharedMemoryObject();
+        std::terminate();
+    }
 };

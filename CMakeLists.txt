@@ -29,6 +29,9 @@ add_executable(${PROJECT_NAME}
 		src/common/IPCTool.hpp
 		src/queue/Buffer/BufferConfiguration.hpp
 		src/IPC/IPCProcInfo.hpp
+		src/IPC/IPCToolType.hpp
+		src/IPC/SiblingProcessObserver.hpp
+		src/IPC/SiblingProcessObserver.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} Boost::program_options stdc++fs)

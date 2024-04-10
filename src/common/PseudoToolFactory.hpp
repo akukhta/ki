@@ -79,7 +79,7 @@ public:
                     procInfo->isWritingStarted = true;
                 }
 
-                IPCTool::ProcessType toolType = IPCTool::ProcessType::Invalid;
+                ProcessType toolType = ProcessType::Invalid;
 
                 {
                     auto lock =  procInfo->createScopedLock();
@@ -88,13 +88,13 @@ public:
                     {
                         reader = std::make_unique<BufferedReader<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>>(
                                 std::move(parser.getSrc()), queue);
-                        toolType = IPCTool::ProcessType::ReaderProcess;
+                        toolType = ProcessType::ReaderProcess;
                     }
                     else
                     {
                         writer = std::make_unique<BufferedFileWriter<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>>(
                                 procInfo->getDst(), queue);
-                        toolType = IPCTool::ProcessType::WriterProcess;
+                        toolType = ProcessType::WriterProcess;
                     }
                 }
 
