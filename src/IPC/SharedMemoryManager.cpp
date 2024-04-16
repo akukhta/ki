@@ -70,6 +70,6 @@ void SharedMemoryManager::tryRemoveActiveSharedMemoryObject()
 {
     if (boost::interprocess::shared_memory_object::remove(shObjName.c_str()))
     {
-        std::cout << std::format("Shared Memory Object {} sucessfully removed", shObjName) <<std::endl;
+        std::cout << std::format("Shared Memory Object {} successfully removed", shObjName) <<std::endl;
     }
 }
