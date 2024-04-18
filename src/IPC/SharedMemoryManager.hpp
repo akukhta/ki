@@ -18,6 +18,13 @@ class FixedBufferQueue;
 
 using Queue = FixedBufferQueue<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>;
 
+///Class handles:\n
+///all allocations and deallocations done in shared memory:\n
+///* Queue that chunks read from files\n
+///* Process Info\n
+///allocation and deallocation of shared memory region\n
+///determines if the process is reader (first process creates shared memory region)
+///or writer (shared memory region already exists)
 class SharedMemoryManager : public std::enable_shared_from_this<SharedMemoryManager>
 {
 public:

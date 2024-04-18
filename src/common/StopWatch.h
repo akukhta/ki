@@ -1,6 +1,11 @@
 #pragma once
 #include <chrono>
 
+/// Class that performs time measurements
+/// Prints the time taken at destructor
+/// Works in 2 modes:
+/// autostart - automatic start at construction and stop at destruction
+/// manualwatch - start and stop functions should be run explicitly
 class StopWatch
 {
 public:

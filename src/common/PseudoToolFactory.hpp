@@ -15,6 +15,7 @@
 #include <vector>
 #include <boost/interprocess/interprocess_fwd.hpp>
 
+/// Factory that creates proper copy tool based on passed arguments
 class ToolFactory
 {
 public:
@@ -67,31 +68,41 @@ public:
 
                 auto procInfo = shMemManager->getProcInfo();
 
+                // If the copy tool process is first, we create the tool that works as a reader
                 if (shMemManager->isFirstProcess())
                 {
+                    // Fill the reader process information
                     auto lock = procInfo->createScopedLock();
                     procInfo->dst = parser.getDst();
                     procInfo->isWritingStarted = false;
                 }
                 else
                 {
+                    // Fill the writer process information
                     auto lock = procInfo->createScopedLock();
                     procInfo->isWritingStarted = true;
                 }
 
+                // Initially, tool type is set to invalid
+                // because we should check amount of process instances
+                // If 0 readers, we create a reader
+                // If we already have the reader and no writer, we create the writer
+                // if we already have the reader and the writer, the tool type remains invalid and will be terminated
+                // as we run copy function
                 ProcessType toolType = ProcessType::Invalid;
-
                 {
                     auto lock =  procInfo->createScopedLock();
 
                     if (procInfo->readerProcessCount <= procInfo->writerProcessCount)
                     {
+                        // For reader process there is no need to create writer object, so the writer is null
                         reader = std::make_unique<BufferedReader<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>>(
                                 std::move(parser.getSrc()), queue);
                         toolType = ProcessType::ReaderProcess;
                     }
                     else
                     {
+                        // For writer process there is no need to create reader object, so the reader is null
                         writer = std::make_unique<BufferedFileWriter<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>>(
                                 procInfo->getDst(), queue);
                         toolType = ProcessType::WriterProcess;

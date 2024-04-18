@@ -5,6 +5,9 @@
 
 using namespace boost::program_options;
 
+/// Command Line Options parser implementation
+/// does parse and return option passed to cmd
+/// i.e. not mocked, but real
 class OptionsParser : public IOptionsParser
 {
 public:
@@ -77,10 +80,10 @@ public:
 
     ~OptionsParser() override = default;
 private:
-    options_description desc{"Kopieren Instrument"};
+    options_description desc{"Kopieren Instrument"}; /// Objects that stores and parses options that could be passed to the process
     
-    std::string src;
-    std::string dst;
-    std::string type;
-    std::string sharedObjName;
+    std::string src; /// Source file (copy-from) absolute path
+    std::string dst; /// Destination file (copy-to) absolute path
+    std::string type; /// Type of tool to use, i.e in what mode perform the copying (buffered, buffered with optimized file IO, IPC)
+    std::string sharedObjName; /// name of shared object, applicable for IPC tool only
 };

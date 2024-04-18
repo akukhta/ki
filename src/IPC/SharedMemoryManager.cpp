@@ -50,9 +50,10 @@ SharedMemoryManager::~SharedMemoryManager()
 {
     if (procInfo->writerProcessCount == 0 && procInfo->readerProcessCount == 0)
     {
+#if DEBUG
         std::cout <<"Clearing shared memory\n";
-
-        boost::interprocess::shared_memory_object::remove(shObjName.c_str());
+#endif
+        tryRemoveActiveSharedMemoryObject();
     }
 }
 

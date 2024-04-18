@@ -34,4 +34,10 @@ add_executable(${PROJECT_NAME}
 		src/IPC/SiblingProcessObserver.cpp
 )
 
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC DEBUG=1)
+elseif(CMAKE_BUILD_TYPE MATCHES Release)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC DEBUG=0)
+endif()
+
 target_link_libraries(${PROJECT_NAME} Boost::program_options stdc++fs)
