@@ -12,12 +12,16 @@
 #include <filesystem>
 #include <concepts>
 
+/// Concept to check if the type used as a Chunk support push_back-like operations
 template<class ChunkType>
 concept BackInsertable = requires (ChunkType c)
 {
     {std::back_insert_iterator<ChunkType>(c)};
 };
 
+/// Class that performs reading from file\n
+/// Reading is done via mmap\n
+/// \tparam ChunkType Data type used as a buffer
 template <class ChunkType>
     requires BackInsertable<ChunkType>
 class MMapFileReader : public IFileReader<ChunkType>

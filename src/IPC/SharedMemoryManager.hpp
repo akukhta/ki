@@ -32,16 +32,34 @@ public:
     explicit SharedMemoryManager(std::string const& shObjName);
     ~SharedMemoryManager();
 
+    /// Creates or Finds and returns a pointer to the queue
+    /// \param name A name of queue stored in shared memory
+    /// \return Returns raw pointer to IPCQueue
     Queue* getQueue(std::string const& name);
 
+    /// Returns allocator that is used by the queue to allocate/deallocate elements of the queue
+    /// \return returns shared pointer to the allocator of
+    /// FixedBufferQueue<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>
     std::shared_ptr<ShmemAllocator<SharedDeque>> getDequeAllocator();
 
+    /// Returns allocator that allocates char within the shared memory region\n
+    /// Used for allocation of string\n
+    /// \return Shared pointer to the char allocator
     std::shared_ptr<ShmemAllocator<unsigned char>> getRawAllocator();
 
+    /// Creates or Finds and returns a pointer to the ProcInfo structure
+    /// that is used for managing process state and proper resource deallocation
+    /// \return Raw pointer to ProcInfo
     ProcInfo* getProcInfo();
 
+    /// Determines if the process is first consumer of the shared object
+    /// specified at the construction\n
+    /// Used to determine if process is a reader or writer
+    /// \return true if shared memory object has not been used before, otherwise false
     bool isFirstProcess() const;
 
+    /// Tries to deallocate shared memory region
+    /// if no one else uses it
     void tryRemoveActiveSharedMemoryObject();
 
 private:
@@ -55,5 +73,8 @@ private:
 
     std::string shObjName;
 
+    /// Calculates size of shared memory region to allocate
+    /// to hold the buffer queue
+    /// \return size in bytes to allocate
     static size_t calculateNeededSize();
 };

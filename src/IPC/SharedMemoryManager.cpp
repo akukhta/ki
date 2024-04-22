@@ -8,6 +8,11 @@ SharedMemoryManager::SharedMemoryManager(const std::string &shObjName) : shObjNa
         try
         {
             segment = boost::interprocess::managed_shared_memory(boost::interprocess::create_only, this->shObjName.c_str(), calculateNeededSize());
+
+            // If shared memory segment with given name has already been allocated
+            // the exception is thrown and that means that the process is not first (writer)
+            // and all necessary resources have already allocated
+
             isFirstProcess_ = true;
             dequeAllocator = std::make_shared<ShmemAllocator<SharedDeque>>(ShmemAllocator<SharedDeque>(segment.get_segment_manager()));
             rawAllocator = std::make_shared<ShmemAllocator<unsigned char>>(ShmemAllocator<unsigned char>(segment.get_segment_manager()));
@@ -16,6 +21,8 @@ SharedMemoryManager::SharedMemoryManager(const std::string &shObjName) : shObjNa
         }
         catch (boost::interprocess::interprocess_exception const&)
         {
+            // the process is not first
+            // so no need to allocate resources, only find some of them
             segment = boost::interprocess::managed_shared_memory(boost::interprocess::open_only, this->shObjName.c_str());
             procInfo = segment.find<ProcInfo>("kiProcInfo").first;
         }

@@ -3,8 +3,10 @@
 #include <deque>
 #include <boost/interprocess/offset_ptr.hpp>
 
-enum class BufferType : char { READ, WRITE };
+// TODO: Remove
+enum class BufferType : char { READ, WRITE }; // Deprecated
 
+/// Class represents a buffer
 template <class DataType>
 class Buffer
 {

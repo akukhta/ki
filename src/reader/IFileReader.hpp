@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 
+/// File Reader interface
 template <class ChunkType>
 class IFileReader
 {

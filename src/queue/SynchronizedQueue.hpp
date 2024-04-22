@@ -6,6 +6,8 @@
 #include <condition_variable>
 #include <concepts>
 
+/// non ipc-queue designed to work with mmaped readers and writers
+/// \tparam ChunkType type of buffer that queue holds
 template <class ChunkType>
     requires std::movable<ChunkType>
 class SynchronizedQueue : public IQueue<ChunkType>
