@@ -76,12 +76,6 @@ public:
                     procInfo->dst = parser.getDst();
                     procInfo->isWritingStarted = false;
                 }
-                else
-                {
-                    // Fill the writer process information
-                    auto lock = procInfo->createScopedLock();
-                    procInfo->isWritingStarted = true;
-                }
 
                 // Initially, tool type is set to invalid
                 // because we should check amount of process instances

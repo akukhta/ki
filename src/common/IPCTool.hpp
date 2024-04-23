@@ -114,6 +114,16 @@ public:
             }
 
             queue->close();
+
+            {
+                // Wait to prevent closing the reader process before writing has started
+                // Otherwise when copying small files
+                // Reader process would be instantly closed, and the process we have started assuming that it's writer
+                // Would turn into a reader, cause there is no reader process running
+                auto lk = procInfo->createScopedLock();
+                procInfo->writingStartedCondition.wait(lk,
+                                                       [this]() { return procInfo->isWritingStarted; });
+            }
             timer = nullptr;
         }
         else if (ipcToolType == ProcessType::WriterProcess)
@@ -127,7 +137,18 @@ public:
 
             fileWriter->create();
 
-            timer->startObserver();
+            {
+                // Indicate that writing has been started
+                // and reader can be closed if the entire file is read
+                auto lk = procInfo->createScopedLock();
+                procInfo->isWritingStarted = true;
+                procInfo->writingStartedCondition.notify_all();
+            }
+            // If read is not finished, we should check that reader process will appear
+            if (!queue->isReadFinished())
+            {
+                timer->startObserver();
+            }
 
             while(true)
             {
@@ -160,8 +181,16 @@ private:
 
     void timeout()
     {
-        std::cout << std::format("Exit because of the time out: no running {} process", ipcToolType == ProcessType::ReaderProcess ? "writer" : "reader") << std::endl;
-        SharedMemManager->tryRemoveActiveSharedMemoryObject();
-        std::terminate();
+        // Terminate the process only if current process works in reader mode
+        // and no writers available
+        // If the process works as writer and reading is not finished (i.e. reading process has been killed for some reason)
+        // terminate the process, because there is no posibility to read the entire file
+        if (ipcToolType == ProcessType::ReaderProcess || queue->isReadFinished() == false)
+        {
+            std::cout << std::format("Exit because of the time out: no running {} process",
+                                     ipcToolType == ProcessType::ReaderProcess ? "writer" : "reader") << std::endl;
+            SharedMemManager->tryRemoveActiveSharedMemoryObject();
+            std::terminate();
+        }
     }
 };

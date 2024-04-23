@@ -3,6 +3,7 @@
 #include <boost/interprocess/allocators/allocator.hpp>
 #include <boost/interprocess/managed_shared_memory.hpp>
 #include <boost/interprocess/sync/interprocess_mutex.hpp>
+#include <boost/interprocess/sync/interprocess_condition.hpp>
 
 using CharAllocator =  boost::interprocess::allocator<char, boost::interprocess::managed_shared_memory::segment_manager>;
 using SharedString = boost::interprocess::basic_string<char, std::char_traits<char>, CharAllocator>;
@@ -31,6 +32,7 @@ struct ProcInfo
     }
 
     boost::interprocess::interprocess_mutex mutex;
+    boost::interprocess::interprocess_condition writingStartedCondition;
     SharedString dst; /// String that holds destination file path, allocated in shared memory
     bool isWritingStarted = false;
     size_t readerProcessCount = 0; /// counter of reader processes (for now holds 2 values: 0, 1)
