@@ -1,9 +1,0 @@
-{
-    "version": 4,
-    "vendor": {
-        "conan": {}
-    },
-    "include": [
-        "/home/alex/ki/test/bin/CMakePresets.json"
-    ]
-}

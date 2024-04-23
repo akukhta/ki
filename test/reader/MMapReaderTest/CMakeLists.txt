@@ -1,4 +1,0 @@
-add_subdirectory(entireFileRead)
-#add_subdirectory(onePageRead)
-add_subdirectory(noFile)
-add_subdirectory(emptyFileRead)

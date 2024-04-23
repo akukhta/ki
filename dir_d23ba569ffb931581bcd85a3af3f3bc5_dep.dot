@@ -1,0 +1,11 @@
+digraph "/home/runner/work/ki/ki/src/writer" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_68267d1309a1af8e8297ef4c3efbcdba {
+    graph [ bgcolor="#ddddee", pencolor="black", label="src" fontname="Helvetica", fontsize="10", URL="dir_68267d1309a1af8e8297ef4c3efbcdba.html"]
+  dir_b932d720ae4455b3a35ba932c1ee98d1 [shape=box label="queue" URL="dir_b932d720ae4455b3a35ba932c1ee98d1.html"];
+  dir_d23ba569ffb931581bcd85a3af3f3bc5 [shape=box, label="writer", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_d23ba569ffb931581bcd85a3af3f3bc5.html"];
+  }
+  dir_d23ba569ffb931581bcd85a3af3f3bc5->dir_b932d720ae4455b3a35ba932c1ee98d1 [headlabel="1", labeldistance=1.5 headhref="dir_000005_000003.html"];
+}

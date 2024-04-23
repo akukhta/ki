@@ -1,0 +1,12 @@
+digraph "Graphical Class Hierarchy"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node2 [label="std::conditional_t",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node2 -> Node0 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node0 [label="FixedBufferQueue\< boost\l::interprocess::interprocess\l_mutex, boost::interprocess\l::interprocess_condition, boost\l::interprocess::scoped_lock, boost\l::interprocess::deque \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classFixedBufferQueue.html",tooltip=" "];
+  Node2 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="FixedBufferQueue\< MutexType,\l ConditionType, RAIILockType,\l DequeType \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classFixedBufferQueue.html",tooltip=" "];
+}
