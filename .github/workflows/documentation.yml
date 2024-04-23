@@ -13,12 +13,21 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
+    
+    - name: Install Conan
+      id: conan
+      uses: turtlebrowser/get-conan@main
+    
+    - name: Detect profile
+      run: conan profile detect
+    
     - name: Install Doxygen
       run: |
         sudo apt-get install doxygen
         pip install jinja2 Pygments
     - name: configure
       run: |
+        conan install . --build=missing --output-folder=debug --profile=debugprofile.txt --profile:b=debugprofile.txt
         cmake -Bbin -DCMAKE_BUILD_TYPE="Debug"
     - name: building
       run: |
