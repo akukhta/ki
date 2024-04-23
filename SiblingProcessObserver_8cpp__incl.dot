@@ -18,11 +18,13 @@ digraph "/home/runner/work/ki/ki/src/IPC/SiblingProcessObserver.cpp"
   Node7 [label="boost/interprocess\l/managed_shared_memory.hpp",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
   Node4 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node8 [label="boost/interprocess\l/sync/interprocess_mutex.hpp",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
-  Node2 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node9 [label="thread",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node4 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="boost/interprocess\l/sync/interprocess_condition.hpp",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
   Node2 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node10 [label="chrono",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node10 [label="thread",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
   Node2 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node11 [label="functional",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node11 [label="chrono",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node2 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="functional",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
   Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
 }

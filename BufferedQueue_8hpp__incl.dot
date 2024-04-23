@@ -50,6 +50,7 @@ digraph "/home/runner/work/ki/ki/src/queue/BufferedQueue.hpp"
   Node19 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node19 -> Node21 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node21 [label="boost/interprocess\l/sync/interprocess_mutex.hpp",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node19 -> Node18 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node22 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node22 [label="Buffer/BufferConfiguration.hpp",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
 }

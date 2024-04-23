@@ -59,6 +59,7 @@ digraph "/home/runner/work/ki/ki/src/common/BufferedParallelCopyTool.hpp"
   Node23 -> Node19 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node23 -> Node25 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node25 [label="boost/interprocess\l/sync/interprocess_mutex.hpp",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node23 -> Node22 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node6 -> Node26 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node26 [label="Buffer/BufferConfiguration.hpp",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
   Node3 -> Node27 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

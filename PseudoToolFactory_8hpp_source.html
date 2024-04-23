@@ -148,58 +148,52 @@ $(function() {
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                    procInfo-&gt;dst = parser.<a class="code" href="classIOptionsParser.html#a27ed5673d60f8de0cf6297bde5774605">getDst</a>();</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                    procInfo-&gt;isWritingStarted = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                }</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                {</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                    <span class="comment">// Fill the writer process information</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                    <span class="keyword">auto</span> lock = procInfo-&gt;createScopedLock();</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                    procInfo-&gt;isWritingStarted = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                }</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                <span class="comment">// Initially, tool type is set to invalid</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                <span class="comment">// because we should check amount of process instances</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                <span class="comment">// If 0 readers, we create a reader</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                <span class="comment">// If we already have the reader and no writer, we create the writer</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                <span class="comment">// if we already have the reader and the writer, the tool type remains invalid and will be terminated</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                <span class="comment">// as we run copy function</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                <a class="code" href="IPCToolType_8hpp.html#afef3d7d0afec25786663538afdba3d44">ProcessType</a> toolType = <a class="code" href="IPCToolType_8hpp.html#afef3d7d0afec25786663538afdba3d44a4bbb8f967da6d1a610596d7257179c2b">ProcessType::Invalid</a>;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                {</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                    <span class="keyword">auto</span> lock =  procInfo-&gt;createScopedLock();</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                    <span class="keywordflow">if</span> (procInfo-&gt;readerProcessCount &lt;= procInfo-&gt;writerProcessCount)</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                    {</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                        <span class="comment">// For reader process there is no need to create writer object, so the writer is null</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                        reader = std::make_unique&lt;BufferedReader&lt;boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque&gt;&gt;(</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                                std::move(parser.<a class="code" href="classIOptionsParser.html#a7aa635555859be6c5b152275a6bc941b">getSrc</a>()), queue);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                        toolType = <a class="code" href="IPCToolType_8hpp.html#afef3d7d0afec25786663538afdba3d44a8219708236d392f9d3a7f91cfcb1dfc7">ProcessType::ReaderProcess</a>;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                    }</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                    {</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                        <span class="comment">// For writer process there is no need to create reader object, so the reader is null</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                        writer = std::make_unique&lt;BufferedFileWriter&lt;boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque&gt;&gt;(</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                                procInfo-&gt;getDst(), queue);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                        toolType = <a class="code" href="IPCToolType_8hpp.html#afef3d7d0afec25786663538afdba3d44aa6819c94442998686286d1cac31a799d">ProcessType::WriterProcess</a>;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                    }</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                }</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                tool = std::make_unique&lt;IPCTool&gt;(std::move(reader), std::move(writer), queue, shMemManager, toolType);</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                <span class="comment">// Initially, tool type is set to invalid</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                <span class="comment">// because we should check amount of process instances</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                <span class="comment">// If 0 readers, we create a reader</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                <span class="comment">// If we already have the reader and no writer, we create the writer</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                <span class="comment">// if we already have the reader and the writer, the tool type remains invalid and will be terminated</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                <span class="comment">// as we run copy function</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                <a class="code" href="IPCToolType_8hpp.html#afef3d7d0afec25786663538afdba3d44">ProcessType</a> toolType = <a class="code" href="IPCToolType_8hpp.html#afef3d7d0afec25786663538afdba3d44a4bbb8f967da6d1a610596d7257179c2b">ProcessType::Invalid</a>;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                    <span class="keyword">auto</span> lock =  procInfo-&gt;createScopedLock();</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                    <span class="keywordflow">if</span> (procInfo-&gt;readerProcessCount &lt;= procInfo-&gt;writerProcessCount)</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                    {</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                        <span class="comment">// For reader process there is no need to create writer object, so the writer is null</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                        reader = std::make_unique&lt;BufferedReader&lt;boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque&gt;&gt;(</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                                std::move(parser.<a class="code" href="classIOptionsParser.html#a7aa635555859be6c5b152275a6bc941b">getSrc</a>()), queue);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                        toolType = <a class="code" href="IPCToolType_8hpp.html#afef3d7d0afec25786663538afdba3d44a8219708236d392f9d3a7f91cfcb1dfc7">ProcessType::ReaderProcess</a>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                    }</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                    {</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                        <span class="comment">// For writer process there is no need to create reader object, so the reader is null</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                        writer = std::make_unique&lt;BufferedFileWriter&lt;boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque&gt;&gt;(</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                                procInfo-&gt;getDst(), queue);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                        toolType = <a class="code" href="IPCToolType_8hpp.html#afef3d7d0afec25786663538afdba3d44aa6819c94442998686286d1cac31a799d">ProcessType::WriterProcess</a>;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                    }</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                }</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                tool = std::make_unique&lt;IPCTool&gt;(std::move(reader), std::move(writer), queue, shMemManager, toolType);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            }</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            <span class="keywordflow">default</span>:</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            {</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                std::cerr &lt;&lt; <span class="stringliteral">&quot;Unknown tool bufferType&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            }</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            <span class="keywordflow">default</span>:</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            {</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                std::cerr &lt;&lt; <span class="stringliteral">&quot;Unknown tool bufferType&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            }</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        }</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <span class="keywordflow">return</span> tool;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    }       </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <a class="code" href="classIOptionsParser.html">IOptionsParser</a> <span class="keyword">const</span> &amp;parser;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <a class="code" href="ToolTypeEnum_8hpp.html#acbb91b3762d5b1de61e4312a6087d8a6">ToolType</a> type;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;};</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        }</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        <span class="keywordflow">return</span> tool;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    }       </div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <a class="code" href="classIOptionsParser.html">IOptionsParser</a> <span class="keyword">const</span> &amp;parser;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <a class="code" href="ToolTypeEnum_8hpp.html#acbb91b3762d5b1de61e4312a6087d8a6">ToolType</a> type;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;};</div>
 <div class="ttc" id="aBufferedParallelCopyTool_8hpp_html"><div class="ttname"><a href="BufferedParallelCopyTool_8hpp.html">BufferedParallelCopyTool.hpp</a></div></div>
 <div class="ttc" id="aIOptionsParser_8hpp_html"><div class="ttname"><a href="IOptionsParser_8hpp.html">IOptionsParser.hpp</a></div></div>
 <div class="ttc" id="aIPCToolType_8hpp_html_afef3d7d0afec25786663538afdba3d44"><div class="ttname"><a href="IPCToolType_8hpp.html#afef3d7d0afec25786663538afdba3d44">ProcessType</a></div><div class="ttdeci">ProcessType</div><div class="ttdef"><b>Definition:</b> IPCToolType.hpp:5</div></div>

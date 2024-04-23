@@ -12,4 +12,6 @@ digraph "/home/runner/work/ki/ki/src/IPC/IPCProcInfo.hpp"
   Node4 [label="boost/interprocess\l/managed_shared_memory.hpp",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
   Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node5 [label="boost/interprocess\l/sync/interprocess_mutex.hpp",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="boost/interprocess\l/sync/interprocess_condition.hpp",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
 }

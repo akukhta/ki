@@ -57,6 +57,7 @@ digraph "/home/runner/work/ki/ki/src/writer/BufferedFileWriter.hpp"
   Node22 -> Node18 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node22 -> Node24 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node24 [label="boost/interprocess\l/sync/interprocess_mutex.hpp",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node22 -> Node21 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node5 -> Node25 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node25 [label="Buffer/BufferConfiguration.hpp",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
 }
