@@ -13,9 +13,9 @@ First thread should read the data from source file.
 Second thread should write the data to the target file.
  
 
- 
+ ### [Documentation](https://akukhta.github.io/ki/) 
 
-Hints before start:
+### Hints before start:
 * Start the project as a prove of concept.
 * no need to process all possible errors. Just check the count of parameters so 'source' and 'destination' parameters are present and source exists. (start with POC - prove of concept)
 * safety hint - do not overwrite destination file by default - but it is up to you.
