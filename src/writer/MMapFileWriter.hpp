@@ -7,6 +7,8 @@
 #include <stdexcept>
 #include <sys/mman.h>
 
+/// Writes data to the file using memory mmaped file
+/// \tparam ChunkType Data type of buffer
 template <class ChunkType>
 class MMapFileWriter : public IFileWriter<ChunkType>
 {
@@ -15,8 +17,11 @@ public:
         : fileName(std::move(fileName)), fileSize(fileSize), currentOffset(0), writeFinished(false)
     {}
 
+    /// Writes a buffer to the file
+    /// \param buf Data to write
     void write(ChunkType buf) override
     {
+        // Check if we do not write more that requested (bytes written + current buffer size < source file size)
         if (currentOffset + buf.size() > fileSize)
         {
             throw std::runtime_error("Writer: writing more than expected");
@@ -24,9 +29,11 @@ public:
         
         std::copy(buf.begin(), buf.end(), mmappedFile + currentOffset);
 
+        // Update the write position (fseek-like, but for memory mapped file)
         currentOffset += buf.size();
     }
 
+    /// Creates file and creates handle for memory mapped file
     void create() override
     {
         fileDesc = open(fileName.data(), O_RDWR | O_CREAT, 0644);
@@ -50,6 +57,7 @@ public:
         }
     }
 
+    /// Closes file memory map handle and sync file disk's content
     void finishWrite() override
     {
         if (mmappedFile)

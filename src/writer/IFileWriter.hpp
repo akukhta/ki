@@ -1,6 +1,9 @@
 #pragma once
 #include <vector>
 
+/// Writes data to the file\n
+/// Template instance for writer that receives buffer as function argument
+/// \tparam ChunkType Data type represents buffer
 template <class ChunkType>
 class IFileWriter
 {
