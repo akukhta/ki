@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['mmapfilereader_165',['MMapFileReader',['../classMMapFileReader.html',1,'']]],
-  ['mmapfilewriter_166',['MMapFileWriter',['../classMMapFileWriter.html',1,'']]]
+  ['mmapfilereader_169',['MMapFileReader',['../classMMapFileReader.html',1,'']]],
+  ['mmapfilewriter_170',['MMapFileWriter',['../classMMapFileWriter.html',1,'']]],
+  ['multifilewriter_171',['MultiFileWriter',['../classMultiFileWriter.html',1,'']]]
 ];

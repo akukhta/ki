@@ -31,7 +31,11 @@ digraph "/home/runner/work/ki/ki/src/queue/IQueue.hpp"
   Node10 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node10 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node10 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node1 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node11 [label="/home/runner/work/ki\l/ki/src/queue/SynchronizedQueue.hpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$SynchronizedQueue_8hpp.html",tooltip=" "];
-  Node11 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="/home/runner/work/ki\l/ki/src/writer/MultiFileWriter.hpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$MultiFileWriter_8hpp.html",tooltip=" "];
+  Node11 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="/home/runner/work/ki\l/ki/src/writer/MultiFileWriter.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$MultiFileWriter_8cpp.html",tooltip=" "];
+  Node1 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="/home/runner/work/ki\l/ki/src/queue/SynchronizedQueue.hpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$SynchronizedQueue_8hpp.html",tooltip=" "];
+  Node13 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
 }
