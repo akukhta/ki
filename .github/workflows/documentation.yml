@@ -4,7 +4,7 @@ on:
   push:
     tags:
       - "*"
-    branches: [ main, master ]
+    branches: [ tcpiptool, master ]
 
 jobs:
   build:
