@@ -32,6 +32,9 @@ add_executable(${PROJECT_NAME}
 		src/IPC/IPCToolType.hpp
 		src/IPC/SiblingProcessObserver.hpp
 		src/IPC/SiblingProcessObserver.cpp
+		src/writer/MultiFileWriter.cpp
+		src/writer/MultiFileWriter.hpp
+		src/TCPIP/FileInfo.hpp
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
