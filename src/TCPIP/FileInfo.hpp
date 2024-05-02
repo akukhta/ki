@@ -11,7 +11,6 @@ namespace TCPIP {
         size_t pid;
         std::string senderIP;
         std::string fileName;
-
         // attributes
     };
 }

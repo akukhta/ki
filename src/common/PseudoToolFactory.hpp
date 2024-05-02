@@ -45,14 +45,14 @@ public:
 
             case ToolType::BUFFERED_PARALLEL:
             {
-                auto queue = std::make_shared<FixedBufferQueue<std::mutex, std::condition_variable, std::unique_lock, std::deque>>();
+                auto queue = std::make_shared<FixedBufferQueue<NonIPCTag>>();
 
-                auto reader = std::make_unique<BufferedReader<std::mutex, std::condition_variable, std::unique_lock, std::deque>>(std::move(parser.getSrc()), queue);
+                auto reader = std::make_unique<BufferedReader<NonIPCTag>>(std::move(parser.getSrc()), queue);
 
-                auto writer = std::make_unique<BufferedFileWriter<std::mutex, std::condition_variable, std::unique_lock, std::deque>>(std::move(parser.getDst()), queue);
+                auto writer = std::make_unique<BufferedFileWriter<NonIPCTag>>(std::move(parser.getDst()), queue);
 
                 tool = std::make_unique<BPCopyTool>(std::move(reader), std::move(writer), queue);
-                
+
                 break;
             }
 
@@ -62,9 +62,9 @@ public:
 
                 auto queue = shMemManager->getQueue("shQueue");
 
-                std::unique_ptr<BufferedReader<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> reader = nullptr;
+                std::unique_ptr<BufferedReader<IPCTag>> reader = nullptr;
 
-                std::unique_ptr<BufferedFileWriter<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> writer = nullptr;
+                std::unique_ptr<BufferedFileWriter<IPCTag>> writer = nullptr;
 
                 auto procInfo = shMemManager->getProcInfo();
 
@@ -90,14 +90,14 @@ public:
                     if (procInfo->readerProcessCount <= procInfo->writerProcessCount)
                     {
                         // For reader process there is no need to create writer object, so the writer is null
-                        reader = std::make_unique<BufferedReader<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>>(
+                        reader = std::make_unique<BufferedReader<IPCTag>>(
                                 std::move(parser.getSrc()), queue);
                         toolType = ProcessType::ReaderProcess;
                     }
                     else
                     {
                         // For writer process there is no need to create reader object, so the reader is null
-                        writer = std::make_unique<BufferedFileWriter<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>>(
+                        writer = std::make_unique<BufferedFileWriter<IPCTag>>(
                                 procInfo->getDst(), queue);
                         toolType = ProcessType::WriterProcess;
                     }

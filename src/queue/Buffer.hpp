@@ -2,9 +2,7 @@
 #include <condition_variable>
 #include <deque>
 #include <boost/interprocess/offset_ptr.hpp>
-
-// TODO: Remove
-enum class BufferType : char { READ, WRITE }; // Deprecated
+#include "Buffer/BufferType.hpp"
 
 /// Class represents a buffer
 template <class DataType>

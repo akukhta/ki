@@ -11,27 +11,44 @@
 #include "Buffer.hpp"
 #include "../IPC/SharedMemoryManager.hpp"
 #include "Buffer/BufferConfiguration.hpp"
+#include "../TCPIP/TCPIPBuffer.hpp"
 
-/// Buffers that are used in non-ipc version of a queue\n
-/// Allocated on the stack
-struct NonIPCBase
+struct NonIPCTag
 {
+    using MutexType = std::mutex;
+    using ConditionType = std::condition_variable;
+    using BufferType = Buffer<unsigned char*>;
+    using RAIILockType = std::unique_lock<MutexType>;
+    using DequeType = std::deque<BufferType>;
+
     std::array<std::array<unsigned char, BUFFER_SIZE>, BUFFERS_IN_QUEUE> buffers{};
 };
 
-/// Buffers used for IPC-version of a queue\n
-/// It's empty because IPC buffers are allocated within shared memory
-/// and managed by SharedMemoryManager
-struct IPCBase {};
+struct IPCTag
+{
+    using MutexType = boost::interprocess::interprocess_mutex;
+    using ConditionType = boost::interprocess::interprocess_condition;
+    using BufferType = Buffer<boost::interprocess::offset_ptr<unsigned char>>;
+    using RAIILockType = boost::interprocess::scoped_lock<MutexType>;
+    using DequeType =  boost::interprocess::deque<ShmemBuffer, ShmemAllocator<BufferType>>;
+};
 
+struct TCPIPTag
+{
+    using MutexType = std::mutex;
+    using ConditionType = std::condition_variable;
+    using BufferType = TCPIP::Buffer;
+    using RAIILockType = std::unique_lock<MutexType>;
+    using DequeType = std::deque<BufferType>;
+};
 /// Concept to determine if the tool works in non-ipc mode
 /// TODO: Refactor it to use tags
-template <class T>
-concept IsNonIPC = std::is_same_v<T, std::mutex>;
+template <class Tag>
+concept IsNonIPC = std::is_same_v<Tag, NonIPCTag>;
 
 /// Concept to determine if the tool works in ipc mode
-template <class T>
-concept IsIPC = std::is_same_v<T, boost::interprocess::interprocess_mutex>;
+template <class Tag>
+concept IsIPC = std::is_same_v<Tag, IPCTag>;
 
 /// Queue that holds buffers\n
 /// Provides following functionality:\n
@@ -40,30 +57,28 @@ concept IsIPC = std::is_same_v<T, boost::interprocess::interprocess_mutex>;
 /// Note: Once buffer is no longer neeeded, it should be returned back to the queue. See returnBuffer function\n
 /// P.S. not inherited from IQueue because IPC queue would store virtual function pointer
 /// And this pointer wouldn`t work from another process, if we use queue allocated withing shared memory
-template <class MutexType, class ConditionType, template<class> class RAIILockType, template<class> class DequeType>
-class FixedBufferQueue : public std::conditional_t<std::is_same_v<MutexType, std::mutex>, NonIPCBase, IPCBase>
+template <class Tag>
+class FixedBufferQueue : public Tag
 {
-private:
     /// Typename to determine which buffers to use: ipc(allocated within shared memory) or non-ipc(allocated on the stack)
-   using BufType = Buffer<std::conditional_t<std::is_same_v<MutexType, std::mutex>, unsigned char*, boost::interprocess::offset_ptr<unsigned char>>>;
-
+private:
 public:
 
     /// Constructor for non-IPC tool queue
-    template<typename T = MutexType>
-        requires IsNonIPC<T>
+    template<typename T = Tag>
+        requires IsNonIPC<Tag>
     FixedBufferQueue()
     {
         // Put all buffers in the reader deque
         // Since the app has just started and no data written yet
-        for (auto &buffer : NonIPCBase::buffers)
+        for (auto &buffer : NonIPCTag::buffers)
         {
             readBuffers.emplace_back(buffer.data());
         }
     }
 
     /// Constructor for IPC tool queue
-    template<typename T = MutexType>
+    template<typename T = Tag>
         requires IsIPC<T>
     explicit FixedBufferQueue(std::shared_ptr<SharedMemoryManager> shMemManager) :
         readBuffers(*shMemManager->getDequeAllocator()), writeBuffers(*shMemManager->getDequeAllocator())
@@ -84,9 +99,9 @@ public:
 
     /// Function to get a free/unused buffer to read data into
     /// \return Returns free buffer or std::nullopt if buffer can`t be given
-    std::optional<BufType> getFreeBuffer()
+    std::optional<typename Tag::BufferType> getFreeBuffer()
     {
-        RAIILockType lm(queueMutex);
+        typename Tag::RAIILockType lm(queueMutex);
         // Wait until readBuffers contains something
         // or queue is closed (nothing should be returned)
         cv.wait(lm, [this](){ return !readBuffers.empty() || !isOpen.load(); });
@@ -108,9 +123,9 @@ public:
 
     /// Function to get a filled/used buffer to write data from
     /// \return Returns filled buffer or std::nullopt if buffer can`t be given
-    std::optional<BufType> getFilledBuffer()
+    std::optional<typename Tag::BufferType> getFilledBuffer()
     {
-        RAIILockType lm(queueMutex);
+        typename Tag::RAIILockType lm(queueMutex);
         // Wait until writeBuffers contains something
         // or queue is closed (nothing should be returned)
         cv.wait(lm, [this](){ return !writeBuffers.empty() || !isOpen.load(); });
@@ -133,7 +148,7 @@ public:
     /// \return true if there is a buffer available, otherwise false
     bool isEmpty() const
     {
-        RAIILockType lm(queueMutex);
+        typename Tag::RAIILockType lm(queueMutex);
         return writeBuffers.empty() && !isOpen.load();
     }
 
@@ -154,10 +169,10 @@ public:
 
     /// Function to return buffer (that has been used to read into/write from) back to the queue
     /// \param buffer Buffer to return
-    void returnBuffer(BufType buffer)
+    void returnBuffer(Tag::BufferType buffer)
     {
         {
-            RAIILockType lm(queueMutex);
+            typename Tag::RAIILockType lm(queueMutex);
 
             auto typeToSet = buffer.getType() == BufferType::READ ? BufferType::WRITE : BufferType::READ;
             auto &dequeToPush = typeToSet == BufferType::READ ? readBuffers : writeBuffers;
@@ -172,25 +187,25 @@ public:
     /// \return true if reading is done, false otherwise
     bool isReadFinished() const
     {
-        RAIILockType lm(queueMutex);
+        typename Tag::RAIILockType lm(queueMutex);
         return isReadFinished_;
     }
 
     /// Function to signalize that the reading is done
     void finishRead()
     {
-        RAIILockType lm(queueMutex);
+        typename Tag::RAIILockType lm(queueMutex);
         isReadFinished_ = true;
     }
 
 protected:
     /// Inner queue store buffers could be used for reading or writing
-    std::conditional_t<std::is_same_v<MutexType, std::mutex>, DequeType<BufType>, SharedDeque> readBuffers, writeBuffers;
+    Tag::DequeType readBuffers, writeBuffers;
 
     /// Queue mutex
-    mutable MutexType queueMutex;
+    mutable Tag::MutexType queueMutex;
     /// Conditional variable
-    ConditionType cv;
+    Tag::ConditionType cv;
     std::atomic_bool isOpen{false};
     bool isReadFinished_ = false;
 };

@@ -19,8 +19,8 @@ public:
     /// \param fileWriter pointer to the writer object, the object type is strongly defined as BufferedWriter<std::mutex, std::condition_variable, std::unique_lock, std::deque>
     /// to emphasize the writer class with such template arguments is used for non ipc application
     /// \param queue pointer to non-ipc queue
-    BPCopyTool(std::unique_ptr<BufferedReader<std::mutex, std::condition_variable, std::unique_lock, std::deque>> fileReader,
-        std::unique_ptr<BufferedFileWriter<std::mutex, std::condition_variable, std::unique_lock, std::deque>> fileWriter, std::shared_ptr<FixedBufferQueue<std::mutex, std::condition_variable, std::unique_lock, std::deque>> queue) :
+    BPCopyTool(std::unique_ptr<BufferedReader<NonIPCTag>> fileReader,
+        std::unique_ptr<BufferedFileWriter<NonIPCTag>> fileWriter, std::shared_ptr<FixedBufferQueue<NonIPCTag>> queue) :
             fileReader(std::move(fileReader)),
             fileWriter(std::move(fileWriter)),
             queue(std::move(queue)),
@@ -71,9 +71,9 @@ private:
 
     StopWatch sw; /// StopWatch object to measure the time of copying, works in auto mode (= start the stopwatch at its construction, stop and print time taken at its destruction)
 
-    std::unique_ptr<BufferedReader<std::mutex, std::condition_variable, std::unique_lock, std::deque>> fileReader;
-    std::unique_ptr<BufferedFileWriter<std::mutex, std::condition_variable, std::unique_lock, std::deque>> fileWriter;
-    std::shared_ptr<FixedBufferQueue<std::mutex, std::condition_variable, std::unique_lock, std::deque>> queue;
+    std::unique_ptr<BufferedReader<NonIPCTag>> fileReader;
+    std::unique_ptr<BufferedFileWriter<NonIPCTag>> fileWriter;
+    std::shared_ptr<FixedBufferQueue<NonIPCTag>> queue;
     
     std::jthread writingThread; /// Thread dedicated to writing operation, reading operation performed in "main" thread (the thread from which copy function has called)
 };

@@ -65,8 +65,7 @@ SharedMemoryManager::~SharedMemoryManager()
 }
 
 size_t SharedMemoryManager::calculateNeededSize() {
-    return (BUFFER_SIZE * BUFFERS_IN_QUEUE + sizeof(FixedBufferQueue<boost::interprocess::interprocess_mutex,
-            boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>)) * 1.7;
+    return (BUFFER_SIZE * BUFFERS_IN_QUEUE + sizeof(FixedBufferQueue<IPCTag>)) * 1.7;
 }
 
 ProcInfo* SharedMemoryManager::getProcInfo()

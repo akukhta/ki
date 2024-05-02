@@ -14,14 +14,14 @@
 /// \tparam ConditionType Data type used as a conditional variables(std::conditional_variable/boost::interprocess::condition)
 /// \tparam RAIILockType Data type used as a RAII lock (std::unique_lock/boost::interprocess::scoped_lock)
 /// \tparam DequeType Data type used as an inner deque types (std::deque/boost::interprocess::deque)
-template <class MutexType, class ConditionType, template<class> class RAIILockType, template<class> class DequeType>
+template <class Tag>
 class BufferedReader : public IFileReader<void>
 {
 private:
-    using QueueType = FixedBufferQueue<MutexType, ConditionType, RAIILockType, DequeType>;
+    using QueueType = FixedBufferQueue<Tag>;
 public:
     explicit BufferedReader(std::string fileName,
-                            std::conditional_t<std::is_same_v<MutexType, std::mutex>, std::shared_ptr<QueueType>, QueueType*> queue) :
+                            std::conditional_t<std::is_same_v<Tag, NonIPCTag>, std::shared_ptr<QueueType>, QueueType*> queue) :
         fileName(std::move(fileName)), queue(std::move(queue))
     {
         fileSize = std::filesystem::file_size(this->fileName);
@@ -118,5 +118,5 @@ private:
     std::atomic_bool readFinished{false};
 
     std::string fileName;
-    std::conditional_t<std::is_same_v<MutexType, std::mutex>, std::shared_ptr<QueueType>, QueueType*> queue;
+    std::conditional_t<std::is_same_v<Tag, NonIPCTag>, std::shared_ptr<QueueType>, QueueType*> queue;
 };

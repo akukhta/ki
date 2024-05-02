@@ -13,10 +13,11 @@ using ShmemBuffer = Buffer<boost::interprocess::offset_ptr<unsigned char>>;
 
 using SharedDeque = boost::interprocess::deque<ShmemBuffer, ShmemAllocator<ShmemBuffer>>;
 
-template <class MutexType, class ConditionType, template<class> class RAIILockType, template<class> class DequeType>
+template <class Tag>
 class FixedBufferQueue;
 
-using Queue = FixedBufferQueue<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>;
+class IPCTag;
+using Queue = FixedBufferQueue<IPCTag>;
 
 ///Class handles:\n
 ///all allocations and deallocations done in shared memory:\n

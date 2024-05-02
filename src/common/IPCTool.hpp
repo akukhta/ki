@@ -34,9 +34,9 @@ public:
     /// that are used to correctly deallocate shared memory resources and kill idling processes after some timeout
     /// To determine what type of tool to create use bool SharedMemoryManager::isFirstProcess()
     /// First process is always reader, the second is writer
-    IPCTool(std::unique_ptr<BufferedReader<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> fileReader,
-            std::unique_ptr<BufferedFileWriter<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> fileWriter,
-            FixedBufferQueue<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>* queue,
+    IPCTool(std::unique_ptr<BufferedReader<IPCTag>> fileReader,
+            std::unique_ptr<BufferedFileWriter<IPCTag>> fileWriter,
+            FixedBufferQueue<IPCTag>* queue,
             std::shared_ptr<SharedMemoryManager> SharedMemManager, ProcessType toolType)
             : fileReader(std::move(fileReader)), fileWriter(std::move(fileWriter)), queue(queue), SharedMemManager(std::move(SharedMemManager)),
                 sw(StopWatch::createAutoStartWatch("ipc copy tool benchmark")), ipcToolType(toolType)
@@ -171,9 +171,9 @@ public:
 private:
 
     StopWatch sw;
-    std::unique_ptr<BufferedReader<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> fileReader;
-    std::unique_ptr<BufferedFileWriter<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>> fileWriter;
-    FixedBufferQueue<boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque>* queue;
+    std::unique_ptr<BufferedReader<IPCTag>> fileReader;
+    std::unique_ptr<BufferedFileWriter<IPCTag>> fileWriter;
+    FixedBufferQueue<IPCTag>* queue;
     std::shared_ptr<SharedMemoryManager> SharedMemManager;
     ProcInfo *procInfo = nullptr;
     ProcessType ipcToolType;

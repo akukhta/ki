@@ -35,6 +35,8 @@ add_executable(${PROJECT_NAME}
 		src/writer/MultiFileWriter.cpp
 		src/writer/MultiFileWriter.hpp
 		src/TCPIP/FileInfo.hpp
+		src/TCPIP/TCPIPBuffer.hpp
+		src/queue/Buffer/BufferType.hpp
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
