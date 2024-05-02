@@ -1,9 +1,9 @@
-digraph "BufferedFileWriter&lt; MutexType, ConditionType, RAIILockType, DequeType &gt;"
+digraph "BufferedFileWriter&lt; Tag &gt;"
 {
  // LATEX_PDF_SIZE
   edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
   node [fontname="Helvetica",fontsize="10",shape=record];
-  Node1 [label="BufferedFileWriter\l\< MutexType, ConditionType,\l RAIILockType, DequeType \>",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 [label="BufferedFileWriter\l\< Tag \>",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
   Node2 -> Node1 [dir="back",color="firebrick4",fontsize="10",style="solid",fontname="Helvetica"];
   Node2 [label="IFileWriter\< void \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classIFileWriter_3_01void_01_4.html",tooltip=" "];
 }

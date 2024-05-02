@@ -117,14 +117,14 @@ $(function() {
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            <span class="keywordflow">case</span> <a class="code" href="ToolTypeEnum_8hpp.html#acbb91b3762d5b1de61e4312a6087d8a6a4d38195865118f3e091014d926ed20fc">ToolType::BUFFERED_PARALLEL</a>:</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                <span class="keyword">auto</span> queue = std::make_shared&lt;FixedBufferQueue&lt;std::mutex, std::condition_variable, std::unique_lock, std::deque&gt;&gt;();</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                <span class="keyword">auto</span> queue = std::make_shared&lt;FixedBufferQueue&lt;NonIPCTag&gt;&gt;();</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                <span class="keyword">auto</span> reader = std::make_unique&lt;BufferedReader&lt;std::mutex, std::condition_variable, std::unique_lock, std::deque&gt;&gt;(std::move(parser.<a class="code" href="classIOptionsParser.html#a7aa635555859be6c5b152275a6bc941b">getSrc</a>()), queue);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                <span class="keyword">auto</span> reader = std::make_unique&lt;BufferedReader&lt;NonIPCTag&gt;&gt;(std::move(parser.<a class="code" href="classIOptionsParser.html#a7aa635555859be6c5b152275a6bc941b">getSrc</a>()), queue);</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                <span class="keyword">auto</span> writer = std::make_unique&lt;BufferedFileWriter&lt;std::mutex, std::condition_variable, std::unique_lock, std::deque&gt;&gt;(std::move(parser.<a class="code" href="classIOptionsParser.html#a27ed5673d60f8de0cf6297bde5774605">getDst</a>()), queue);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                <span class="keyword">auto</span> writer = std::make_unique&lt;BufferedFileWriter&lt;NonIPCTag&gt;&gt;(std::move(parser.<a class="code" href="classIOptionsParser.html#a27ed5673d60f8de0cf6297bde5774605">getDst</a>()), queue);</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                tool = std::make_unique&lt;BPCopyTool&gt;(std::move(reader), std::move(writer), queue);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            }</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
@@ -134,9 +134,9 @@ $(function() {
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                <span class="keyword">auto</span> queue = shMemManager-&gt;getQueue(<span class="stringliteral">&quot;shQueue&quot;</span>);</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                std::unique_ptr&lt;BufferedReader&lt;boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque&gt;&gt; reader = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                std::unique_ptr&lt;BufferedReader&lt;IPCTag&gt;&gt; reader = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                std::unique_ptr&lt;BufferedFileWriter&lt;boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque&gt;&gt; writer = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                std::unique_ptr&lt;BufferedFileWriter&lt;IPCTag&gt;&gt; writer = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                <span class="keyword">auto</span> procInfo = shMemManager-&gt;getProcInfo();</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
@@ -162,14 +162,14 @@ $(function() {
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                    <span class="keywordflow">if</span> (procInfo-&gt;readerProcessCount &lt;= procInfo-&gt;writerProcessCount)</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                    {</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                        <span class="comment">// For reader process there is no need to create writer object, so the writer is null</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                        reader = std::make_unique&lt;BufferedReader&lt;boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque&gt;&gt;(</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                        reader = std::make_unique&lt;BufferedReader&lt;IPCTag&gt;&gt;(</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                                std::move(parser.<a class="code" href="classIOptionsParser.html#a7aa635555859be6c5b152275a6bc941b">getSrc</a>()), queue);</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                        toolType = <a class="code" href="IPCToolType_8hpp.html#afef3d7d0afec25786663538afdba3d44a8219708236d392f9d3a7f91cfcb1dfc7">ProcessType::ReaderProcess</a>;</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                    }</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                    <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                    {</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                        <span class="comment">// For writer process there is no need to create reader object, so the reader is null</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                        writer = std::make_unique&lt;BufferedFileWriter&lt;boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque&gt;&gt;(</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                        writer = std::make_unique&lt;BufferedFileWriter&lt;IPCTag&gt;&gt;(</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                                procInfo-&gt;getDst(), queue);</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                        toolType = <a class="code" href="IPCToolType_8hpp.html#afef3d7d0afec25786663538afdba3d44aa6819c94442998686286d1cac31a799d">ProcessType::WriterProcess</a>;</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                    }</div>

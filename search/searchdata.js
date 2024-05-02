@@ -5,8 +5,8 @@ var indexSectionsWithContent =
   2: "bimopst",
   3: "bcfgimoprstw~",
   4: "bcdimqrw",
-  5: "cqs",
-  6: "bpt",
+  5: "bcdmqrs",
+  6: "pt",
   7: "biprw"
 };
 

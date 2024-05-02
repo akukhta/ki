@@ -75,68 +75,63 @@ $(function() {
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;condition_variable&gt;</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;deque&gt;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;boost/interprocess/offset_ptr.hpp&gt;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">// TODO: Remove</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="Buffer_8hpp.html#a8414579f199f4fae5a905bb5dabbc0de">    7</a></span>&#160;<span class="keyword">enum class</span> <a class="code" href="Buffer_8hpp.html#a8414579f199f4fae5a905bb5dabbc0de">BufferType</a> : char { <a class="code" href="Buffer_8hpp.html#a8414579f199f4fae5a905bb5dabbc0dea3466fab4975481651940ed328aa990e4">READ</a>, <a class="code" href="Buffer_8hpp.html#a8414579f199f4fae5a905bb5dabbc0dead4b9e47f65b6e79b010582f15785867e">WRITE</a> }; <span class="comment">// Deprecated</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> DataType&gt;</div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="classBuffer.html">   11</a></span>&#160;<span class="keyword">class </span><a class="code" href="classBuffer.html">Buffer</a></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="classBuffer.html#ace03737eff97a8543e07e3c88066c952">   14</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classBuffer.html#ace03737eff97a8543e07e3c88066c952">Buffer</a>(DataType <a class="code" href="classBuffer.html#a6b94aa2105620b97b89f87a7c748ced6">data</a>, <a class="code" href="Buffer_8hpp.html#a8414579f199f4fae5a905bb5dabbc0de">BufferType</a> type = <a class="code" href="Buffer_8hpp.html#a8414579f199f4fae5a905bb5dabbc0dea3466fab4975481651940ed328aa990e4">BufferType::READ</a>)</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        : <a class="code" href="classBuffer.html#a214f5f715a0b618536a0b50be83ff1ed">bytesUsed</a>{0z}, <a class="code" href="classBuffer.html#a6b94aa2105620b97b89f87a7c748ced6">data</a>(<a class="code" href="classBuffer.html#a6b94aa2105620b97b89f87a7c748ced6">data</a>), bufferType(type) {}</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="classBuffer.html#a3dedf17a2ba31ddaa1bd21094c3a2626">   17</a></span>&#160;    <a class="code" href="classBuffer.html#a3dedf17a2ba31ddaa1bd21094c3a2626">Buffer</a>(<a class="code" href="classBuffer.html">Buffer</a> &amp;&amp; other) noexcept</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        :   <a class="code" href="classBuffer.html#a6b94aa2105620b97b89f87a7c748ced6">data</a>(other.data), <a class="code" href="classBuffer.html#a214f5f715a0b618536a0b50be83ff1ed">bytesUsed</a>(other.bytesUsed),</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            bufferType(other.bufferType)</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        other.data = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    }</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="classBuffer.html#a64cb5554a7fcf92f3c5cd664a0e03550">   24</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classBuffer.html#a64cb5554a7fcf92f3c5cd664a0e03550">setType</a>(<a class="code" href="Buffer_8hpp.html#a8414579f199f4fae5a905bb5dabbc0de">BufferType</a> type)</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        this-&gt;bufferType = type;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    }</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classBuffer.html#aeb492e182da6c71f7de6ef1700570cf2">   29</a></span>&#160;    <a class="code" href="Buffer_8hpp.html#a8414579f199f4fae5a905bb5dabbc0de">BufferType</a> <a class="code" href="classBuffer.html#aeb492e182da6c71f7de6ef1700570cf2">getType</a>()</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keywordflow">return</span> bufferType;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    }</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="classBuffer.html#a74c53739bbe84d60d0cae092b16dd3f9">   34</a></span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* <a class="code" href="classBuffer.html#a74c53739bbe84d60d0cae092b16dd3f9">getData</a>()</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keywordflow">if</span> constexpr(std::is_same_v&lt;boost::interprocess::offset_ptr&lt;unsigned char&gt;, DataType&gt;)</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classBuffer.html#a6b94aa2105620b97b89f87a7c748ced6">data</a>.get();</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        }</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classBuffer.html#a6b94aa2105620b97b89f87a7c748ced6">data</a>;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        }</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    }</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classBuffer.html#ad37216ed3d2e2b5e8368bcbfb297cf87">   46</a></span>&#160;    <a class="code" href="classBuffer.html#ad37216ed3d2e2b5e8368bcbfb297cf87">Buffer</a>(<a class="code" href="classBuffer.html">Buffer</a> <span class="keyword">const</span>&amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classBuffer.html#a49352807ffdf8548bf7083358d27d4c3">   47</a></span>&#160;    <a class="code" href="classBuffer.html">Buffer</a>&amp; <a class="code" href="classBuffer.html#a49352807ffdf8548bf7083358d27d4c3">operator=</a>(<a class="code" href="classBuffer.html">Buffer</a> <span class="keyword">const</span>&amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classBuffer.html#a6b94aa2105620b97b89f87a7c748ced6">   49</a></span>&#160;    DataType <a class="code" href="classBuffer.html#a6b94aa2105620b97b89f87a7c748ced6">data</a>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classBuffer.html#a214f5f715a0b618536a0b50be83ff1ed">   50</a></span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="classBuffer.html#a214f5f715a0b618536a0b50be83ff1ed">bytesUsed</a>;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <a class="code" href="Buffer_8hpp.html#a8414579f199f4fae5a905bb5dabbc0de">BufferType</a> bufferType;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;};</div>
-<div class="ttc" id="aBuffer_8hpp_html_a8414579f199f4fae5a905bb5dabbc0de"><div class="ttname"><a href="Buffer_8hpp.html#a8414579f199f4fae5a905bb5dabbc0de">BufferType</a></div><div class="ttdeci">BufferType</div><div class="ttdef"><b>Definition:</b> Buffer.hpp:7</div></div>
-<div class="ttc" id="aBuffer_8hpp_html_a8414579f199f4fae5a905bb5dabbc0dea3466fab4975481651940ed328aa990e4"><div class="ttname"><a href="Buffer_8hpp.html#a8414579f199f4fae5a905bb5dabbc0dea3466fab4975481651940ed328aa990e4">BufferType::READ</a></div><div class="ttdeci">@ READ</div></div>
-<div class="ttc" id="aBuffer_8hpp_html_a8414579f199f4fae5a905bb5dabbc0dead4b9e47f65b6e79b010582f15785867e"><div class="ttname"><a href="Buffer_8hpp.html#a8414579f199f4fae5a905bb5dabbc0dead4b9e47f65b6e79b010582f15785867e">BufferType::WRITE</a></div><div class="ttdeci">@ WRITE</div></div>
-<div class="ttc" id="aclassBuffer_html"><div class="ttname"><a href="classBuffer.html">Buffer</a></div><div class="ttdoc">Class represents a buffer.</div><div class="ttdef"><b>Definition:</b> Buffer.hpp:12</div></div>
-<div class="ttc" id="aclassBuffer_html_a214f5f715a0b618536a0b50be83ff1ed"><div class="ttname"><a href="classBuffer.html#a214f5f715a0b618536a0b50be83ff1ed">Buffer::bytesUsed</a></div><div class="ttdeci">size_t bytesUsed</div><div class="ttdef"><b>Definition:</b> Buffer.hpp:50</div></div>
-<div class="ttc" id="aclassBuffer_html_a3dedf17a2ba31ddaa1bd21094c3a2626"><div class="ttname"><a href="classBuffer.html#a3dedf17a2ba31ddaa1bd21094c3a2626">Buffer::Buffer</a></div><div class="ttdeci">Buffer(Buffer &amp;&amp;other) noexcept</div><div class="ttdef"><b>Definition:</b> Buffer.hpp:17</div></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;Buffer/BufferType.hpp&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> DataType&gt;</div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="classBuffer.html">    9</a></span>&#160;<span class="keyword">class </span><a class="code" href="classBuffer.html">Buffer</a></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;{</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="classBuffer.html#ace03737eff97a8543e07e3c88066c952">   12</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classBuffer.html#ace03737eff97a8543e07e3c88066c952">Buffer</a>(DataType <a class="code" href="classBuffer.html#a6b94aa2105620b97b89f87a7c748ced6">data</a>, BufferType type = BufferType::READ)</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        : <a class="code" href="classBuffer.html#a214f5f715a0b618536a0b50be83ff1ed">bytesUsed</a>{0z}, <a class="code" href="classBuffer.html#a6b94aa2105620b97b89f87a7c748ced6">data</a>(<a class="code" href="classBuffer.html#a6b94aa2105620b97b89f87a7c748ced6">data</a>), bufferType(type) {}</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="classBuffer.html#a3dedf17a2ba31ddaa1bd21094c3a2626">   15</a></span>&#160;    <a class="code" href="classBuffer.html#a3dedf17a2ba31ddaa1bd21094c3a2626">Buffer</a>(<a class="code" href="classBuffer.html">Buffer</a> &amp;&amp; other) noexcept</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        :   <a class="code" href="classBuffer.html#a6b94aa2105620b97b89f87a7c748ced6">data</a>(other.data), <a class="code" href="classBuffer.html#a214f5f715a0b618536a0b50be83ff1ed">bytesUsed</a>(other.bytesUsed),</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            bufferType(other.bufferType)</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    {</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        other.data = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    }</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="classBuffer.html#a64cb5554a7fcf92f3c5cd664a0e03550">   22</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classBuffer.html#a64cb5554a7fcf92f3c5cd664a0e03550">setType</a>(BufferType type)</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    {</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        this-&gt;bufferType = type;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    }</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="classBuffer.html#aeb492e182da6c71f7de6ef1700570cf2">   27</a></span>&#160;    BufferType <a class="code" href="classBuffer.html#aeb492e182da6c71f7de6ef1700570cf2">getType</a>()</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keywordflow">return</span> bufferType;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    }</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="classBuffer.html#a74c53739bbe84d60d0cae092b16dd3f9">   32</a></span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* <a class="code" href="classBuffer.html#a74c53739bbe84d60d0cae092b16dd3f9">getData</a>()</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keywordflow">if</span> constexpr(std::is_same_v&lt;boost::interprocess::offset_ptr&lt;unsigned char&gt;, DataType&gt;)</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classBuffer.html#a6b94aa2105620b97b89f87a7c748ced6">data</a>.get();</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        }</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classBuffer.html#a6b94aa2105620b97b89f87a7c748ced6">data</a>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        }</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    }</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classBuffer.html#ad37216ed3d2e2b5e8368bcbfb297cf87">   44</a></span>&#160;    <a class="code" href="classBuffer.html#ad37216ed3d2e2b5e8368bcbfb297cf87">Buffer</a>(<a class="code" href="classBuffer.html">Buffer</a> <span class="keyword">const</span>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="classBuffer.html#a49352807ffdf8548bf7083358d27d4c3">   45</a></span>&#160;    <a class="code" href="classBuffer.html">Buffer</a>&amp; <a class="code" href="classBuffer.html#a49352807ffdf8548bf7083358d27d4c3">operator=</a>(<a class="code" href="classBuffer.html">Buffer</a> <span class="keyword">const</span>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classBuffer.html#a6b94aa2105620b97b89f87a7c748ced6">   47</a></span>&#160;    DataType <a class="code" href="classBuffer.html#a6b94aa2105620b97b89f87a7c748ced6">data</a>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classBuffer.html#a214f5f715a0b618536a0b50be83ff1ed">   48</a></span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="classBuffer.html#a214f5f715a0b618536a0b50be83ff1ed">bytesUsed</a>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    BufferType bufferType;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;};</div>
+<div class="ttc" id="aclassBuffer_html"><div class="ttname"><a href="classBuffer.html">Buffer</a></div><div class="ttdoc">Class represents a buffer.</div><div class="ttdef"><b>Definition:</b> Buffer.hpp:10</div></div>
+<div class="ttc" id="aclassBuffer_html_a214f5f715a0b618536a0b50be83ff1ed"><div class="ttname"><a href="classBuffer.html#a214f5f715a0b618536a0b50be83ff1ed">Buffer::bytesUsed</a></div><div class="ttdeci">size_t bytesUsed</div><div class="ttdef"><b>Definition:</b> Buffer.hpp:48</div></div>
+<div class="ttc" id="aclassBuffer_html_a3dedf17a2ba31ddaa1bd21094c3a2626"><div class="ttname"><a href="classBuffer.html#a3dedf17a2ba31ddaa1bd21094c3a2626">Buffer::Buffer</a></div><div class="ttdeci">Buffer(Buffer &amp;&amp;other) noexcept</div><div class="ttdef"><b>Definition:</b> Buffer.hpp:15</div></div>
 <div class="ttc" id="aclassBuffer_html_a49352807ffdf8548bf7083358d27d4c3"><div class="ttname"><a href="classBuffer.html#a49352807ffdf8548bf7083358d27d4c3">Buffer::operator=</a></div><div class="ttdeci">Buffer &amp; operator=(Buffer const &amp;)=delete</div></div>
-<div class="ttc" id="aclassBuffer_html_a64cb5554a7fcf92f3c5cd664a0e03550"><div class="ttname"><a href="classBuffer.html#a64cb5554a7fcf92f3c5cd664a0e03550">Buffer::setType</a></div><div class="ttdeci">void setType(BufferType type)</div><div class="ttdef"><b>Definition:</b> Buffer.hpp:24</div></div>
-<div class="ttc" id="aclassBuffer_html_a6b94aa2105620b97b89f87a7c748ced6"><div class="ttname"><a href="classBuffer.html#a6b94aa2105620b97b89f87a7c748ced6">Buffer::data</a></div><div class="ttdeci">DataType data</div><div class="ttdef"><b>Definition:</b> Buffer.hpp:49</div></div>
-<div class="ttc" id="aclassBuffer_html_a74c53739bbe84d60d0cae092b16dd3f9"><div class="ttname"><a href="classBuffer.html#a74c53739bbe84d60d0cae092b16dd3f9">Buffer::getData</a></div><div class="ttdeci">unsigned char * getData()</div><div class="ttdef"><b>Definition:</b> Buffer.hpp:34</div></div>
-<div class="ttc" id="aclassBuffer_html_ace03737eff97a8543e07e3c88066c952"><div class="ttname"><a href="classBuffer.html#ace03737eff97a8543e07e3c88066c952">Buffer::Buffer</a></div><div class="ttdeci">Buffer(DataType data, BufferType type=BufferType::READ)</div><div class="ttdef"><b>Definition:</b> Buffer.hpp:14</div></div>
+<div class="ttc" id="aclassBuffer_html_a64cb5554a7fcf92f3c5cd664a0e03550"><div class="ttname"><a href="classBuffer.html#a64cb5554a7fcf92f3c5cd664a0e03550">Buffer::setType</a></div><div class="ttdeci">void setType(BufferType type)</div><div class="ttdef"><b>Definition:</b> Buffer.hpp:22</div></div>
+<div class="ttc" id="aclassBuffer_html_a6b94aa2105620b97b89f87a7c748ced6"><div class="ttname"><a href="classBuffer.html#a6b94aa2105620b97b89f87a7c748ced6">Buffer::data</a></div><div class="ttdeci">DataType data</div><div class="ttdef"><b>Definition:</b> Buffer.hpp:47</div></div>
+<div class="ttc" id="aclassBuffer_html_a74c53739bbe84d60d0cae092b16dd3f9"><div class="ttname"><a href="classBuffer.html#a74c53739bbe84d60d0cae092b16dd3f9">Buffer::getData</a></div><div class="ttdeci">unsigned char * getData()</div><div class="ttdef"><b>Definition:</b> Buffer.hpp:32</div></div>
+<div class="ttc" id="aclassBuffer_html_ace03737eff97a8543e07e3c88066c952"><div class="ttname"><a href="classBuffer.html#ace03737eff97a8543e07e3c88066c952">Buffer::Buffer</a></div><div class="ttdeci">Buffer(DataType data, BufferType type=BufferType::READ)</div><div class="ttdef"><b>Definition:</b> Buffer.hpp:12</div></div>
 <div class="ttc" id="aclassBuffer_html_ad37216ed3d2e2b5e8368bcbfb297cf87"><div class="ttname"><a href="classBuffer.html#ad37216ed3d2e2b5e8368bcbfb297cf87">Buffer::Buffer</a></div><div class="ttdeci">Buffer(Buffer const &amp;)=delete</div></div>
-<div class="ttc" id="aclassBuffer_html_aeb492e182da6c71f7de6ef1700570cf2"><div class="ttname"><a href="classBuffer.html#aeb492e182da6c71f7de6ef1700570cf2">Buffer::getType</a></div><div class="ttdeci">BufferType getType()</div><div class="ttdef"><b>Definition:</b> Buffer.hpp:29</div></div>
+<div class="ttc" id="aclassBuffer_html_aeb492e182da6c71f7de6ef1700570cf2"><div class="ttname"><a href="classBuffer.html#aeb492e182da6c71f7de6ef1700570cf2">Buffer::getType</a></div><div class="ttdeci">BufferType getType()</div><div class="ttdef"><b>Definition:</b> Buffer.hpp:27</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

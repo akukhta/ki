@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['shareddeque_309',['SharedDeque',['../SharedMemoryManager_8hpp.html#a8a3f4a10b1dc9bbfc05222167de8e0e3',1,'SharedMemoryManager.hpp']]],
-  ['sharedstring_310',['SharedString',['../IPCProcInfo_8hpp.html#ae83d88f9d746048ee52ea13031b4d3b4',1,'IPCProcInfo.hpp']]],
-  ['shmemallocator_311',['ShmemAllocator',['../SharedMemoryManager_8hpp.html#aa7c3bc3a00a8b718101b98d96a6d9033',1,'SharedMemoryManager.hpp']]],
-  ['shmembuffer_312',['ShmemBuffer',['../SharedMemoryManager_8hpp.html#a91c80b58d74e9eca81fbf774dc1d3259',1,'SharedMemoryManager.hpp']]]
+  ['dequetype_317',['DequeType',['../structNonIPCTag.html#ae85a8d55503b2e749be17d696ab5adc5',1,'NonIPCTag::DequeType()'],['../structIPCTag.html#a2ce3c51b4bfb0205635e0ea00f43a9b7',1,'IPCTag::DequeType()'],['../structTCPIPTag.html#a71047f51834fb52cf2e74514ea80a6dc',1,'TCPIPTag::DequeType()']]]
 ];

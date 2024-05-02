@@ -1,12 +1,13 @@
 var searchData=
 [
-  ['charallocator_15',['CharAllocator',['../IPCProcInfo_8hpp.html#a2881ff6bd51b75c8909332ecac41e1f7',1,'IPCProcInfo.hpp']]],
-  ['close_16',['close',['../classIQueue.html#a1e87c3b6641115bfe981dd4ebe1cc549',1,'IQueue::close()'],['../classSynchronizedQueue.html#a829b3a6235ce46b58da71cc5dc2795bb',1,'SynchronizedQueue::close()'],['../classFixedBufferQueue.html#a444da33299b08c53ddcba143957a2e4c',1,'FixedBufferQueue::close()']]],
-  ['copy_17',['copy',['../classBPCopyTool.html#a29f47aa907ca6cc52836f71098334074',1,'BPCopyTool::copy()'],['../classICopyTool.html#ae1f69085c997e192337781f0e34a6ea5',1,'ICopyTool::copy()'],['../classIPCTool.html#a30b2c19f12c6735ee7d092a9d1deab7e',1,'IPCTool::copy()'],['../classParallelCopyTool.html#a432e25a830e902e10a883ba06cc75e9b',1,'ParallelCopyTool::copy()']]],
-  ['create_18',['create',['../classBufferedFileWriter.html#a6fc2712525a519332240673a675735ff',1,'BufferedFileWriter::create()'],['../classIFileWriter.html#ace426a9c2a203e2f237b30cbc4efd134',1,'IFileWriter::create()'],['../classIFileWriter_3_01void_01_4.html#ab2fd9fc1a7bf13817586b48630eb7277',1,'IFileWriter&lt; void &gt;::create()'],['../classMMapFileWriter.html#a390be3999043f24741c8a334563e3e40',1,'MMapFileWriter::create()']]],
-  ['createautostartwatch_19',['createAutoStartWatch',['../classStopWatch.html#a3ccc5f242fa008568de3e44339b5a31e',1,'StopWatch']]],
-  ['createmanualwatch_20',['createManualWatch',['../classStopWatch.html#a93eeb195642e4beec689ef47e1f9abac',1,'StopWatch']]],
-  ['createscopedlock_21',['createScopedLock',['../structProcInfo.html#a02aadf5eca623eb55383fd44d919b77a',1,'ProcInfo']]],
-  ['createtool_22',['createTool',['../classToolFactory.html#a04804e493d973cd4656e414b96642932',1,'ToolFactory']]],
-  ['cv_23',['cv',['../classFixedBufferQueue.html#afa70550f86723862d2a20bde9223d193',1,'FixedBufferQueue']]]
+  ['charallocator_16',['CharAllocator',['../IPCProcInfo_8hpp.html#a2881ff6bd51b75c8909332ecac41e1f7',1,'IPCProcInfo.hpp']]],
+  ['close_17',['close',['../classIQueue.html#a1e87c3b6641115bfe981dd4ebe1cc549',1,'IQueue::close()'],['../classSynchronizedQueue.html#a829b3a6235ce46b58da71cc5dc2795bb',1,'SynchronizedQueue::close()'],['../classFixedBufferQueue.html#abc34529daed277a80971baa764cb9a06',1,'FixedBufferQueue::close()']]],
+  ['conditiontype_18',['ConditionType',['../structNonIPCTag.html#a15d1db6c8030ff9c003923203dc6fe60',1,'NonIPCTag::ConditionType()'],['../structTCPIPTag.html#a0941e8fd84c7d7784273bd258ac18d5a',1,'TCPIPTag::ConditionType()'],['../structIPCTag.html#a22d5c3c44c20dd772a71efb5acce1f6d',1,'IPCTag::ConditionType()']]],
+  ['copy_19',['copy',['../classBPCopyTool.html#a29f47aa907ca6cc52836f71098334074',1,'BPCopyTool::copy()'],['../classICopyTool.html#ae1f69085c997e192337781f0e34a6ea5',1,'ICopyTool::copy()'],['../classIPCTool.html#a30b2c19f12c6735ee7d092a9d1deab7e',1,'IPCTool::copy()'],['../classParallelCopyTool.html#a432e25a830e902e10a883ba06cc75e9b',1,'ParallelCopyTool::copy()']]],
+  ['create_20',['create',['../classBufferedFileWriter.html#a5c44ae24bc6771c502adc7dde54a88a7',1,'BufferedFileWriter::create()'],['../classIFileWriter.html#ace426a9c2a203e2f237b30cbc4efd134',1,'IFileWriter::create()'],['../classIFileWriter_3_01void_01_4.html#ab2fd9fc1a7bf13817586b48630eb7277',1,'IFileWriter&lt; void &gt;::create()'],['../classMMapFileWriter.html#a390be3999043f24741c8a334563e3e40',1,'MMapFileWriter::create()']]],
+  ['createautostartwatch_21',['createAutoStartWatch',['../classStopWatch.html#a3ccc5f242fa008568de3e44339b5a31e',1,'StopWatch']]],
+  ['createmanualwatch_22',['createManualWatch',['../classStopWatch.html#a93eeb195642e4beec689ef47e1f9abac',1,'StopWatch']]],
+  ['createscopedlock_23',['createScopedLock',['../structProcInfo.html#a02aadf5eca623eb55383fd44d919b77a',1,'ProcInfo']]],
+  ['createtool_24',['createTool',['../classToolFactory.html#a04804e493d973cd4656e414b96642932',1,'ToolFactory']]],
+  ['cv_25',['cv',['../classFixedBufferQueue.html#a91b0b10bf6619772a124f6a3db8c2cd4',1,'FixedBufferQueue']]]
 ];

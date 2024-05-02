@@ -86,57 +86,59 @@ $(function() {
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
 <div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="SharedMemoryManager_8hpp.html#a8a3f4a10b1dc9bbfc05222167de8e0e3">   14</a></span>&#160;<span class="keyword">using</span> <a class="code" href="SharedMemoryManager_8hpp.html#a8a3f4a10b1dc9bbfc05222167de8e0e3">SharedDeque</a> = boost::interprocess::deque&lt;ShmemBuffer, ShmemAllocator&lt;ShmemBuffer&gt;&gt;;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> MutexType, <span class="keyword">class</span> ConditionType, <span class="keyword">template</span>&lt;<span class="keyword">class</span>&gt; <span class="keyword">class </span>RAIILockType, <span class="keyword">template</span>&lt;<span class="keyword">class</span>&gt; <span class="keyword">class </span>DequeType&gt;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> Tag&gt;</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">class </span><a class="code" href="classFixedBufferQueue.html">FixedBufferQueue</a>;</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="SharedMemoryManager_8hpp.html#a71714d5fdbdec719b46e0263a8179b16">   19</a></span>&#160;<span class="keyword">using</span> <a class="code" href="classFixedBufferQueue.html">Queue</a> = <a class="code" href="classFixedBufferQueue.html">FixedBufferQueue&lt;boost::interprocess::interprocess_mutex, boost::interprocess::interprocess_condition, boost::interprocess::scoped_lock, boost::interprocess::deque&gt;</a>;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="classSharedMemoryManager.html">   28</a></span>&#160;<span class="keyword">class </span><a class="code" href="classSharedMemoryManager.html">SharedMemoryManager</a> : <span class="keyword">public</span> std::enable_shared_from_this&lt;SharedMemoryManager&gt;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classSharedMemoryManager.html#ae95d73c79b3bf9a3c7e672ae579fc579">SharedMemoryManager</a>(std::string <span class="keyword">const</span>&amp; shObjName);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <a class="code" href="classSharedMemoryManager.html#ad393917379fb03dddfd4508a72ee99a7">~SharedMemoryManager</a>();</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <a class="code" href="classFixedBufferQueue.html">Queue</a>* <a class="code" href="classSharedMemoryManager.html#af9b3838aecff501c170522b8ee744e36">getQueue</a>(std::string <span class="keyword">const</span>&amp; name);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    std::shared_ptr&lt;ShmemAllocator&lt;SharedDeque&gt;&gt; <a class="code" href="classSharedMemoryManager.html#a56da49269a7fa6ce07ea8f30f75034d9">getDequeAllocator</a>();</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    std::shared_ptr&lt;ShmemAllocator&lt;unsigned char&gt;&gt; <a class="code" href="classSharedMemoryManager.html#a78b4d23fe3d8798361b053ff0ceaf417">getRawAllocator</a>();</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <a class="code" href="structProcInfo.html">ProcInfo</a>* <a class="code" href="classSharedMemoryManager.html#ab3c2514bbb22c63e51ad5d6446f736c8">getProcInfo</a>();</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classSharedMemoryManager.html#ae7f5912dd90478549afb504cd30c9080">isFirstProcess</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSharedMemoryManager.html#a92975a2e6170bdba9fe98ebe39dc7ac1">tryRemoveActiveSharedMemoryObject</a>();</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    boost::interprocess::managed_shared_memory segment;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">bool</span> isFirstProcess_ = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    std::shared_ptr&lt;ShmemAllocator&lt;SharedDeque&gt;&gt; dequeAllocator = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    std::shared_ptr&lt;ShmemAllocator&lt;unsigned char&gt;&gt; rawAllocator = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    std::shared_ptr&lt;CharAllocator&gt; charAllocator = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <a class="code" href="structProcInfo.html">ProcInfo</a>* procInfo = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    std::string shObjName;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">size_t</span> calculateNeededSize();</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;};</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">class </span><a class="code" href="structIPCTag.html">IPCTag</a>;</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="SharedMemoryManager_8hpp.html#a9e6f389db40422cb8e6885e8eafa5aee">   20</a></span>&#160;<span class="keyword">using</span> <a class="code" href="classFixedBufferQueue.html">Queue</a> = <a class="code" href="classFixedBufferQueue.html">FixedBufferQueue&lt;IPCTag&gt;</a>;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classSharedMemoryManager.html">   29</a></span>&#160;<span class="keyword">class </span><a class="code" href="classSharedMemoryManager.html">SharedMemoryManager</a> : <span class="keyword">public</span> std::enable_shared_from_this&lt;SharedMemoryManager&gt;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classSharedMemoryManager.html#ae95d73c79b3bf9a3c7e672ae579fc579">SharedMemoryManager</a>(std::string <span class="keyword">const</span>&amp; shObjName);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <a class="code" href="classSharedMemoryManager.html#ad393917379fb03dddfd4508a72ee99a7">~SharedMemoryManager</a>();</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="classFixedBufferQueue.html">Queue</a>* <a class="code" href="classSharedMemoryManager.html#af9b3838aecff501c170522b8ee744e36">getQueue</a>(std::string <span class="keyword">const</span>&amp; name);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    std::shared_ptr&lt;ShmemAllocator&lt;SharedDeque&gt;&gt; <a class="code" href="classSharedMemoryManager.html#a56da49269a7fa6ce07ea8f30f75034d9">getDequeAllocator</a>();</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    std::shared_ptr&lt;ShmemAllocator&lt;unsigned char&gt;&gt; <a class="code" href="classSharedMemoryManager.html#a78b4d23fe3d8798361b053ff0ceaf417">getRawAllocator</a>();</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <a class="code" href="structProcInfo.html">ProcInfo</a>* <a class="code" href="classSharedMemoryManager.html#ab3c2514bbb22c63e51ad5d6446f736c8">getProcInfo</a>();</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classSharedMemoryManager.html#ae7f5912dd90478549afb504cd30c9080">isFirstProcess</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSharedMemoryManager.html#a92975a2e6170bdba9fe98ebe39dc7ac1">tryRemoveActiveSharedMemoryObject</a>();</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    boost::interprocess::managed_shared_memory segment;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordtype">bool</span> isFirstProcess_ = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    std::shared_ptr&lt;ShmemAllocator&lt;SharedDeque&gt;&gt; dequeAllocator = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    std::shared_ptr&lt;ShmemAllocator&lt;unsigned char&gt;&gt; rawAllocator = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    std::shared_ptr&lt;CharAllocator&gt; charAllocator = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="structProcInfo.html">ProcInfo</a>* procInfo = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    std::string shObjName;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">size_t</span> calculateNeededSize();</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;};</div>
 <div class="ttc" id="aIPCProcInfo_8hpp_html"><div class="ttname"><a href="IPCProcInfo_8hpp.html">IPCProcInfo.hpp</a></div></div>
 <div class="ttc" id="aSharedMemoryManager_8hpp_html_a8a3f4a10b1dc9bbfc05222167de8e0e3"><div class="ttname"><a href="SharedMemoryManager_8hpp.html#a8a3f4a10b1dc9bbfc05222167de8e0e3">SharedDeque</a></div><div class="ttdeci">boost::interprocess::deque&lt; ShmemBuffer, ShmemAllocator&lt; ShmemBuffer &gt; &gt; SharedDeque</div><div class="ttdef"><b>Definition:</b> SharedMemoryManager.hpp:14</div></div>
 <div class="ttc" id="aSharedMemoryManager_8hpp_html_aa7c3bc3a00a8b718101b98d96a6d9033"><div class="ttname"><a href="SharedMemoryManager_8hpp.html#aa7c3bc3a00a8b718101b98d96a6d9033">ShmemAllocator</a></div><div class="ttdeci">boost::interprocess::allocator&lt; T, boost::interprocess::managed_shared_memory::segment_manager &gt; ShmemAllocator</div><div class="ttdef"><b>Definition:</b> SharedMemoryManager.hpp:10</div></div>
-<div class="ttc" id="aclassBuffer_html"><div class="ttname"><a href="classBuffer.html">Buffer</a></div><div class="ttdoc">Class represents a buffer.</div><div class="ttdef"><b>Definition:</b> Buffer.hpp:12</div></div>
-<div class="ttc" id="aclassFixedBufferQueue_html"><div class="ttname"><a href="classFixedBufferQueue.html">FixedBufferQueue</a></div><div class="ttdef"><b>Definition:</b> BufferedQueue.hpp:45</div></div>
-<div class="ttc" id="aclassSharedMemoryManager_html"><div class="ttname"><a href="classSharedMemoryManager.html">SharedMemoryManager</a></div><div class="ttdef"><b>Definition:</b> SharedMemoryManager.hpp:29</div></div>
+<div class="ttc" id="aclassBuffer_html"><div class="ttname"><a href="classBuffer.html">Buffer</a></div><div class="ttdoc">Class represents a buffer.</div><div class="ttdef"><b>Definition:</b> Buffer.hpp:10</div></div>
+<div class="ttc" id="aclassFixedBufferQueue_html"><div class="ttname"><a href="classFixedBufferQueue.html">FixedBufferQueue</a></div><div class="ttdef"><b>Definition:</b> BufferedQueue.hpp:62</div></div>
+<div class="ttc" id="aclassSharedMemoryManager_html"><div class="ttname"><a href="classSharedMemoryManager.html">SharedMemoryManager</a></div><div class="ttdef"><b>Definition:</b> SharedMemoryManager.hpp:30</div></div>
 <div class="ttc" id="aclassSharedMemoryManager_html_a56da49269a7fa6ce07ea8f30f75034d9"><div class="ttname"><a href="classSharedMemoryManager.html#a56da49269a7fa6ce07ea8f30f75034d9">SharedMemoryManager::getDequeAllocator</a></div><div class="ttdeci">std::shared_ptr&lt; ShmemAllocator&lt; SharedDeque &gt; &gt; getDequeAllocator()</div><div class="ttdef"><b>Definition:</b> SharedMemoryManager.cpp:35</div></div>
 <div class="ttc" id="aclassSharedMemoryManager_html_a78b4d23fe3d8798361b053ff0ceaf417"><div class="ttname"><a href="classSharedMemoryManager.html#a78b4d23fe3d8798361b053ff0ceaf417">SharedMemoryManager::getRawAllocator</a></div><div class="ttdeci">std::shared_ptr&lt; ShmemAllocator&lt; unsigned char &gt; &gt; getRawAllocator()</div><div class="ttdef"><b>Definition:</b> SharedMemoryManager.cpp:31</div></div>
-<div class="ttc" id="aclassSharedMemoryManager_html_a92975a2e6170bdba9fe98ebe39dc7ac1"><div class="ttname"><a href="classSharedMemoryManager.html#a92975a2e6170bdba9fe98ebe39dc7ac1">SharedMemoryManager::tryRemoveActiveSharedMemoryObject</a></div><div class="ttdeci">void tryRemoveActiveSharedMemoryObject()</div><div class="ttdef"><b>Definition:</b> SharedMemoryManager.cpp:77</div></div>
-<div class="ttc" id="aclassSharedMemoryManager_html_ab3c2514bbb22c63e51ad5d6446f736c8"><div class="ttname"><a href="classSharedMemoryManager.html#ab3c2514bbb22c63e51ad5d6446f736c8">SharedMemoryManager::getProcInfo</a></div><div class="ttdeci">ProcInfo * getProcInfo()</div><div class="ttdef"><b>Definition:</b> SharedMemoryManager.cpp:72</div></div>
+<div class="ttc" id="aclassSharedMemoryManager_html_a92975a2e6170bdba9fe98ebe39dc7ac1"><div class="ttname"><a href="classSharedMemoryManager.html#a92975a2e6170bdba9fe98ebe39dc7ac1">SharedMemoryManager::tryRemoveActiveSharedMemoryObject</a></div><div class="ttdeci">void tryRemoveActiveSharedMemoryObject()</div><div class="ttdef"><b>Definition:</b> SharedMemoryManager.cpp:76</div></div>
+<div class="ttc" id="aclassSharedMemoryManager_html_ab3c2514bbb22c63e51ad5d6446f736c8"><div class="ttname"><a href="classSharedMemoryManager.html#ab3c2514bbb22c63e51ad5d6446f736c8">SharedMemoryManager::getProcInfo</a></div><div class="ttdeci">ProcInfo * getProcInfo()</div><div class="ttdef"><b>Definition:</b> SharedMemoryManager.cpp:71</div></div>
 <div class="ttc" id="aclassSharedMemoryManager_html_ad393917379fb03dddfd4508a72ee99a7"><div class="ttname"><a href="classSharedMemoryManager.html#ad393917379fb03dddfd4508a72ee99a7">SharedMemoryManager::~SharedMemoryManager</a></div><div class="ttdeci">~SharedMemoryManager()</div><div class="ttdef"><b>Definition:</b> SharedMemoryManager.cpp:56</div></div>
 <div class="ttc" id="aclassSharedMemoryManager_html_ae7f5912dd90478549afb504cd30c9080"><div class="ttname"><a href="classSharedMemoryManager.html#ae7f5912dd90478549afb504cd30c9080">SharedMemoryManager::isFirstProcess</a></div><div class="ttdeci">bool isFirstProcess() const</div><div class="ttdef"><b>Definition:</b> SharedMemoryManager.cpp:51</div></div>
 <div class="ttc" id="aclassSharedMemoryManager_html_ae95d73c79b3bf9a3c7e672ae579fc579"><div class="ttname"><a href="classSharedMemoryManager.html#ae95d73c79b3bf9a3c7e672ae579fc579">SharedMemoryManager::SharedMemoryManager</a></div><div class="ttdeci">SharedMemoryManager(std::string const &amp;shObjName)</div><div class="ttdef"><b>Definition:</b> SharedMemoryManager.cpp:6</div></div>
 <div class="ttc" id="aclassSharedMemoryManager_html_af9b3838aecff501c170522b8ee744e36"><div class="ttname"><a href="classSharedMemoryManager.html#af9b3838aecff501c170522b8ee744e36">SharedMemoryManager::getQueue</a></div><div class="ttdeci">Queue * getQueue(std::string const &amp;name)</div><div class="ttdef"><b>Definition:</b> SharedMemoryManager.cpp:39</div></div>
+<div class="ttc" id="astructIPCTag_html"><div class="ttname"><a href="structIPCTag.html">IPCTag</a></div><div class="ttdef"><b>Definition:</b> BufferedQueue.hpp:28</div></div>
 <div class="ttc" id="astructProcInfo_html"><div class="ttname"><a href="structProcInfo.html">ProcInfo</a></div><div class="ttdef"><b>Definition:</b> IPCProcInfo.hpp:15</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
