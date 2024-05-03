@@ -96,42 +96,49 @@ $(function() {
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
 <div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="classTCPIPTool.html#a73fbb123d04a1371e94d8132a40f3f49">   24</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTCPIPTool.html#a73fbb123d04a1371e94d8132a40f3f49">copy</a>()<span class="keyword"> override</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        queue-&gt;open();</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keywordflow">if</span> (type == <a class="code" href="namespaceTCPIP.html#a46a146eeeb808f6e5379df99b7af1028ad8d1811704a7dc7d1380d438f1222ebc">TCPIP::Client</a>)</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        {</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keywordflow">if</span> (type == <a class="code" href="namespaceTCPIP.html#a46a146eeeb808f6e5379df99b7af1028ad8d1811704a7dc7d1380d438f1222ebc">TCPIP::Client</a>)</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            queue-&gt;open();</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            fileReader-&gt;open();</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            fileioThread = std::jthread(&amp;TCPIPTool::readingFunction, <span class="keyword">this</span>);</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        }</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (type == <a class="code" href="namespaceTCPIP.html#a46a146eeeb808f6e5379df99b7af1028af5833b5373cfa2651b0120f4f2d2524d">TCPIP::Server</a>)</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            <span class="comment">//</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        }</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        queue-&gt;close(); <span class="comment">// ???</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    }</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="namespaceTCPIP.html#a46a146eeeb808f6e5379df99b7af1028">TCPIP::ToolType</a> type;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="classStopWatch.html">StopWatch</a> sw;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    std::unique_ptr&lt;MultiFileWriter&gt; fileWriter;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    std::unique_ptr&lt;BufferedReader&lt;NonIPCTag&gt;&gt; fileReader;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    std::shared_ptr&lt;FixedBufferQueue&lt;NonIPCTag&gt;&gt; queue;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    std::jthread fileioThread;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">void</span> readingFunction()</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    {</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">while</span> (!fileReader-&gt;isReadFinished())</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            fileReader-&gt;read();</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        fileReader-&gt;finishRead();</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    }</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;};</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            queue-&gt;close(); <span class="comment">// ???</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        }</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (type == <a class="code" href="namespaceTCPIP.html#a46a146eeeb808f6e5379df99b7af1028af5833b5373cfa2651b0120f4f2d2524d">TCPIP::Server</a>)</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            fileioThread = std::jthread(&amp;TCPIPTool::writingFunction, <span class="keyword">this</span>);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        }</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    }</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="namespaceTCPIP.html#a46a146eeeb808f6e5379df99b7af1028">TCPIP::ToolType</a> type;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <a class="code" href="classStopWatch.html">StopWatch</a> sw;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    std::unique_ptr&lt;MultiFileWriter&gt; fileWriter;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    std::unique_ptr&lt;BufferedReader&lt;NonIPCTag&gt;&gt; fileReader;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    std::shared_ptr&lt;FixedBufferQueue&lt;NonIPCTag&gt;&gt; queue;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    std::jthread fileioThread;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">void</span> readingFunction()</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordflow">while</span> (!fileReader-&gt;isReadFinished())</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            fileReader-&gt;read();</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        fileReader-&gt;finishRead();</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">void</span> writingFunction()</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordflow">while</span> (!queue-&gt;isReadFinished() &amp;&amp; !queue-&gt;isEmpty())</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            fileWriter-&gt;write();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        }</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;};</div>
 <div class="ttc" id="aICopyTool_8hpp_html"><div class="ttname"><a href="ICopyTool_8hpp.html">ICopyTool.hpp</a></div></div>
 <div class="ttc" id="aStopWatch_8h_html"><div class="ttname"><a href="StopWatch_8h.html">StopWatch.h</a></div></div>
 <div class="ttc" id="aclassBufferedReader_html"><div class="ttname"><a href="classBufferedReader.html">BufferedReader</a></div><div class="ttdef"><b>Definition:</b> BufferedFileReader.hpp:19</div></div>
