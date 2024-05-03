@@ -37,6 +37,7 @@ add_executable(${PROJECT_NAME}
 		src/TCPIP/FileInfo.hpp
 		src/TCPIP/TCPIPBuffer.hpp
 		src/queue/Buffer/BufferType.hpp
+		src/common/TCPIPTool.hpp
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)

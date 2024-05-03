@@ -12,19 +12,28 @@ void MultiFileWriter::registerNewFile(unsigned int ID, TCPIP::FileInfo fileInfo)
     }
 
     // Create ofstream
-    filesDescs.insert({ID, std::ofstream{(rootDir / clientDir / fileInfo.fileName).string()}});
+    filesDescs.insert({ID, std::fopen((rootDir / clientDir / fileInfo.fileName).c_str(), "wb")});
 
     // Add current file info to the info registry
     filesInfo.insert({ID, std::move(fileInfo)});
 }
 
-void MultiFileWriter::finishWrite(unsigned int ID)
+void MultiFileWriter::finishWriteOfFile(unsigned int ID)
 {
     // Sync file content on the disc & close file desc
-    filesDescs[ID].flush();
-    filesDescs[ID].close();
+    std::unique_lock lk(mutex);
 
-    // Remove associated file info & file desc
+    if (!checkClientID(ID))
+    {
+        return;
+    }
+
+    if (filesDescs[ID])
+    {
+        fsync(filesDescs[ID]->_fileno);
+        std::fclose(filesDescs[ID]);
+    }
+
     filesDescs.erase(ID);
     filesInfo.erase(ID);
 }
@@ -34,15 +43,34 @@ MultiFileWriter::MultiFileWriter(MultiFileWriter::queueType queue) : queue(std::
     ;
 }
 
-void MultiFileWriter::startWriting()
-{
-    writingThread = std::jthread(&MultiFileWriter::write, this);
-}
-
 void MultiFileWriter::write()
 {
     while (!queue->isReadFinished() || !queue->isEmpty())
     {
-        auto buffer = queue->getFilledBuffer();
+        auto buf = queue->getFilledBuffer();
+
+        if (!buf || !checkClientID(buf->clientID))
+        {
+            continue;
+        }
+
+        {
+            std::unique_lock lk(mutex);
+
+            auto &id = buf->clientID;
+            fwrite(buf->getData(), buf->bytesUsed, 1, filesDescs[id]);
+            filesInfo[id].bytesWritten += buf->bytesUsed;
+
+            if (filesInfo[id].bytesWritten + buf->bytesUsed >= filesInfo[id].fileSize)
+            {
+                finishWriteOfFile(id);
+            }
+        }
     }
+}
+
+bool MultiFileWriter::checkClientID(unsigned int clientID)
+{
+    std::unique_lock lk(mutex);
+    return filesDescs.find(clientID) != filesDescs.end() && filesInfo.find(clientID) != filesInfo.end();
 }
