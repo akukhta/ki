@@ -23,20 +23,19 @@ public:
 
     void copy() override
     {
-        queue->open();
-
         if (type == TCPIP::Client)
         {
+            queue->open();
+
             fileReader->open();
             fileioThread = std::jthread(&TCPIPTool::readingFunction, this);
 
+            queue->close(); // ???
         }
         else if (type == TCPIP::Server)
         {
-            //
+            fileioThread = std::jthread(&TCPIPTool::writingFunction, this);
         }
-
-        queue->close(); // ???
     }
 
 private:
@@ -57,5 +56,13 @@ private:
         }
 
         fileReader->finishRead();
+    }
+
+    void writingFunction()
+    {
+        while (!queue->isReadFinished() && !queue->isEmpty())
+        {
+            fileWriter->write();
+        }
     }
 };

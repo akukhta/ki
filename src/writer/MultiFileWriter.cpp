@@ -45,26 +45,23 @@ MultiFileWriter::MultiFileWriter(MultiFileWriter::queueType queue) : queue(std::
 
 void MultiFileWriter::write()
 {
-    while (!queue->isReadFinished() || !queue->isEmpty())
+    auto buf = queue->getFilledBuffer();
+
+    if (!buf || !checkClientID(buf->clientID))
     {
-        auto buf = queue->getFilledBuffer();
+        return;
+    }
 
-        if (!buf || !checkClientID(buf->clientID))
+    {
+        std::unique_lock lk(mutex);
+
+        auto &id = buf->clientID;
+        fwrite(buf->getData(), buf->bytesUsed, 1, filesDescs[id]);
+        filesInfo[id].bytesWritten += buf->bytesUsed;
+
+        if (filesInfo[id].bytesWritten + buf->bytesUsed >= filesInfo[id].fileSize)
         {
-            continue;
-        }
-
-        {
-            std::unique_lock lk(mutex);
-
-            auto &id = buf->clientID;
-            fwrite(buf->getData(), buf->bytesUsed, 1, filesDescs[id]);
-            filesInfo[id].bytesWritten += buf->bytesUsed;
-
-            if (filesInfo[id].bytesWritten + buf->bytesUsed >= filesInfo[id].fileSize)
-            {
-                finishWriteOfFile(id);
-            }
+            finishWriteOfFile(id);
         }
     }
 }
