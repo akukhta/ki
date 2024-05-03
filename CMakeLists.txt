@@ -41,6 +41,9 @@ add_executable(${PROJECT_NAME}
 		src/TCPIP/TCPUtiles.hpp
 		src/TCPIP/TCPIPClient.cpp
 		src/TCPIP/TCPIPClient.hpp
+		src/TCPIP/TCPIPRequests.hpp
+		src/TCPIP/TCPIPServer.cpp
+		src/TCPIP/TCPIPServer.hpp
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
