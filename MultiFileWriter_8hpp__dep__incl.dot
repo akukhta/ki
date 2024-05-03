@@ -5,5 +5,7 @@ digraph "/home/runner/work/ki/ki/src/writer/MultiFileWriter.hpp"
   node [fontname="Helvetica",fontsize="10",shape=record];
   Node1 [label="/home/runner/work/ki\l/ki/src/writer/MultiFileWriter.hpp",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
   Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node2 [label="/home/runner/work/ki\l/ki/src/writer/MultiFileWriter.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$MultiFileWriter_8cpp.html",tooltip=" "];
+  Node2 [label="/home/runner/work/ki\l/ki/src/common/TCPIPTool.hpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$TCPIPTool_8hpp.html",tooltip=" "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="/home/runner/work/ki\l/ki/src/writer/MultiFileWriter.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$MultiFileWriter_8cpp.html",tooltip=" "];
 }

@@ -2,35 +2,38 @@ var indexSectionsWithContent =
 {
   0: "bcdfgimnopqrstw~",
   1: "bfimnopst",
-  2: "bimopst",
-  3: "bcfgimoprstw~",
-  4: "bcdimqrw",
-  5: "bcdmqrs",
-  6: "pt",
-  7: "biprw"
+  2: "t",
+  3: "bimopst",
+  4: "bcfgimoprstw~",
+  5: "bcdimqrw",
+  6: "bcdmqrs",
+  7: "pt",
+  8: "bciprsw"
 };
 
 var indexSectionNames =
 {
   0: "all",
   1: "classes",
-  2: "files",
-  3: "functions",
-  4: "variables",
-  5: "typedefs",
-  6: "enums",
-  7: "enumvalues"
+  2: "namespaces",
+  3: "files",
+  4: "functions",
+  5: "variables",
+  6: "typedefs",
+  7: "enums",
+  8: "enumvalues"
 };
 
 var indexSectionLabels =
 {
   0: "All",
   1: "Classes",
-  2: "Files",
-  3: "Functions",
-  4: "Variables",
-  5: "Typedefs",
-  6: "Enumerations",
-  7: "Enumerator"
+  2: "Namespaces",
+  3: "Files",
+  4: "Functions",
+  5: "Variables",
+  6: "Typedefs",
+  7: "Enumerations",
+  8: "Enumerator"
 };
 

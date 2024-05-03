@@ -83,35 +83,34 @@ $(function() {
 <div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="classMultiFileWriter.html">   10</a></span>&#160;<span class="keyword">class </span><a class="code" href="classMultiFileWriter.html">MultiFileWriter</a></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;{</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keyword">using</span> queueType = std::shared_ptr&lt;FixedBufferQueue&lt;NonIPCTag&gt;&gt;;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keyword">using</span> queueType = std::shared_ptr&lt;FixedBufferQueue&lt;TCPIPTag&gt;&gt;;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classMultiFileWriter.html#a882424de3a142039e64c32098007f731">MultiFileWriter</a>(queueType queue);</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classMultiFileWriter.html#ae7442f423483794141812fdc613a9fe0">registerNewFile</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> ID, TCPIP::FileInfo fileInfo);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classMultiFileWriter.html#a90684561837e8f61c06aa666cbec5795">finishWrite</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> ID);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classMultiFileWriter.html#aeeaec381bb518b8a48233fad107216ff">finishWriteOfFile</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> ID);</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classMultiFileWriter.html#a50587fe981cd15c9f8e9a0cf890de735">startWriting</a>();</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classMultiFileWriter.html#aa16860ca258a38965621ba7544de55b3">write</a>();</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordtype">void</span> write();</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    queueType queue;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    std::unordered_map&lt;unsigned int, TCPIP::FileInfo&gt; filesInfo;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    std::unordered_map&lt;unsigned int, std::ofstream&gt; filesDescs;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    std::string constexpr <span class="keyword">static</span> rootDir = <span class="stringliteral">&quot;TCPIP Storage&quot;</span>;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    std::jthread writingThread;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;};</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordtype">bool</span> checkClientID(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> clientID);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    queueType queue;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    std::unordered_map&lt;unsigned int, TCPIP::FileInfo&gt; filesInfo;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    std::unordered_map&lt;unsigned int, std::FILE*&gt; filesDescs;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    std::string constexpr <span class="keyword">static</span> rootDir = <span class="stringliteral">&quot;TCPIP Storage&quot;</span>;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    std::mutex mutex;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;};</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
 <div class="ttc" id="aIFileWriter_8hpp_html"><div class="ttname"><a href="IFileWriter_8hpp.html">IFileWriter.hpp</a></div></div>
 <div class="ttc" id="aclassMultiFileWriter_html"><div class="ttname"><a href="classMultiFileWriter.html">MultiFileWriter</a></div><div class="ttdef"><b>Definition:</b> MultiFileWriter.hpp:11</div></div>
-<div class="ttc" id="aclassMultiFileWriter_html_a50587fe981cd15c9f8e9a0cf890de735"><div class="ttname"><a href="classMultiFileWriter.html#a50587fe981cd15c9f8e9a0cf890de735">MultiFileWriter::startWriting</a></div><div class="ttdeci">void startWriting()</div><div class="ttdef"><b>Definition:</b> MultiFileWriter.cpp:37</div></div>
-<div class="ttc" id="aclassMultiFileWriter_html_a882424de3a142039e64c32098007f731"><div class="ttname"><a href="classMultiFileWriter.html#a882424de3a142039e64c32098007f731">MultiFileWriter::MultiFileWriter</a></div><div class="ttdeci">MultiFileWriter(queueType queue)</div><div class="ttdef"><b>Definition:</b> MultiFileWriter.cpp:32</div></div>
-<div class="ttc" id="aclassMultiFileWriter_html_a90684561837e8f61c06aa666cbec5795"><div class="ttname"><a href="classMultiFileWriter.html#a90684561837e8f61c06aa666cbec5795">MultiFileWriter::finishWrite</a></div><div class="ttdeci">void finishWrite(unsigned int ID)</div><div class="ttdef"><b>Definition:</b> MultiFileWriter.cpp:21</div></div>
+<div class="ttc" id="aclassMultiFileWriter_html_a882424de3a142039e64c32098007f731"><div class="ttname"><a href="classMultiFileWriter.html#a882424de3a142039e64c32098007f731">MultiFileWriter::MultiFileWriter</a></div><div class="ttdeci">MultiFileWriter(queueType queue)</div><div class="ttdef"><b>Definition:</b> MultiFileWriter.cpp:41</div></div>
+<div class="ttc" id="aclassMultiFileWriter_html_aa16860ca258a38965621ba7544de55b3"><div class="ttname"><a href="classMultiFileWriter.html#aa16860ca258a38965621ba7544de55b3">MultiFileWriter::write</a></div><div class="ttdeci">void write()</div><div class="ttdef"><b>Definition:</b> MultiFileWriter.cpp:46</div></div>
 <div class="ttc" id="aclassMultiFileWriter_html_ae7442f423483794141812fdc613a9fe0"><div class="ttname"><a href="classMultiFileWriter.html#ae7442f423483794141812fdc613a9fe0">MultiFileWriter::registerNewFile</a></div><div class="ttdeci">void registerNewFile(unsigned int ID, TCPIP::FileInfo fileInfo)</div><div class="ttdef"><b>Definition:</b> MultiFileWriter.cpp:4</div></div>
+<div class="ttc" id="aclassMultiFileWriter_html_aeeaec381bb518b8a48233fad107216ff"><div class="ttname"><a href="classMultiFileWriter.html#aeeaec381bb518b8a48233fad107216ff">MultiFileWriter::finishWriteOfFile</a></div><div class="ttdeci">void finishWriteOfFile(unsigned int ID)</div><div class="ttdef"><b>Definition:</b> MultiFileWriter.cpp:21</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

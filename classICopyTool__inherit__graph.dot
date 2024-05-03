@@ -10,4 +10,6 @@ digraph "ICopyTool"
   Node3 [label="IPCTool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classIPCTool.html",tooltip=" "];
   Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node4 [label="ParallelCopyTool\< ChunkType \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classParallelCopyTool.html",tooltip=" "];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="TCPIPTool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classTCPIPTool.html",tooltip=" "];
 }

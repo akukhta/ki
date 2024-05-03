@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['writerprocess_332',['WriterProcess',['../IPCToolType_8hpp.html#afef3d7d0afec25786663538afdba3d44aa6819c94442998686286d1cac31a799d',1,'IPCToolType.hpp']]]
+  ['readerprocess_341',['ReaderProcess',['../IPCToolType_8hpp.html#afef3d7d0afec25786663538afdba3d44a8219708236d392f9d3a7f91cfcb1dfc7',1,'IPCToolType.hpp']]]
 ];
