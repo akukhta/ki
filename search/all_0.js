@@ -14,6 +14,6 @@ var searchData=
   ['bufferedqueue_2ehpp_11',['BufferedQueue.hpp',['../BufferedQueue_8hpp.html',1,'']]],
   ['bufferedreader_12',['BufferedReader',['../classBufferedReader.html',1,'BufferedReader&lt; Tag &gt;'],['../classBufferedReader.html#a3f653e948a1ed58a73ac166fdc00b9ad',1,'BufferedReader::BufferedReader()']]],
   ['buffers_13',['buffers',['../structNonIPCTag.html#ac80bf2fd6c6fa233da320a0bb5355234',1,'NonIPCTag']]],
-  ['buffertype_14',['BufferType',['../structNonIPCTag.html#af4a4666dc94886a9099e5ae5a5b62598',1,'NonIPCTag::BufferType()'],['../structIPCTag.html#a764eb9f68c9e4bbdfadf1178a63a516d',1,'IPCTag::BufferType()'],['../structTCPIPTag.html#a42b1dca5731acdb60b1cc82e4f0c2d63',1,'TCPIPTag::BufferType()']]],
+  ['buffertype_14',['BufferType',['../structNonIPCTag.html#af4a4666dc94886a9099e5ae5a5b62598',1,'NonIPCTag::BufferType()'],['../structIPCTag.html#a764eb9f68c9e4bbdfadf1178a63a516d',1,'IPCTag::BufferType()'],['../structTCPIPTag.html#a2876f47595fb6744e219dfdf4e88e66b',1,'TCPIPTag::BufferType()']]],
   ['bytesused_15',['bytesUsed',['../classBuffer.html#a214f5f715a0b618536a0b50be83ff1ed',1,'Buffer']]]
 ];
