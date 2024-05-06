@@ -37,7 +37,8 @@ struct TCPIPTag
 {
     using MutexType = std::mutex;
     using ConditionType = std::condition_variable;
-    using BufferType = TCPIP::Buffer;
+    using BufferType = Buffer<unsigned char*>;
+    //using BufferType = TCPIP::Buffer;
     using RAIILockType = std::unique_lock<MutexType>;
     using DequeType = std::deque<BufferType>;
 };

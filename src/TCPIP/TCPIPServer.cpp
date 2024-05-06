@@ -3,8 +3,10 @@
 #include <arpa/inet.h>
 #include <sys/epoll.h>
 #include "TCPUtiles.hpp"
+#include "TCPIPRequests.hpp"
 
-TCPIP::TCPIPServer::TCPIPServer()
+TCPIP::TCPIPServer::TCPIPServer(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue) :
+    queue(queue), buffer(sizeof(size_t))
 {
     masterSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
@@ -37,28 +39,60 @@ void TCPIP::TCPIPServer::runFunction()
         {
             if (events[i].data.fd == masterSocket)
             {
-                sockaddr_in clientAddress;
-                socklen_t addrLen = sizeof(clientAddress);
-
-                int slaveSocket = accept(masterSocket, reinterpret_cast<sockaddr*>(&clientAddress), &addrLen);
-                TCPIP::Utiles::setSocketNonBlock(slaveSocket);
-
-                epoll_event slaveSocketEvent;
-                slaveSocketEvent.data.fd = slaveSocket;
-                slaveSocketEvent.events = EPOLLIN;
-
-                epoll_ctl(epollFD, EPOLL_CTL_ADD, slaveSocket, &slaveSocketEvent);
+                connectClient();
             }
             else
             {
-                ///
+                size_t bytesRead = recv(events[i].data.fd, connectedClients[events[i].data.fd].getBuffer(), BUFFER_SIZE, MSG_NOSIGNAL);
+                connectedClients[events[i].data.fd].returnBuffer(bytesRead);
+
+                processRequest(events[i].data.fd);
             }
         }
-
     }
 }
 
 size_t TCPIP::TCPIPServer::getConnectedClientsAmount()
 {
-    return connectedClients.load();
+    return connectedClients.size();
+}
+
+void TCPIP::TCPIPServer::connectClient()
+{
+    sockaddr_in clientAddress;
+    socklen_t addrLen = sizeof(clientAddress);
+
+    int slaveSocket = accept(masterSocket, reinterpret_cast<sockaddr*>(&clientAddress), &addrLen);
+    TCPIP::Utiles::setSocketNonBlock(slaveSocket);
+
+    epoll_event slaveSocketEvent;
+    slaveSocketEvent.data.fd = slaveSocket;
+    slaveSocketEvent.events = EPOLLIN;
+
+    auto clientIP = inet_ntoa(*reinterpret_cast<in_addr*>(&clientAddress));
+
+    epoll_ctl(epollFD, EPOLL_CTL_ADD, slaveSocket, &slaveSocketEvent);
+
+    connectedClients.insert({slaveSocket, TCPIP::ClientConnection(clientIP, queue)});
+}
+
+void TCPIP::TCPIPServer::processRequest(int clientSocket)
+{
+    auto buffer = connectedClients[clientSocket].getBuffer();
+
+    auto type = static_cast<Request>(buffer[0]);
+    auto size = *reinterpret_cast<short*>(buffer[1]);
+
+    switch(type)
+    {
+        case Request::FILE_INFO:
+        {
+            //
+        }
+
+        case Request::FILE:
+        {
+            //
+        }
+    }
 }

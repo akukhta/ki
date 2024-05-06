@@ -4,13 +4,17 @@
 #include <sys/epoll.h>
 #include <netinet/in.h>
 #include <thread>
+#include <vector>
+#include <unordered_map>
+#include <memory>
+#include "TCPIPClientConnection.hpp"
 
 namespace TCPIP
 {
     class TCPIPServer
     {
     public:
-        TCPIPServer();
+        TCPIPServer(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue);
 
         void start();
         size_t getConnectedClientsAmount();
@@ -27,8 +31,15 @@ namespace TCPIP
 
         sockaddr_in socketAddress;
 
-        std::atomic<size_t> connectedClients = 0;
-
         std::jthread serverThread;
+
+        std::vector<unsigned char> buffer;
+
+        void connectClient();
+
+        void processRequest(int clientSocket);
+
+        std::unordered_map<int, TCPIP::ClientConnection> connectedClients;
+        std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue;
     };
 }

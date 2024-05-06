@@ -2,5 +2,5 @@
 
 namespace TCPIP
 {
-    enum class Requeset : char {FILE_INFO, FILE};
+    enum class Request : char {FILE_INFO, FILE};
 }
