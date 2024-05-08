@@ -1,0 +1,48 @@
+1. Increase queue buffers amount to 4x times
+
+runServer:
+	1. Receive an incomming request
+		1.1 Read ClientRequest->requestSize bytes
+	2. Send the request to the process function
+	
+Handle Request (chain of responsibility pattern):
+	1. Check the tcp buffer state
+	   1.1 If its new:
+			1.1.1 Check size of received buffer
+			1.1.2 if it's enough to contain header (request type + size of buffer as short):
+				  1.1.2.1 set the state to the HEADER_RECIVED
+				  1.1.2.2 set RequestSize to the actual size obtained from the header
+				  1.1.2.3 check the size received and the actual size, if it does set type to MESSAGE_RECIVED
+				  1.1.2.4 otherwise set to MESSAGE_RECIVING
+			1.1.3 Otherwise set to HEADER_RECIVING
+			1.1.4 Next iteration should append the request
+			1.1.5 After appending of the request go to 1.1.2
+		1.2 If MESSAGE_RECIVING:
+			1.2.1: Increase request size 
+			1.2.2: Check if it's complete and set MESSAGE_RECIVED
+		1.3 if MESSAGE_RECIVED:
+			1.3.1 Check the type of the request and handle it:
+				1.3.1.1 add a new file to write and return buffer as free
+				1.3.1.2. return buffer as filled
+				
+Client Connection (rename to ClientRequest):
+Responsible for buffers "allocation" (shot get it from the queue)
+Each client should use 1 buffer at the time for the request
+Have a pointer to tcpbuffer instead of raw chunks
+Have a have a state of buffer (NEW/HEADER_RECIVING/HEADER_RECIVED/REQUEST_RECIVED/REQUEST_RECIVING)
+getBuffer:
+	1. Check the state:
+		1.1 NEW:
+		1.1.1 Obtain a buffer from the queue
+		1.2 Otherwise:
+			1.2.1 Return current buffer
+			
+size_t RequestSize - size of the request obtained from the header/or BUFFER_SIZE
+RequestType (NONE/FILE_INFO/FILE) type - type of the current request
+
+TCPBuffer:
+unsigned char* GetData() - should return buffer.begin() + header size (offset)
+
+Header:
+RequestType
+size_t length
