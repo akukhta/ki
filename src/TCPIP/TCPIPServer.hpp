@@ -7,7 +7,7 @@
 #include <vector>
 #include <unordered_map>
 #include <memory>
-#include "TCPIPClientConnection.hpp"
+#include "ClientRequest.hpp"
 
 namespace TCPIP
 {
@@ -39,7 +39,7 @@ namespace TCPIP
 
         void processRequest(int clientSocket);
 
-        std::unordered_map<int, TCPIP::ClientConnection> connectedClients;
+        std::unordered_map<int, TCPIP::ClientRequest> clientRequests;
         std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue;
     };
 }

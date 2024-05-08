@@ -35,7 +35,6 @@ add_executable(${PROJECT_NAME}
 		src/writer/MultiFileWriter.cpp
 		src/writer/MultiFileWriter.hpp
 		src/TCPIP/FileInfo.hpp
-		src/TCPIP/TCPIPBuffer.hpp
 		src/queue/Buffer/BufferType.hpp
 		src/common/TCPIPTool.hpp
 		src/TCPIP/TCPUtiles.hpp
@@ -44,7 +43,12 @@ add_executable(${PROJECT_NAME}
 		src/TCPIP/TCPIPRequests.hpp
 		src/TCPIP/TCPIPServer.cpp
 		src/TCPIP/TCPIPServer.hpp
-		src/TCPIP/TCPIPClientConnection.hpp
+		src/TCPIP/ClientRequest.hpp
+		src/queue/TCPIPBuffer.hpp
+		src/TCPIP/RequestHeader.hpp
+		src/TCPIP/RequestHandler.cpp
+		src/TCPIP/RequestHandler.hpp
+		src/TCPIP/IRequestHandler.hpp
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)

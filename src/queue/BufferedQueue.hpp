@@ -11,7 +11,7 @@
 #include "Buffer.hpp"
 #include "../IPC/SharedMemoryManager.hpp"
 #include "Buffer/BufferConfiguration.hpp"
-#include "../TCPIP/TCPIPBuffer.hpp"
+#include "TCPIPBuffer.hpp"
 
 struct NonIPCTag
 {
@@ -37,20 +37,13 @@ struct TCPIPTag
 {
     using MutexType = std::mutex;
     using ConditionType = std::condition_variable;
-    using BufferType = Buffer<unsigned char*>;
-    //using BufferType = TCPIP::Buffer;
+    //using BufferType = Buffer<unsigned char*>;
+    using BufferType = TCPIP::Buffer;
     using RAIILockType = std::unique_lock<MutexType>;
     using DequeType = std::deque<BufferType>;
+
+    std::vector<std::vector<unsigned char>> buffers = std::vector<std::vector<unsigned char>>{BUFFERS_IN_QUEUE * 4, std::vector<unsigned char>(BUFFER_SIZE)};
 };
-/// Concept to determine if the tool works in non-ipc mode
-/// TODO: Refactor it to use tags
-template <class Tag>
-concept IsNonIPC = std::is_same_v<Tag, NonIPCTag>;
-
-/// Concept to determine if the tool works in ipc mode
-template <class Tag>
-concept IsIPC = std::is_same_v<Tag, IPCTag>;
-
 /// Queue that holds buffers\n
 /// Provides following functionality:\n
 /// 1. Get free buffer to read data into\n
@@ -67,12 +60,12 @@ public:
 
     /// Constructor for non-IPC tool queue
     template<typename T = Tag>
-        requires IsNonIPC<Tag>
+        requires (!std::same_as<T, IPCTag>)
     FixedBufferQueue()
     {
         // Put all buffers in the reader deque
         // Since the app has just started and no data written yet
-        for (auto &buffer : NonIPCTag::buffers)
+        for (auto &buffer : T::buffers)
         {
             readBuffers.emplace_back(buffer.data());
         }
@@ -80,7 +73,7 @@ public:
 
     /// Constructor for IPC tool queue
     template<typename T = Tag>
-        requires IsIPC<T>
+        requires std::same_as<T, IPCTag>
     explicit FixedBufferQueue(std::shared_ptr<SharedMemoryManager> shMemManager) :
         readBuffers(*shMemManager->getDequeAllocator()), writeBuffers(*shMemManager->getDequeAllocator())
     {
@@ -94,7 +87,6 @@ public:
                 readBuffers.emplace_back(allocated);
             }
     };
-
 
     ~FixedBufferQueue() = default;
 

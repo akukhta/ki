@@ -43,10 +43,10 @@ void TCPIP::TCPIPServer::runFunction()
             }
             else
             {
-                size_t bytesRead = recv(events[i].data.fd, connectedClients[events[i].data.fd].getBuffer(), BUFFER_SIZE, MSG_NOSIGNAL);
-                connectedClients[events[i].data.fd].returnBuffer(bytesRead);
+                //size_t bytesRead = recv(events[i].data.fd, clientRequests[events[i].data.fd].getBuffer(), BUFFER_SIZE, MSG_NOSIGNAL);
+                //clientRequests[events[i].data.fd].returnBuffer(bytesRead);
 
-                processRequest(events[i].data.fd);
+                //processRequest(events[i].data.fd);
             }
         }
     }
@@ -54,7 +54,7 @@ void TCPIP::TCPIPServer::runFunction()
 
 size_t TCPIP::TCPIPServer::getConnectedClientsAmount()
 {
-    return connectedClients.size();
+    return clientRequests.size();
 }
 
 void TCPIP::TCPIPServer::connectClient()
@@ -73,15 +73,16 @@ void TCPIP::TCPIPServer::connectClient()
 
     epoll_ctl(epollFD, EPOLL_CTL_ADD, slaveSocket, &slaveSocketEvent);
 
-    connectedClients.insert({slaveSocket, TCPIP::ClientConnection(clientIP, queue)});
+    clientRequests.insert({slaveSocket, TCPIP::ClientRequest(clientIP, queue, slaveSocket)});
 }
 
 void TCPIP::TCPIPServer::processRequest(int clientSocket)
 {
-    auto buffer = connectedClients[clientSocket].getBuffer();
+    /*
+    auto buffer = clientRequests[clientSocket].getRequestBuffer();
 
-    auto type = static_cast<Request>(buffer[0]);
-    auto size = *reinterpret_cast<short*>(buffer[1]);
+    auto type = static_cast<Request>(buffer->getData()[0]);
+    auto size = *reinterpret_cast<short*>(buffer->getData()[1]);
 
     switch(type)
     {
@@ -95,4 +96,5 @@ void TCPIP::TCPIPServer::processRequest(int clientSocket)
             //
         }
     }
+    */
 }

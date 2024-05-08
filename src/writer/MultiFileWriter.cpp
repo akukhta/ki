@@ -47,7 +47,7 @@ void MultiFileWriter::write()
 {
     auto buf = queue->getFilledBuffer();
 
-    if (!buf || !checkClientID(buf->clientID))
+    if (!buf || !checkClientID(buf->owningClientID))
     {
         return;
     }
@@ -55,7 +55,7 @@ void MultiFileWriter::write()
     {
         std::unique_lock lk(mutex);
 
-        auto &id = buf->clientID;
+        auto &id = buf->owningClientID;
         fwrite(buf->getData(), buf->bytesUsed, 1, filesDescs[id]);
         filesInfo[id].bytesWritten += buf->bytesUsed;
 

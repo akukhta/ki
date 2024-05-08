@@ -25,11 +25,11 @@ Handle Request (chain of responsibility pattern):
 				1.3.1.1 add a new file to write and return buffer as free
 				1.3.1.2. return buffer as filled
 				
-Client Connection (rename to ClientRequest):
+ClientRequest: +
 Responsible for buffers "allocation" (shot get it from the queue)
 Each client should use 1 buffer at the time for the request
 Have a pointer to tcpbuffer instead of raw chunks
-Have a have a state of buffer (NEW/HEADER_RECIVING/HEADER_RECIVED/REQUEST_RECIVED/REQUEST_RECIVING)
+Have a have a state of buffer (NEW/HEADER_RECIVING/HEADER_RECEIVED/REQUEST_RECIVED/REQUEST_RECIVING)
 getBuffer:
 	1. Check the state:
 		1.1 NEW:
@@ -39,10 +39,11 @@ getBuffer:
 			
 size_t RequestSize - size of the request obtained from the header/or BUFFER_SIZE
 RequestType (NONE/FILE_INFO/FILE) type - type of the current request
+OwnerID = holds the id of the owner client (== socket fd)
 
-TCPBuffer:
+TCPBuffer: +
 unsigned char* GetData() - should return buffer.begin() + header size (offset)
 
-Header:
+Header: +
 RequestType
 size_t length
