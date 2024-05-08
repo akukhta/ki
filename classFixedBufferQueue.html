@@ -86,14 +86,14 @@ Collaboration diagram for FixedBufferQueue&lt; Tag &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1671938c5cb07ad13892e87d64b918b8"><td class="memTemplParams" colspan="2">template&lt;typename T  = Tag&gt; </td></tr>
-<tr class="memitem:a1671938c5cb07ad13892e87d64b918b8"><td class="memTemplItemLeft" align="right" valign="top">requires <a class="el" href="BufferedQueue_8hpp.html#a534ffaf54f24af04b69f2d3b473c7423">IsNonIPC</a>&lt; Tag &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classFixedBufferQueue.html#a1671938c5cb07ad13892e87d64b918b8">FixedBufferQueue</a> ()</td></tr>
-<tr class="memdesc:a1671938c5cb07ad13892e87d64b918b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typename to determine which buffers to use: ipc(allocated within shared memory) or non-ipc(allocated on the stack)  <a href="classFixedBufferQueue.html#a1671938c5cb07ad13892e87d64b918b8">More...</a><br /></td></tr>
-<tr class="separator:a1671938c5cb07ad13892e87d64b918b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a972bd529b11756b52926b135e29047e3"><td class="memTemplParams" colspan="2">template&lt;typename T  = Tag&gt; </td></tr>
-<tr class="memitem:a972bd529b11756b52926b135e29047e3"><td class="memTemplItemLeft" align="right" valign="top">requires <a class="el" href="BufferedQueue_8hpp.html#a1b35eb17e4a0cc88ab545af917e06fd5">IsIPC</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classFixedBufferQueue.html#a972bd529b11756b52926b135e29047e3">FixedBufferQueue</a> (std::shared_ptr&lt; <a class="el" href="classSharedMemoryManager.html">SharedMemoryManager</a> &gt; shMemManager)</td></tr>
-<tr class="memdesc:a972bd529b11756b52926b135e29047e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for IPC tool queue.  <a href="classFixedBufferQueue.html#a972bd529b11756b52926b135e29047e3">More...</a><br /></td></tr>
-<tr class="separator:a972bd529b11756b52926b135e29047e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a311ad3217cf6ce7f84729c28fb00680a"><td class="memTemplParams" colspan="2">template&lt;typename T  = Tag&gt; </td></tr>
+<tr class="memitem:a311ad3217cf6ce7f84729c28fb00680a"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classFixedBufferQueue.html#a311ad3217cf6ce7f84729c28fb00680a">requires</a> (!std::same_as&lt; T, <a class="el" href="structIPCTag.html">IPCTag</a> &gt;) <a class="el" href="classFixedBufferQueue.html">FixedBufferQueue</a>()</td></tr>
+<tr class="memdesc:a311ad3217cf6ce7f84729c28fb00680a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typename to determine which buffers to use: ipc(allocated within shared memory) or non-ipc(allocated on the stack)  <a href="classFixedBufferQueue.html#a311ad3217cf6ce7f84729c28fb00680a">More...</a><br /></td></tr>
+<tr class="separator:a311ad3217cf6ce7f84729c28fb00680a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77f138873fdd02e5dfc51716141f9349"><td class="memTemplParams" colspan="2">template&lt;typename T  = Tag&gt; </td></tr>
+<tr class="memitem:a77f138873fdd02e5dfc51716141f9349"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classFixedBufferQueue.html#a311ad3217cf6ce7f84729c28fb00680a">requires</a> std::same_as&lt; T, <a class="el" href="structIPCTag.html">IPCTag</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classFixedBufferQueue.html#a77f138873fdd02e5dfc51716141f9349">FixedBufferQueue</a> (std::shared_ptr&lt; <a class="el" href="classSharedMemoryManager.html">SharedMemoryManager</a> &gt; shMemManager)</td></tr>
+<tr class="memdesc:a77f138873fdd02e5dfc51716141f9349"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for IPC tool queue.  <a href="classFixedBufferQueue.html#a77f138873fdd02e5dfc51716141f9349">More...</a><br /></td></tr>
+<tr class="separator:a77f138873fdd02e5dfc51716141f9349"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6acce046a59c8c25a45b237f8e1f2861"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFixedBufferQueue.html#a6acce046a59c8c25a45b237f8e1f2861">~FixedBufferQueue</a> ()=default</td></tr>
 <tr class="separator:a6acce046a59c8c25a45b237f8e1f2861"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a974c28589c9e41a6f2a21d7453809f93"><td class="memItemLeft" align="right" valign="top">std::optional&lt; typename Tag::BufferType &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFixedBufferQueue.html#a974c28589c9e41a6f2a21d7453809f93">getFreeBuffer</a> ()</td></tr>
@@ -146,8 +146,8 @@ Note: Once buffer is no longer neeeded, it should be returned back to the queue.
 P.S. not inherited from <a class="el" href="classIQueue.html">IQueue</a> because IPC queue would store virtual function pointer And this pointer wouldn`t work from another process, if we use queue allocated withing shared memory </li>
 </ol>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a1671938c5cb07ad13892e87d64b918b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1671938c5cb07ad13892e87d64b918b8">&#9670;&nbsp;</a></span>FixedBufferQueue() <span class="overload">[1/2]</span></h2>
+<a id="a77f138873fdd02e5dfc51716141f9349"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77f138873fdd02e5dfc51716141f9349">&#9670;&nbsp;</a></span>FixedBufferQueue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -160,39 +160,7 @@ template&lt;typename T  = Tag&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">requires <a class="el" href="BufferedQueue_8hpp.html#a534ffaf54f24af04b69f2d3b473c7423">IsNonIPC</a>&lt;Tag&gt; <a class="el" href="classFixedBufferQueue.html">FixedBufferQueue</a>&lt; Tag &gt;::<a class="el" href="classFixedBufferQueue.html">FixedBufferQueue</a> </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Typename to determine which buffers to use: ipc(allocated within shared memory) or non-ipc(allocated on the stack) </p>
-<p>Constructor for non-IPC tool queue </p>
-
-</div>
-</div>
-<a id="a972bd529b11756b52926b135e29047e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a972bd529b11756b52926b135e29047e3">&#9670;&nbsp;</a></span>FixedBufferQueue() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Tag &gt; </div>
-<div class="memtemplate">
-template&lt;typename T  = Tag&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">requires <a class="el" href="BufferedQueue_8hpp.html#a1b35eb17e4a0cc88ab545af917e06fd5">IsIPC</a>&lt;T&gt; <a class="el" href="classFixedBufferQueue.html">FixedBufferQueue</a>&lt; Tag &gt;::<a class="el" href="classFixedBufferQueue.html">FixedBufferQueue</a> </td>
+          <td class="memname"><a class="el" href="classFixedBufferQueue.html#a311ad3217cf6ce7f84729c28fb00680a">requires</a> std::same_as&lt;T, <a class="el" href="structIPCTag.html">IPCTag</a>&gt; <a class="el" href="classFixedBufferQueue.html">FixedBufferQueue</a>&lt; Tag &gt;::<a class="el" href="classFixedBufferQueue.html">FixedBufferQueue</a> </td>
           <td>(</td>
           <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classSharedMemoryManager.html">SharedMemoryManager</a> &gt;&#160;</td>
           <td class="paramname"><em>shMemManager</em></td><td>)</td>
@@ -434,6 +402,39 @@ template&lt;class Tag &gt; </div>
 </div><div class="memdoc">
 <p>Function to open the queue<br  />
 Does not allocate any memory, used only to properly initialize flags </p>
+
+</div>
+</div>
+<a id="a311ad3217cf6ce7f84729c28fb00680a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a311ad3217cf6ce7f84729c28fb00680a">&#9670;&nbsp;</a></span>requires()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Tag &gt; </div>
+<div class="memtemplate">
+template&lt;typename T  = Tag&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classFixedBufferQueue.html">FixedBufferQueue</a>&lt; Tag &gt;::requires </td>
+          <td>(</td>
+          <td class="paramtype">!std::same_as&lt; T, <a class="el" href="structIPCTag.html">IPCTag</a> &gt;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Typename to determine which buffers to use: ipc(allocated within shared memory) or non-ipc(allocated on the stack) </p>
+<p>Constructor for non-IPC tool queue </p>
 
 </div>
 </div>

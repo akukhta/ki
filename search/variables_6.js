@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['readbuffers_318',['readBuffers',['../classFixedBufferQueue.html#a33ace92058168c00cf8474a00aff70ed',1,'FixedBufferQueue']]],
-  ['readerprocesscount_319',['readerProcessCount',['../structProcInfo.html#a057ebfe11e15b8d286b87e0e5962cfe5',1,'ProcInfo']]]
+  ['queuemutex_325',['queueMutex',['../classFixedBufferQueue.html#aa147d4d6bcb01496e0126ddb07b1de73',1,'FixedBufferQueue']]]
 ];

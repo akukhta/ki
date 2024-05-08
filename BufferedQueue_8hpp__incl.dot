@@ -56,5 +56,8 @@ digraph "/home/runner/work/ki/ki/src/queue/BufferedQueue.hpp"
   Node1 -> Node23 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node23 [label="Buffer/BufferConfiguration.hpp",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
   Node1 -> Node24 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node24 [label="../TCPIP/TCPIPBuffer.hpp",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node24 [label="TCPIPBuffer.hpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$TCPIPBuffer_8hpp.html",tooltip=" "];
+  Node24 -> Node14 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node24 -> Node25 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node25 [label="cstdlib",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
 }

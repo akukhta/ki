@@ -19,13 +19,11 @@ var searchData=
   ['ipctooltype_2ehpp_67',['IPCToolType.hpp',['../IPCToolType_8hpp.html',1,'']]],
   ['iqueue_68',['IQueue',['../classIQueue.html',1,'']]],
   ['iqueue_2ehpp_69',['IQueue.hpp',['../IQueue_8hpp.html',1,'']]],
-  ['isempty_70',['isEmpty',['../classFixedBufferQueue.html#aa311a7f14d03b0967a02b8c534f2bf08',1,'FixedBufferQueue::isEmpty()'],['../classSynchronizedQueue.html#a9b2e5faec2da85616a8cf1ff4ba294f0',1,'SynchronizedQueue::isEmpty()'],['../classIQueue.html#ad7d6baa792fd60bc40cc8fdd0a5a4a33',1,'IQueue::isEmpty()']]],
+  ['isempty_70',['isEmpty',['../classIQueue.html#ad7d6baa792fd60bc40cc8fdd0a5a4a33',1,'IQueue::isEmpty()'],['../classSynchronizedQueue.html#a9b2e5faec2da85616a8cf1ff4ba294f0',1,'SynchronizedQueue::isEmpty()'],['../classFixedBufferQueue.html#aa311a7f14d03b0967a02b8c534f2bf08',1,'FixedBufferQueue::isEmpty()']]],
   ['isfirstprocess_71',['isFirstProcess',['../classSharedMemoryManager.html#ae7f5912dd90478549afb504cd30c9080',1,'SharedMemoryManager']]],
-  ['isipc_72',['IsIPC',['../BufferedQueue_8hpp.html#a1b35eb17e4a0cc88ab545af917e06fd5',1,'BufferedQueue.hpp']]],
-  ['isnonipc_73',['IsNonIPC',['../BufferedQueue_8hpp.html#a534ffaf54f24af04b69f2d3b473c7423',1,'BufferedQueue.hpp']]],
-  ['isopen_74',['isOpen',['../classFixedBufferQueue.html#ad283e4f84f81f2fc0bf0b0d0c94f65f9',1,'FixedBufferQueue']]],
-  ['isreadfinished_75',['isReadFinished',['../classFixedBufferQueue.html#aa526944b93d7b49528f0bd6f9a4e4571',1,'FixedBufferQueue::isReadFinished()'],['../classBufferedReader.html#a5b0a10e664b8e60ae1bc2d44eb28a54e',1,'BufferedReader::isReadFinished()'],['../classIFileReader.html#aa99df7f9dcb9fc811a5316b26f025685',1,'IFileReader::isReadFinished()'],['../classMMapFileReader.html#ab82d7e6957eac323fb02b1ddefdfd4f4',1,'MMapFileReader::isReadFinished()']]],
-  ['isreadfinished_5f_76',['isReadFinished_',['../classFixedBufferQueue.html#af75711b30461ef3e23da699b946a67de',1,'FixedBufferQueue']]],
-  ['iswritefinished_77',['isWriteFinished',['../classBufferedFileWriter.html#a13bcd7aa2be38ba466c8995c0dff79ab',1,'BufferedFileWriter::isWriteFinished()'],['../classIFileWriter.html#ab69113252447fbf78715ceed519be43f',1,'IFileWriter::isWriteFinished()'],['../classIFileWriter_3_01void_01_4.html#ae8ff8a10576c810fc90b422c7b60b99b',1,'IFileWriter&lt; void &gt;::isWriteFinished()'],['../classMMapFileWriter.html#af08cc4eb69b70df46bcda7d881f923fd',1,'MMapFileWriter::isWriteFinished()']]],
-  ['iswritingstarted_78',['isWritingStarted',['../structProcInfo.html#a314cfafabe4a2c901a8a5a1cd4a74eb3',1,'ProcInfo']]]
+  ['isopen_72',['isOpen',['../classFixedBufferQueue.html#ad283e4f84f81f2fc0bf0b0d0c94f65f9',1,'FixedBufferQueue']]],
+  ['isreadfinished_73',['isReadFinished',['../classFixedBufferQueue.html#aa526944b93d7b49528f0bd6f9a4e4571',1,'FixedBufferQueue::isReadFinished()'],['../classBufferedReader.html#a5b0a10e664b8e60ae1bc2d44eb28a54e',1,'BufferedReader::isReadFinished()'],['../classIFileReader.html#aa99df7f9dcb9fc811a5316b26f025685',1,'IFileReader::isReadFinished()'],['../classMMapFileReader.html#ab82d7e6957eac323fb02b1ddefdfd4f4',1,'MMapFileReader::isReadFinished()']]],
+  ['isreadfinished_5f_74',['isReadFinished_',['../classFixedBufferQueue.html#af75711b30461ef3e23da699b946a67de',1,'FixedBufferQueue']]],
+  ['iswritefinished_75',['isWriteFinished',['../classBufferedFileWriter.html#a13bcd7aa2be38ba466c8995c0dff79ab',1,'BufferedFileWriter::isWriteFinished()'],['../classIFileWriter.html#ab69113252447fbf78715ceed519be43f',1,'IFileWriter::isWriteFinished()'],['../classIFileWriter_3_01void_01_4.html#ae8ff8a10576c810fc90b422c7b60b99b',1,'IFileWriter&lt; void &gt;::isWriteFinished()'],['../classMMapFileWriter.html#af08cc4eb69b70df46bcda7d881f923fd',1,'MMapFileWriter::isWriteFinished()']]],
+  ['iswritingstarted_76',['isWritingStarted',['../structProcInfo.html#a314cfafabe4a2c901a8a5a1cd4a74eb3',1,'ProcInfo']]]
 ];

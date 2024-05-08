@@ -6,5 +6,6 @@ var searchData=
   ['readerprocess_110',['ReaderProcess',['../IPCToolType_8hpp.html#afef3d7d0afec25786663538afdba3d44a8219708236d392f9d3a7f91cfcb1dfc7',1,'IPCToolType.hpp']]],
   ['readerprocesscount_111',['readerProcessCount',['../structProcInfo.html#a057ebfe11e15b8d286b87e0e5962cfe5',1,'ProcInfo']]],
   ['registernewfile_112',['registerNewFile',['../classMultiFileWriter.html#ae7442f423483794141812fdc613a9fe0',1,'MultiFileWriter']]],
-  ['returnbuffer_113',['returnBuffer',['../classFixedBufferQueue.html#a58ef6b6b0f0206c2af9452cdd36d0d60',1,'FixedBufferQueue']]]
+  ['requires_113',['requires',['../classFixedBufferQueue.html#a311ad3217cf6ce7f84729c28fb00680a',1,'FixedBufferQueue']]],
+  ['returnbuffer_114',['returnBuffer',['../classFixedBufferQueue.html#a58ef6b6b0f0206c2af9452cdd36d0d60',1,'FixedBufferQueue']]]
 ];
