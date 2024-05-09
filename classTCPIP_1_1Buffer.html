@@ -88,10 +88,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a285c7c62f47fc0ca975ea1f72ea741f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6882b65f81338fd2b5c61417b0b8f91"><td class="memItemLeft" align="right" valign="top">BufferType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTCPIP_1_1Buffer.html#ab6882b65f81338fd2b5c61417b0b8f91">getType</a> ()</td></tr>
 <tr class="separator:ab6882b65f81338fd2b5c61417b0b8f91"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a3c9d35daba57ef7f1a0190827df36e"><td class="memItemLeft" align="right" valign="top">unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTCPIP_1_1Buffer.html#a6a3c9d35daba57ef7f1a0190827df36e">getData</a> ()</td></tr>
-<tr class="separator:a6a3c9d35daba57ef7f1a0190827df36e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a627b641beb30f92a378e44b466a153c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTCPIP_1_1Buffer.html#a627b641beb30f92a378e44b466a153c2">setOffset</a> (size_t <a class="el" href="classTCPIP_1_1Buffer.html#ac91d595780ff917563241a929f12e376">offset</a>)</td></tr>
-<tr class="separator:a627b641beb30f92a378e44b466a153c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad852c77d5bedfad67615a4ffaaa1320"><td class="memItemLeft" align="right" valign="top">unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTCPIP_1_1Buffer.html#aad852c77d5bedfad67615a4ffaaa1320">appendBufferData</a> ()</td></tr>
+<tr class="separator:aad852c77d5bedfad67615a4ffaaa1320"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af122ea247f50ee66e4842f88f24da198"><td class="memItemLeft" align="right" valign="top">unsigned char const  *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTCPIP_1_1Buffer.html#af122ea247f50ee66e4842f88f24da198">getBufferData</a> ()</td></tr>
+<tr class="separator:af122ea247f50ee66e4842f88f24da198"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a234c3a333b06aec24d434f6fad1352d2"><td class="memItemLeft" align="right" valign="top">unsigned char const  *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTCPIP_1_1Buffer.html#a234c3a333b06aec24d434f6fad1352d2">getRequestData</a> ()</td></tr>
+<tr class="separator:a234c3a333b06aec24d434f6fad1352d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28489adb12598bcb2920aa7958804b7f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTCPIP_1_1Buffer.html#a28489adb12598bcb2920aa7958804b7f">setOwnerID</a> (int id)</td></tr>
 <tr class="separator:a28489adb12598bcb2920aa7958804b7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e3869773205a8fc8a034c11fff63c6a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTCPIP_1_1Buffer.html#a7e3869773205a8fc8a034c11fff63c6a">Buffer</a> (<a class="el" href="classTCPIP_1_1Buffer.html">Buffer</a> const &amp;)=delete</td></tr>
@@ -105,8 +107,6 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a4316d1e41fb479e3609a13417e7f4e79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebf80e265e590d1f29df95d630da1fa4"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTCPIP_1_1Buffer.html#aebf80e265e590d1f29df95d630da1fa4">bytesUsed</a></td></tr>
 <tr class="separator:aebf80e265e590d1f29df95d630da1fa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac91d595780ff917563241a929f12e376"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTCPIP_1_1Buffer.html#ac91d595780ff917563241a929f12e376">offset</a> = 0</td></tr>
-<tr class="separator:ac91d595780ff917563241a929f12e376"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f818149e70a05a1a4e3740960062af5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTCPIP_1_1Buffer.html#a9f818149e70a05a1a4e3740960062af5">owningClientID</a> = 0</td></tr>
 <tr class="separator:a9f818149e70a05a1a4e3740960062af5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -200,8 +200,8 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a6a3c9d35daba57ef7f1a0190827df36e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a3c9d35daba57ef7f1a0190827df36e">&#9670;&nbsp;</a></span>getData()</h2>
+<a id="aad852c77d5bedfad67615a4ffaaa1320"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad852c77d5bedfad67615a4ffaaa1320">&#9670;&nbsp;</a></span>appendBufferData()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -210,7 +210,57 @@ Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned char* TCPIP::Buffer::getData </td>
+          <td class="memname">unsigned char* TCPIP::Buffer::appendBufferData </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af122ea247f50ee66e4842f88f24da198"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af122ea247f50ee66e4842f88f24da198">&#9670;&nbsp;</a></span>getBufferData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned char const* TCPIP::Buffer::getBufferData </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a234c3a333b06aec24d434f6fad1352d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a234c3a333b06aec24d434f6fad1352d2">&#9670;&nbsp;</a></span>getRequestData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned char const* TCPIP::Buffer::getRequestData </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -270,32 +320,6 @@ Public Attributes</h2></td></tr>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">delete</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a627b641beb30f92a378e44b466a153c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a627b641beb30f92a378e44b466a153c2">&#9670;&nbsp;</a></span>setOffset()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TCPIP::Buffer::setOffset </td>
-          <td>(</td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>offset</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -377,20 +401,6 @@ Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">unsigned char* TCPIP::Buffer::data</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ac91d595780ff917563241a929f12e376"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac91d595780ff917563241a929f12e376">&#9670;&nbsp;</a></span>offset</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t TCPIP::Buffer::offset = 0</td>
         </tr>
       </table>
 </div><div class="memdoc">

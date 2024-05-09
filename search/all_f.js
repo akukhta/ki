@@ -1,20 +1,8 @@
 var searchData=
 [
-  ['_7ebpcopytool_151',['~BPCopyTool',['../classBPCopyTool.html#a8da25c30a7b719aa029059bb0ca2c0c2',1,'BPCopyTool']]],
-  ['_7ebufferedfilewriter_152',['~BufferedFileWriter',['../classBufferedFileWriter.html#a37618328f86c3cd2295d790e5f2c46f9',1,'BufferedFileWriter']]],
-  ['_7ebufferedreader_153',['~BufferedReader',['../classBufferedReader.html#aa0deaa33b0a87d13f6035aeb39b208dd',1,'BufferedReader']]],
-  ['_7efixedbufferqueue_154',['~FixedBufferQueue',['../classFixedBufferQueue.html#a6acce046a59c8c25a45b237f8e1f2861',1,'FixedBufferQueue']]],
-  ['_7eicopytool_155',['~ICopyTool',['../classICopyTool.html#aeee82267115943ce47808bc3738eb2d1',1,'ICopyTool']]],
-  ['_7eifilereader_156',['~IFileReader',['../classIFileReader.html#a9a1912b0d88112b25c8616811f887a8b',1,'IFileReader']]],
-  ['_7eifilewriter_157',['~IFileWriter',['../classIFileWriter.html#a4e41dffa0b0b9f4bb5c622b5bacd8709',1,'IFileWriter::~IFileWriter()'],['../classIFileWriter_3_01void_01_4.html#a5851d51987ac70510ec4f1087475c178',1,'IFileWriter&lt; void &gt;::~IFileWriter()']]],
-  ['_7eioptionsparser_158',['~IOptionsParser',['../classIOptionsParser.html#a6302d02d3a863b98277f151e1c7d4965',1,'IOptionsParser']]],
-  ['_7eipctool_159',['~IPCTool',['../classIPCTool.html#a2debb1a7b54af5ae395b7cbcdf1183b9',1,'IPCTool']]],
-  ['_7eiqueue_160',['~IQueue',['../classIQueue.html#ab54a4646c949111e0087fb8d3a355d7a',1,'IQueue']]],
-  ['_7emmapfilereader_161',['~MMapFileReader',['../classMMapFileReader.html#a0f4767bc1041074b8e5c87597c82f811',1,'MMapFileReader']]],
-  ['_7emmapfilewriter_162',['~MMapFileWriter',['../classMMapFileWriter.html#a793f39b9c6b9022a7ef9ba1afa52208d',1,'MMapFileWriter']]],
-  ['_7eoptionsparser_163',['~OptionsParser',['../classOptionsParser.html#a2fc8adf10e5a2d412a249e5e4c13fb72',1,'OptionsParser']]],
-  ['_7eparallelcopytool_164',['~ParallelCopyTool',['../classParallelCopyTool.html#a6066c1e4928095f2a4720b5709ed697f',1,'ParallelCopyTool']]],
-  ['_7esharedmemorymanager_165',['~SharedMemoryManager',['../classSharedMemoryManager.html#ad393917379fb03dddfd4508a72ee99a7',1,'SharedMemoryManager']]],
-  ['_7esiblingprocessobserver_166',['~SiblingProcessObserver',['../classSiblingProcessObserver.html#a31dea841cf1fce97c459e6afac6982c9',1,'SiblingProcessObserver']]],
-  ['_7estopwatch_167',['~StopWatch',['../classStopWatch.html#a223ec0da71dd0bc4f2b14d1af44bf20a',1,'StopWatch']]]
+  ['write_151',['write',['../classBufferedFileWriter.html#a263c13eb2282cd3bdf1e372ad3fac4a3',1,'BufferedFileWriter::write()'],['../classIFileWriter.html#a9434fc6b0818493e392d8562657c5d5c',1,'IFileWriter::write()'],['../classIFileWriter_3_01void_01_4.html#a80efa400acf12ac30409e40b78144791',1,'IFileWriter&lt; void &gt;::write()'],['../classMMapFileWriter.html#a1b56a9cc26f4c6a3eaccf27526ddb131',1,'MMapFileWriter::write()'],['../classMultiFileWriter.html#aa16860ca258a38965621ba7544de55b3',1,'MultiFileWriter::write()']]],
+  ['writebuffers_152',['writeBuffers',['../classFixedBufferQueue.html#afbc276a44d5850b6d8d8e8f5df39a033',1,'FixedBufferQueue']]],
+  ['writerprocess_153',['WriterProcess',['../IPCToolType_8hpp.html#afef3d7d0afec25786663538afdba3d44aa6819c94442998686286d1cac31a799d',1,'IPCToolType.hpp']]],
+  ['writerprocesscount_154',['writerProcessCount',['../structProcInfo.html#aa06379cd79ee609b543301c95fbdc3bc',1,'ProcInfo']]],
+  ['writingstartedcondition_155',['writingStartedCondition',['../structProcInfo.html#a7d1dca382a98c1c4bee1f26274ba2be6',1,'ProcInfo']]]
 ];

@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['finishread_31',['finishRead',['../classFixedBufferQueue.html#a8ca764bd1ae7ea8d5b7c245f6c21628d',1,'FixedBufferQueue::finishRead()'],['../classBufferedReader.html#a4e083c97ddeb58ac03fb0272fed7a6d6',1,'BufferedReader::finishRead()'],['../classIFileReader.html#ac263791dac8304e42d9ee97070181077',1,'IFileReader::finishRead()'],['../classMMapFileReader.html#af268312ca124d0598843a37304dba134',1,'MMapFileReader::finishRead()']]],
-  ['finishwrite_32',['finishWrite',['../classBufferedFileWriter.html#a9c1cf8b5e110a207a640747a7db13bd4',1,'BufferedFileWriter::finishWrite()'],['../classIFileWriter.html#a213c3f53de09b247b18b27ab223cd841',1,'IFileWriter::finishWrite()'],['../classIFileWriter_3_01void_01_4.html#a10727e18cad8a64378cfa5f1ccfd3446',1,'IFileWriter&lt; void &gt;::finishWrite()'],['../classMMapFileWriter.html#aa360060d52d4615477a37277555ac7dc',1,'MMapFileWriter::finishWrite()']]],
-  ['finishwriteoffile_33',['finishWriteOfFile',['../classMultiFileWriter.html#aeeaec381bb518b8a48233fad107216ff',1,'MultiFileWriter']]],
-  ['fixedbufferqueue_34',['FixedBufferQueue',['../classFixedBufferQueue.html',1,'FixedBufferQueue&lt; Tag &gt;'],['../classFixedBufferQueue.html#a77f138873fdd02e5dfc51716141f9349',1,'FixedBufferQueue::FixedBufferQueue()']]],
-  ['fixedbufferqueue_3c_20ipctag_20_3e_35',['FixedBufferQueue&lt; IPCTag &gt;',['../classFixedBufferQueue.html',1,'']]]
+  ['data_28',['data',['../classBuffer.html#a6b94aa2105620b97b89f87a7c748ced6',1,'Buffer::data()'],['../classTCPIP_1_1Buffer.html#a4316d1e41fb479e3609a13417e7f4e79',1,'TCPIP::Buffer::data()']]],
+  ['defaultbuffersize_29',['defaultBufferSize',['../classMMapFileReader.html#a852ff044fb181ab5dcee01943caeb30b',1,'MMapFileReader']]],
+  ['dequetype_30',['DequeType',['../structNonIPCTag.html#ae85a8d55503b2e749be17d696ab5adc5',1,'NonIPCTag::DequeType()'],['../structIPCTag.html#a2ce3c51b4bfb0205635e0ea00f43a9b7',1,'IPCTag::DequeType()'],['../structTCPIPTag.html#a71047f51834fb52cf2e74514ea80a6dc',1,'TCPIPTag::DequeType()']]],
+  ['deserialize_31',['deserialize',['../classSerializer.html#a9eb6bda11832ebd72557fe62817a807d',1,'Serializer']]],
+  ['dst_32',['dst',['../structProcInfo.html#a13f086ce323f65dc699c7f66de9ee833',1,'ProcInfo']]]
 ];
