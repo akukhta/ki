@@ -1,16 +1,40 @@
 #pragma once
 #include <string>
+#include "../common/Serializer.hpp"
 
 namespace TCPIP {
     class FileInfo {
     public:
         FileInfo() = default;
 
-        explicit FileInfo(size_t fileSize, size_t pid, std::string senderIP, std::string fileName)
-                : fileSize(fileSize), pid(pid), senderIP(std::move(senderIP)), fileName(std::move(fileName)) {}
+        explicit FileInfo(size_t fileSize, std::string fileName)
+                : fileSize(fileSize), fileName(std::move(fileName)) {}
+
+        static FileInfo deserialize(std::vector<unsigned char> &buffer)
+        {
+            Serializer serializer(buffer);
+            FileInfo info;
+
+            serializer.deserialize(info.fileSize);
+            serializer.deserialize(info.fileName);
+            return info;
+        }
+
+        std::vector<unsigned char> serialize()
+        {
+            std::vector<unsigned char> buffer;
+            buffer.reserve(259);
+
+            Serializer serializer{buffer};
+
+            serializer.serialize(fileSize);
+            serializer.serialize(fileName);
+
+            return buffer;
+        }
 
         size_t fileSize;
-        size_t pid;
+        size_t port;
         std::string senderIP;
         std::string fileName;
 

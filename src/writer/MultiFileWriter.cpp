@@ -1,10 +1,10 @@
 #include "MultiFileWriter.hpp"
 #include <filesystem>
 
-void MultiFileWriter::registerNewFile(unsigned int ID, TCPIP::FileInfo fileInfo)
+void MultiFileWriter::registerNewFile(unsigned int ID, TCPIP::FileInfo const &fileInfo)
 {
     // Client dir format = Client IP - PID
-    std::filesystem::path clientDir = fileInfo.senderIP + "-" + std::to_string(fileInfo.pid);
+    std::filesystem::path clientDir = fileInfo.senderIP + "-" + std::to_string(fileInfo.port);
 
     if (!std::filesystem::exists(rootDir / clientDir))
     {
@@ -56,7 +56,7 @@ void MultiFileWriter::write()
         std::unique_lock lk(mutex);
 
         auto &id = buf->owningClientID;
-        fwrite(buf->getData(), buf->bytesUsed, 1, filesDescs[id]);
+        fwrite(buf->getRequestData(), buf->bytesUsed, 1, filesDescs[id]);
         filesInfo[id].bytesWritten += buf->bytesUsed;
 
         if (filesInfo[id].bytesWritten + buf->bytesUsed >= filesInfo[id].fileSize)

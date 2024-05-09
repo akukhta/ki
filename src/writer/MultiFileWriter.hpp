@@ -15,7 +15,7 @@ private:
 public:
     explicit MultiFileWriter(queueType queue);
 
-    void registerNewFile(unsigned int ID, TCPIP::FileInfo fileInfo);
+    void registerNewFile(unsigned int ID, TCPIP::FileInfo const &fileInfo);
     void finishWriteOfFile(unsigned int ID);
 
     void write();

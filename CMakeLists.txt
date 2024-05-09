@@ -46,9 +46,16 @@ add_executable(${PROJECT_NAME}
 		src/TCPIP/ClientRequest.hpp
 		src/queue/TCPIPBuffer.hpp
 		src/TCPIP/RequestHeader.hpp
-		src/TCPIP/RequestHandler.cpp
-		src/TCPIP/RequestHandler.hpp
-		src/TCPIP/IRequestHandler.hpp
+		src/TCPIP/RequestHandler/RequestHandler.cpp
+		src/TCPIP/RequestHandler/RequestHandler.hpp
+		src/TCPIP/RequestHandler/IRequestHandler.hpp
+		src/TCPIP/IServer.hpp
+		src/TCPIP/RequestHandler/IHandler.hpp
+		src/TCPIP/RequestHandler/NewRequestHandler.hpp
+		src/TCPIP/RequestHandler/HeaderReceivedHandler.hpp
+		src/TCPIP/RequestHandler/RequestReceivingHandler.hpp
+		src/TCPIP/RequestHandler/RequestReceivedHandler.hpp
+		src/common/Serializer.hpp
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)

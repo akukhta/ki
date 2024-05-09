@@ -8,6 +8,7 @@
 #include <memory>
 #include "../queue/BufferedQueue.hpp"
 #include "../queue/Buffer.hpp"
+#include "RequestHeader.hpp"
 
 namespace TCPIP
 {
@@ -32,11 +33,24 @@ namespace TCPIP
             return buffer;
         }
 
+        RequestState getState()
+        {
+            return state;
+        }
+
+        int getClientID()
+        {
+            return clientID;
+        }
+
+        size_t bytesToRead = BUFFER_SIZE;
+        RequestState state;
+        RequestHeader header;
+
     private:
         std::string ip;
         std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue;
         std::shared_ptr<TCPIP::Buffer> buffer;
-        RequestState state;
         int clientID;
     };
 }

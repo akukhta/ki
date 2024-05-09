@@ -8,15 +8,16 @@
 #include <unordered_map>
 #include <memory>
 #include "ClientRequest.hpp"
+#include "IServer.hpp"
 
 namespace TCPIP
 {
-    class TCPIPServer
+    class TCPIPServer :public IServer
     {
     public:
         TCPIPServer(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue);
 
-        void start();
+        virtual void run() override;
         size_t getConnectedClientsAmount();
 
     private:
@@ -32,8 +33,6 @@ namespace TCPIP
         sockaddr_in socketAddress;
 
         std::jthread serverThread;
-
-        std::vector<unsigned char> buffer;
 
         void connectClient();
 

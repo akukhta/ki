@@ -6,7 +6,7 @@
 #include "TCPIPRequests.hpp"
 
 TCPIP::TCPIPServer::TCPIPServer(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue) :
-    queue(queue), buffer(sizeof(size_t))
+    queue(queue)
 {
     masterSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
@@ -24,7 +24,7 @@ TCPIP::TCPIPServer::TCPIPServer(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queu
     epoll_ctl(epollFD, EPOLL_CTL_ADD, masterSocket, &masterSocketEvent);
 }
 
-void TCPIP::TCPIPServer::start()
+void TCPIP::TCPIPServer::run()
 {
     serverThread = std::jthread(&TCPIPServer::runFunction, this);
 }
@@ -43,10 +43,17 @@ void TCPIP::TCPIPServer::runFunction()
             }
             else
             {
-                //size_t bytesRead = recv(events[i].data.fd, clientRequests[events[i].data.fd].getBuffer(), BUFFER_SIZE, MSG_NOSIGNAL);
-                //clientRequests[events[i].data.fd].returnBuffer(bytesRead);
+                if (clientRequests.find(events[i].data.fd) == clientRequests.end())
+                {
+                    continue;
+                }
 
-                //processRequest(events[i].data.fd);
+                auto &request = clientRequests.at(events[i].data.fd);
+                auto buffer = request.getRequestBuffer();
+
+                size_t bytesRead = recv(events[i].data.fd, buffer->appendBufferData(), request.bytesToRead, MSG_NOSIGNAL);
+
+                buffer->bytesUsed += bytesRead;
             }
         }
     }
