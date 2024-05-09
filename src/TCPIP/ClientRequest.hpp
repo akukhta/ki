@@ -17,8 +17,8 @@ namespace TCPIP
     class ClientRequest
     {
     public:
-        ClientRequest(std::string ip, std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue, int clientID)
-            : ip(std::move(ip)), queue(queue), state(RequestState::NEW), clientID(clientID)
+        ClientRequest(std::string ip, int clientPort, std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue, int clientID)
+            : clientIP(std::move(ip)), clientPort(clientPort), queue(queue), state(RequestState::NEW), clientID(clientID)
         {
         }
 
@@ -31,6 +31,12 @@ namespace TCPIP
             }
 
             return buffer;
+        }
+
+        void completeRequest()
+        {
+            buffer = nullptr;
+            state = RequestState::NEW;
         }
 
         RequestState getState()
@@ -46,11 +52,13 @@ namespace TCPIP
         size_t bytesToRead = BUFFER_SIZE;
         RequestState state;
         RequestHeader header;
+        int clientID;
+
+        std::string clientIP;
+        int clientPort;
 
     private:
-        std::string ip;
         std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue;
         std::shared_ptr<TCPIP::Buffer> buffer;
-        int clientID;
     };
 }

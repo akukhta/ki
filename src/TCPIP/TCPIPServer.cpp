@@ -80,7 +80,7 @@ void TCPIP::TCPIPServer::connectClient()
 
     epoll_ctl(epollFD, EPOLL_CTL_ADD, slaveSocket, &slaveSocketEvent);
 
-    clientRequests.insert({slaveSocket, TCPIP::ClientRequest(clientIP, queue, slaveSocket)});
+    clientRequests.insert({slaveSocket, TCPIP::ClientRequest{clientIP, clientAddress.sin_port, queue, slaveSocket}});
 }
 
 void TCPIP::TCPIPServer::processRequest(int clientSocket)

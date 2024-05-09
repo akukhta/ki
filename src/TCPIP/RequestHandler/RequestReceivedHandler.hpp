@@ -4,6 +4,8 @@
 #include "../../queue/BufferedQueue.hpp"
 #include "../../writer/MultiFileWriter.hpp"
 #include "../RequestHeader.hpp"
+#include "../../common/Serializer.hpp"
+#include "../FileInfo.hpp"
 
 class RequestReceivedHandler : public IHandler
 {
@@ -22,10 +24,25 @@ public:
         {
             case TCPIP::Request::FILE_INFO:
             {
-                fileWriter->registerNewFile(request.getClientID(), )
+                auto fileInfo = TCPIP::FileInfo::deserialize(request.getRequestBuffer()->getRequestData());
+
+                fileInfo.port = request.clientPort;
+                fileInfo.senderIP = request.clientIP;
+
+                fileWriter->registerNewFile(request.clientID, fileInfo);
+
+                request.completeRequest();
+
                 break;
             }
 
+            case TCPIP::Request::FILE:
+            {
+                queue->returnBuffer(std::move(*request.getRequestBuffer()));
+                request.completeRequest();
+
+                break;
+            }
         }
     }
 

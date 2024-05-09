@@ -12,11 +12,21 @@ namespace TCPIP {
 
         static FileInfo deserialize(std::vector<unsigned char> &buffer)
         {
-            Serializer serializer(buffer);
+            Serializer serializer(&buffer);
             FileInfo info;
 
             serializer.deserialize(info.fileSize);
             serializer.deserialize(info.fileName);
+            return info;
+        }
+
+        static FileInfo deserialize(unsigned char const* externalBuffer)
+        {
+            Serializer serializer;
+            FileInfo info;
+
+            serializer.deserialize(externalBuffer, info.fileSize);
+            serializer.deserialize(externalBuffer + sizeof(size_t), info.fileName);
             return info;
         }
 
@@ -25,7 +35,7 @@ namespace TCPIP {
             std::vector<unsigned char> buffer;
             buffer.reserve(259);
 
-            Serializer serializer{buffer};
+            Serializer serializer{&buffer};
 
             serializer.serialize(fileSize);
             serializer.serialize(fileName);
