@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['isopen_331',['isOpen',['../classFixedBufferQueue.html#ad283e4f84f81f2fc0bf0b0d0c94f65f9',1,'FixedBufferQueue']]],
-  ['isreadfinished_5f_332',['isReadFinished_',['../classFixedBufferQueue.html#af75711b30461ef3e23da699b946a67de',1,'FixedBufferQueue']]],
-  ['iswritingstarted_333',['isWritingStarted',['../structProcInfo.html#a314cfafabe4a2c901a8a5a1cd4a74eb3',1,'ProcInfo']]]
+  ['elementscount_339',['elementsCount',['../classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4',1,'Serializer']]],
+  ['externalbufferoffset_340',['externalBufferOffset',['../classSerializer.html#a28bfdbfe8a2bdf0cc1875508a1d3436c',1,'Serializer']]]
 ];

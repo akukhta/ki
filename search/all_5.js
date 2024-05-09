@@ -1,20 +1,9 @@
 var searchData=
 [
-  ['getbufferdata_38',['getBufferData',['../classTCPIP_1_1Buffer.html#af122ea247f50ee66e4842f88f24da198',1,'TCPIP::Buffer']]],
-  ['getdata_39',['getData',['../classBuffer.html#a74c53739bbe84d60d0cae092b16dd3f9',1,'Buffer']]],
-  ['getdequeallocator_40',['getDequeAllocator',['../classSharedMemoryManager.html#a56da49269a7fa6ce07ea8f30f75034d9',1,'SharedMemoryManager']]],
-  ['getdst_41',['getDst',['../classIOptionsParser.html#a27ed5673d60f8de0cf6297bde5774605',1,'IOptionsParser::getDst()'],['../classOptionsParser.html#a1d79a93a3fa54f3ad758cdd5e5ab157c',1,'OptionsParser::getDst()'],['../structProcInfo.html#a27947ca98700ef409d7673754ba891fc',1,'ProcInfo::getDst()']]],
-  ['getfilesize_42',['getFileSize',['../classBufferedReader.html#ab6d29e000485d6b96e942d33475a0d11',1,'BufferedReader::getFileSize()'],['../classMMapFileReader.html#a5c4cb29c1ea46e095d7eee1360e1606c',1,'MMapFileReader::getFileSize()']]],
-  ['getfilledbuffer_43',['getFilledBuffer',['../classFixedBufferQueue.html#a54ef54764f7efd42c1ff32af8dae4af2',1,'FixedBufferQueue']]],
-  ['getfreebuffer_44',['getFreeBuffer',['../classFixedBufferQueue.html#a974c28589c9e41a6f2a21d7453809f93',1,'FixedBufferQueue']]],
-  ['getinstance_45',['getInstance',['../classProcessTerminator.html#a45adbc89dacf05409cfeb1ce01960d44',1,'ProcessTerminator']]],
-  ['getprocinfo_46',['getProcInfo',['../classSharedMemoryManager.html#ab3c2514bbb22c63e51ad5d6446f736c8',1,'SharedMemoryManager']]],
-  ['getqueue_47',['getQueue',['../classSharedMemoryManager.html#af9b3838aecff501c170522b8ee744e36',1,'SharedMemoryManager']]],
-  ['getrawallocator_48',['getRawAllocator',['../classSharedMemoryManager.html#a78b4d23fe3d8798361b053ff0ceaf417',1,'SharedMemoryManager']]],
-  ['getrequestdata_49',['getRequestData',['../classTCPIP_1_1Buffer.html#a234c3a333b06aec24d434f6fad1352d2',1,'TCPIP::Buffer']]],
-  ['getsharedobjname_50',['getSharedObjName',['../classIOptionsParser.html#a5c3071dd210b1da103fd8154f140237b',1,'IOptionsParser::getSharedObjName()'],['../classOptionsParser.html#a581cd5e94e9881b3be05871b08167a27',1,'OptionsParser::getSharedObjName()']]],
-  ['getsrc_51',['getSrc',['../classIOptionsParser.html#a7aa635555859be6c5b152275a6bc941b',1,'IOptionsParser::getSrc()'],['../classOptionsParser.html#ac84959cde2822c9e946c541ad1355be4',1,'OptionsParser::getSrc()']]],
-  ['getstamp_52',['getStamp',['../classStopWatch.html#aef0c24ed47389959575e17b6969acdbe',1,'StopWatch']]],
-  ['gettooltype_53',['getToolType',['../classIOptionsParser.html#af374117219397cf553ee4a849607cb22',1,'IOptionsParser::getToolType()'],['../classOptionsParser.html#aa4fc864d39f471303db93781ae3a4d41',1,'OptionsParser::getToolType()']]],
-  ['gettype_54',['getType',['../classBuffer.html#aeb492e182da6c71f7de6ef1700570cf2',1,'Buffer::getType()'],['../classTCPIP_1_1Buffer.html#ab6882b65f81338fd2b5c61417b0b8f91',1,'TCPIP::Buffer::getType()']]]
+  ['finishread_36',['finishRead',['../classFixedBufferQueue.html#a8ca764bd1ae7ea8d5b7c245f6c21628d',1,'FixedBufferQueue::finishRead()'],['../classBufferedReader.html#a4e083c97ddeb58ac03fb0272fed7a6d6',1,'BufferedReader::finishRead()'],['../classIFileReader.html#ac263791dac8304e42d9ee97070181077',1,'IFileReader::finishRead()'],['../classMMapFileReader.html#af268312ca124d0598843a37304dba134',1,'MMapFileReader::finishRead()']]],
+  ['finishwrite_37',['finishWrite',['../classBufferedFileWriter.html#a9c1cf8b5e110a207a640747a7db13bd4',1,'BufferedFileWriter::finishWrite()'],['../classIFileWriter.html#a213c3f53de09b247b18b27ab223cd841',1,'IFileWriter::finishWrite()'],['../classIFileWriter_3_01void_01_4.html#a10727e18cad8a64378cfa5f1ccfd3446',1,'IFileWriter&lt; void &gt;::finishWrite()'],['../classMMapFileWriter.html#aa360060d52d4615477a37277555ac7dc',1,'MMapFileWriter::finishWrite()']]],
+  ['finishwriteoffile_38',['finishWriteOfFile',['../classMultiFileWriter.html#aeeaec381bb518b8a48233fad107216ff',1,'MultiFileWriter']]],
+  ['fixedbufferqueue_39',['FixedBufferQueue',['../classFixedBufferQueue.html',1,'FixedBufferQueue&lt; Tag &gt;'],['../classFixedBufferQueue.html#a77f138873fdd02e5dfc51716141f9349',1,'FixedBufferQueue::FixedBufferQueue()']]],
+  ['fixedbufferqueue_3c_20ipctag_20_3e_40',['FixedBufferQueue&lt; IPCTag &gt;',['../classFixedBufferQueue.html',1,'']]],
+  ['for_41',['for',['../classSerializer.html#aedf12fb2bb97ed47c0f2357c18e590f4',1,'Serializer']]]
 ];

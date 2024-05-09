@@ -72,73 +72,117 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <a href="Serializer_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;span&gt;</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno"><a class="line" href="classSerializer.html">    4</a></span>&#160;<span class="keyword">class </span><a class="code" href="classSerializer.html">Serializer</a></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;{</div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="classSerializer.html#aa84e27c66143b6e6cdff5914d57a37b0">    7</a></span>&#160;    <a class="code" href="classSerializer.html#aa84e27c66143b6e6cdff5914d57a37b0">Serializer</a>(std::vector&lt;unsigned char&gt; &amp;buffer)</div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="classSerializer.html#a7f280d73603cdf2e4b6d452d60a126e8">    7</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classSerializer.html#a7f280d73603cdf2e4b6d452d60a126e8">Serializer</a>(std::vector&lt;unsigned char&gt; *buffer = <span class="keyword">nullptr</span>)</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;        : buffer(buffer){}</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        <a class="code" href="classSerializer.html#a6b4e5e15e2993980646a01b6cad2e371">requires</a> std::is_fundamental_v&lt;T&gt;</div>
 <div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="classSerializer.html#a9f8fac3a71dbbf7cc88cd5e7ecd13ba5">   12</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSerializer.html#a9f8fac3a71dbbf7cc88cd5e7ecd13ba5">serialize</a>(T <span class="keyword">const</span> &amp;data)</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    {</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        <span class="keyword">auto</span> dataInBytes = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <span class="keyword">const </span>*<span class="keyword">&gt;</span>(data);</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <span class="keyword">sizeof</span>(data); i++)</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        {</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            buffer.push_back(dataInBytes[i]);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        }</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    }</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <a class="code" href="classSerializer.html#a6b4e5e15e2993980646a01b6cad2e371">requires</a> std::is_fundamental_v&lt;T&gt;</div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="classSerializer.html#a9eb6bda11832ebd72557fe62817a807d">   24</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSerializer.html#a9eb6bda11832ebd72557fe62817a807d">deserialize</a>(T &amp;data)</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        data = *<span class="keyword">reinterpret_cast&lt;</span>T*<span class="keyword">&gt;</span>(buffer.data() + offset);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        offset += <span class="keyword">sizeof</span>(data);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    }</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="classSerializer.html#a6b4e5e15e2993980646a01b6cad2e371">   31</a></span>&#160;    <a class="code" href="classSerializer.html#a6b4e5e15e2993980646a01b6cad2e371">requires</a> (std::ranges::contiguous_range&lt;T&gt; &amp;&amp; std::is_fundamental_v&lt;typename T::value_type&gt;)</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSerializer.html#a9f8fac3a71dbbf7cc88cd5e7ecd13ba5">serialize</a>(T <span class="keyword">const</span>&amp; container)</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keywordtype">size_t</span> elementsCount = container.size();</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <a class="code" href="classSerializer.html#a9f8fac3a71dbbf7cc88cd5e7ecd13ba5">serialize</a>(elementsCount);</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        <span class="keywordflow">if</span> (buffer == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Can`t serialize to the empty buffer&quot;</span>);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        }</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <span class="keyword">auto</span> dataInBytes = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <span class="keyword">const </span>*<span class="keyword">&gt;</span>(data);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <span class="keyword">sizeof</span>(data); i++)</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        {</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            buffer-&gt;push_back(dataInBytes[i]);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        }</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    }</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <a class="code" href="classSerializer.html#a6b4e5e15e2993980646a01b6cad2e371">requires</a> std::is_fundamental_v&lt;T&gt;</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="classSerializer.html#a9eb6bda11832ebd72557fe62817a807d">   31</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSerializer.html#a9eb6bda11832ebd72557fe62817a807d">deserialize</a>(T &amp;data)</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    {</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        data = *<span class="keyword">reinterpret_cast&lt;</span>T*<span class="keyword">&gt;</span>(buffer-&gt;data() + offset);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        offset += <span class="keyword">sizeof</span>(data);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    }</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span> <span class="keyword">const</span> &amp;el : container)</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            <a class="code" href="classSerializer.html#a9f8fac3a71dbbf7cc88cd5e7ecd13ba5">serialize</a>(el);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        }</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    }</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classSerializer.html#aacae6ebdff334f66ea9824ff962e9236">   44</a></span>&#160;    <a class="code" href="classSerializer.html#aacae6ebdff334f66ea9824ff962e9236">requires</a> (std::ranges::contiguous_range&lt;T&gt;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;              &amp;&amp; std::is_fundamental_v&lt;typename T::value_type&gt;)<span class="keywordtype">void</span> <a class="code" href="classSerializer.html#a9eb6bda11832ebd72557fe62817a807d">deserialize</a>(T&amp; container)</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordtype">size_t</span> elementsCount;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <a class="code" href="classSerializer.html#a9eb6bda11832ebd72557fe62817a807d">deserialize</a>(elementsCount);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        container.reserve(elementsCount);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <a class="code" href="classSerializer.html#a6b4e5e15e2993980646a01b6cad2e371">requires</a> std::is_fundamental_v&lt;T&gt;</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classSerializer.html#aeb01f8962655a6218033a28c6f5800bc">   39</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSerializer.html#aeb01f8962655a6218033a28c6f5800bc">deserialize</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <span class="keyword">const</span> *externalBuffer, T &amp;data)</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        data = *<span class="keyword">reinterpret_cast&lt;</span>T const*<span class="keyword">&gt;</span>(externalBuffer);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    }</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="classSerializer.html#a6b4e5e15e2993980646a01b6cad2e371">   45</a></span>&#160;    <a class="code" href="classSerializer.html#a6b4e5e15e2993980646a01b6cad2e371">requires</a> (std::ranges::contiguous_range&lt;T&gt; &amp;&amp; std::is_fundamental_v&lt;typename T::value_type&gt;)</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSerializer.html#a9f8fac3a71dbbf7cc88cd5e7ecd13ba5">serialize</a>(T <span class="keyword">const</span>&amp; <a class="code" href="classSerializer.html#a7de6866273060842b9903fcd7cf4cf03">container</a>)</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4">elementsCount</a> = <a class="code" href="classSerializer.html#a7de6866273060842b9903fcd7cf4cf03">container</a>.size();</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <a class="code" href="classSerializer.html#a9f8fac3a71dbbf7cc88cd5e7ecd13ba5">serialize</a>(<a class="code" href="classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4">elementsCount</a>);</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; elementsCount; i++)</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span> <span class="keyword">const</span> &amp;el : <a class="code" href="classSerializer.html#a7de6866273060842b9903fcd7cf4cf03">container</a>)</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="keyword">typename</span> T::value_type element;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <a class="code" href="classSerializer.html#a9eb6bda11832ebd72557fe62817a807d">deserialize</a>(element);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            container.push_back(element);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    std::vector&lt;unsigned char&gt; &amp;buffer;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">size_t</span> offset = 0;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;};</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <a class="code" href="classSerializer.html#a9f8fac3a71dbbf7cc88cd5e7ecd13ba5">serialize</a>(el);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    }</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="classSerializer.html#aacae6ebdff334f66ea9824ff962e9236">   58</a></span>&#160;    <a class="code" href="classSerializer.html#aacae6ebdff334f66ea9824ff962e9236">requires</a> (std::ranges::contiguous_range&lt;T&gt;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;              &amp;&amp; std::is_fundamental_v&lt;typename T::value_type&gt;)</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSerializer.html#a9eb6bda11832ebd72557fe62817a807d">deserialize</a>(T&amp; <a class="code" href="classSerializer.html#a7de6866273060842b9903fcd7cf4cf03">container</a>)</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    {</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4">elementsCount</a>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <a class="code" href="classSerializer.html#a9eb6bda11832ebd72557fe62817a807d">deserialize</a>(<a class="code" href="classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4">elementsCount</a>);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <a class="code" href="classSerializer.html#a7de6866273060842b9903fcd7cf4cf03">container</a>.reserve(<a class="code" href="classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4">elementsCount</a>);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code" href="classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4">elementsCount</a>; i++)</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="keyword">typename</span> T::value_type element;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <a class="code" href="classSerializer.html#a9eb6bda11832ebd72557fe62817a807d">deserialize</a>(element);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <a class="code" href="classSerializer.html#a7de6866273060842b9903fcd7cf4cf03">container</a>.push_back(element);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        }</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="classSerializer.html#ac62ba2844d1c59aeb8b7e2e7dee9cc23">   75</a></span>&#160;    <a class="code" href="classSerializer.html#ac62ba2844d1c59aeb8b7e2e7dee9cc23">requires</a> (std::ranges::contiguous_range&lt;T&gt;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;              &amp;&amp; std::is_fundamental_v&lt;typename T::value_type&gt;)</div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="classSerializer.html#a7de6866273060842b9903fcd7cf4cf03">   77</a></span>&#160;    void <a class="code" href="classSerializer.html#a9eb6bda11832ebd72557fe62817a807d">deserialize</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> const *externalBuffer, T&amp; <a class="code" href="classSerializer.html#a7de6866273060842b9903fcd7cf4cf03">container</a>)</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="classSerializer.html#a28bfdbfe8a2bdf0cc1875508a1d3436c">externalBufferOffset</a> = 0;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4">   81</a></span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4">elementsCount</a>;</div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="classSerializer.html#a0167db46b4b7fca5e7f6fa86997ea26d">   82</a></span>&#160;        <a class="code" href="classSerializer.html#a0167db46b4b7fca5e7f6fa86997ea26d">deserialize</a>(externalBuffer, <a class="code" href="classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4">elementsCount</a>);</div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="classSerializer.html#a332a94445735084755b70e7937fbae43">   83</a></span>&#160;        <a class="code" href="classSerializer.html#a7de6866273060842b9903fcd7cf4cf03">container</a>.reserve(<a class="code" href="classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4">elementsCount</a>);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="classSerializer.html#a28bfdbfe8a2bdf0cc1875508a1d3436c">   85</a></span>&#160;        <a class="code" href="classSerializer.html#a28bfdbfe8a2bdf0cc1875508a1d3436c">externalBufferOffset</a> += <span class="keyword">sizeof</span>(size_t);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="classSerializer.html#aedf12fb2bb97ed47c0f2357c18e590f4">   87</a></span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code" href="classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4">elementsCount</a>; i++)</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="keyword">typename</span> T::value_type element;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <a class="code" href="classSerializer.html#a9eb6bda11832ebd72557fe62817a807d">deserialize</a>(externalBuffer + <a class="code" href="classSerializer.html#a28bfdbfe8a2bdf0cc1875508a1d3436c">externalBufferOffset</a>, element);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            <a class="code" href="classSerializer.html#a28bfdbfe8a2bdf0cc1875508a1d3436c">externalBufferOffset</a> += <span class="keyword">sizeof</span>(element);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <a class="code" href="classSerializer.html#a7de6866273060842b9903fcd7cf4cf03">container</a>.push_back(element);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        }</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    }</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    std::vector&lt;unsigned char&gt; *buffer = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordtype">size_t</span> offset = 0;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;};</div>
 <div class="ttc" id="aclassSerializer_html"><div class="ttname"><a href="classSerializer.html">Serializer</a></div><div class="ttdef"><b>Definition:</b> Serializer.hpp:5</div></div>
-<div class="ttc" id="aclassSerializer_html_a6b4e5e15e2993980646a01b6cad2e371"><div class="ttname"><a href="classSerializer.html#a6b4e5e15e2993980646a01b6cad2e371">Serializer::requires</a></div><div class="ttdeci">requires(std::ranges::contiguous_range&lt; T &gt; &amp;&amp;std::is_fundamental_v&lt; typename T::value_type &gt;) void serialize(T const &amp;container)</div><div class="ttdef"><b>Definition:</b> Serializer.hpp:31</div></div>
-<div class="ttc" id="aclassSerializer_html_a9eb6bda11832ebd72557fe62817a807d"><div class="ttname"><a href="classSerializer.html#a9eb6bda11832ebd72557fe62817a807d">Serializer::deserialize</a></div><div class="ttdeci">requires std::is_fundamental_v&lt; T &gt; void deserialize(T &amp;data)</div><div class="ttdef"><b>Definition:</b> Serializer.hpp:24</div></div>
+<div class="ttc" id="aclassSerializer_html_a0167db46b4b7fca5e7f6fa86997ea26d"><div class="ttname"><a href="classSerializer.html#a0167db46b4b7fca5e7f6fa86997ea26d">Serializer::deserialize</a></div><div class="ttdeci">deserialize(externalBuffer, elementsCount)</div></div>
+<div class="ttc" id="aclassSerializer_html_a28bfdbfe8a2bdf0cc1875508a1d3436c"><div class="ttname"><a href="classSerializer.html#a28bfdbfe8a2bdf0cc1875508a1d3436c">Serializer::externalBufferOffset</a></div><div class="ttdeci">externalBufferOffset</div><div class="ttdef"><b>Definition:</b> Serializer.hpp:85</div></div>
+<div class="ttc" id="aclassSerializer_html_a6b2ab8b2d08d22da678cd4dd10f7c5a4"><div class="ttname"><a href="classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4">Serializer::elementsCount</a></div><div class="ttdeci">size_t elementsCount</div><div class="ttdef"><b>Definition:</b> Serializer.hpp:81</div></div>
+<div class="ttc" id="aclassSerializer_html_a6b4e5e15e2993980646a01b6cad2e371"><div class="ttname"><a href="classSerializer.html#a6b4e5e15e2993980646a01b6cad2e371">Serializer::requires</a></div><div class="ttdeci">requires(std::ranges::contiguous_range&lt; T &gt; &amp;&amp;std::is_fundamental_v&lt; typename T::value_type &gt;) void serialize(T const &amp;container)</div><div class="ttdef"><b>Definition:</b> Serializer.hpp:45</div></div>
+<div class="ttc" id="aclassSerializer_html_a7de6866273060842b9903fcd7cf4cf03"><div class="ttname"><a href="classSerializer.html#a7de6866273060842b9903fcd7cf4cf03">Serializer::container</a></div><div class="ttdeci">T &amp; container</div><div class="ttdef"><b>Definition:</b> Serializer.hpp:78</div></div>
+<div class="ttc" id="aclassSerializer_html_a7f280d73603cdf2e4b6d452d60a126e8"><div class="ttname"><a href="classSerializer.html#a7f280d73603cdf2e4b6d452d60a126e8">Serializer::Serializer</a></div><div class="ttdeci">Serializer(std::vector&lt; unsigned char &gt; *buffer=nullptr)</div><div class="ttdef"><b>Definition:</b> Serializer.hpp:7</div></div>
+<div class="ttc" id="aclassSerializer_html_a9eb6bda11832ebd72557fe62817a807d"><div class="ttname"><a href="classSerializer.html#a9eb6bda11832ebd72557fe62817a807d">Serializer::deserialize</a></div><div class="ttdeci">requires std::is_fundamental_v&lt; T &gt; void deserialize(T &amp;data)</div><div class="ttdef"><b>Definition:</b> Serializer.hpp:31</div></div>
 <div class="ttc" id="aclassSerializer_html_a9f8fac3a71dbbf7cc88cd5e7ecd13ba5"><div class="ttname"><a href="classSerializer.html#a9f8fac3a71dbbf7cc88cd5e7ecd13ba5">Serializer::serialize</a></div><div class="ttdeci">requires std::is_fundamental_v&lt; T &gt; void serialize(T const &amp;data)</div><div class="ttdef"><b>Definition:</b> Serializer.hpp:12</div></div>
-<div class="ttc" id="aclassSerializer_html_aa84e27c66143b6e6cdff5914d57a37b0"><div class="ttname"><a href="classSerializer.html#aa84e27c66143b6e6cdff5914d57a37b0">Serializer::Serializer</a></div><div class="ttdeci">Serializer(std::vector&lt; unsigned char &gt; &amp;buffer)</div><div class="ttdef"><b>Definition:</b> Serializer.hpp:7</div></div>
-<div class="ttc" id="aclassSerializer_html_aacae6ebdff334f66ea9824ff962e9236"><div class="ttname"><a href="classSerializer.html#aacae6ebdff334f66ea9824ff962e9236">Serializer::requires</a></div><div class="ttdeci">requires(std::ranges::contiguous_range&lt; T &gt; &amp;&amp;std::is_fundamental_v&lt; typename T::value_type &gt;) void deserialize(T &amp;container)</div><div class="ttdef"><b>Definition:</b> Serializer.hpp:44</div></div>
+<div class="ttc" id="aclassSerializer_html_aacae6ebdff334f66ea9824ff962e9236"><div class="ttname"><a href="classSerializer.html#aacae6ebdff334f66ea9824ff962e9236">Serializer::requires</a></div><div class="ttdeci">requires(std::ranges::contiguous_range&lt; T &gt; &amp;&amp;std::is_fundamental_v&lt; typename T::value_type &gt;) void deserialize(T &amp;container)</div><div class="ttdef"><b>Definition:</b> Serializer.hpp:58</div></div>
+<div class="ttc" id="aclassSerializer_html_ac62ba2844d1c59aeb8b7e2e7dee9cc23"><div class="ttname"><a href="classSerializer.html#ac62ba2844d1c59aeb8b7e2e7dee9cc23">Serializer::requires</a></div><div class="ttdeci">requires(std::ranges::contiguous_range&lt; T &gt; &amp;&amp;std::is_fundamental_v&lt; typename T::value_type &gt;) void deserialize(unsigned char const *externalBuffer</div></div>
+<div class="ttc" id="aclassSerializer_html_aeb01f8962655a6218033a28c6f5800bc"><div class="ttname"><a href="classSerializer.html#aeb01f8962655a6218033a28c6f5800bc">Serializer::deserialize</a></div><div class="ttdeci">requires std::is_fundamental_v&lt; T &gt; void deserialize(unsigned char const *externalBuffer, T &amp;data)</div><div class="ttdef"><b>Definition:</b> Serializer.hpp:39</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
