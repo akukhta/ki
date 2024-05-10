@@ -12,7 +12,7 @@ var searchData=
   ['bufferedfilewriter_2ehpp_10',['BufferedFileWriter.hpp',['../BufferedFileWriter_8hpp.html',1,'']]],
   ['bufferedparallelcopytool_2ehpp_11',['BufferedParallelCopyTool.hpp',['../BufferedParallelCopyTool_8hpp.html',1,'']]],
   ['bufferedqueue_2ehpp_12',['BufferedQueue.hpp',['../BufferedQueue_8hpp.html',1,'']]],
-  ['bufferedreader_13',['BufferedReader',['../classBufferedReader.html',1,'BufferedReader&lt; Tag &gt;'],['../classBufferedReader.html#a3f653e948a1ed58a73ac166fdc00b9ad',1,'BufferedReader::BufferedReader()']]],
+  ['bufferedreader_13',['BufferedReader',['../classBufferedReader.html',1,'BufferedReader&lt; Tag &gt;'],['../classBufferedReader.html#a1e5e1ad3e877af75d7cf475bc0a5cdce',1,'BufferedReader::BufferedReader()']]],
   ['buffers_14',['buffers',['../structNonIPCTag.html#ac80bf2fd6c6fa233da320a0bb5355234',1,'NonIPCTag::buffers()'],['../structTCPIPTag.html#ac9cc5675238d695dc9e0de564875b538',1,'TCPIPTag::buffers()']]],
   ['buffertype_15',['BufferType',['../structNonIPCTag.html#af4a4666dc94886a9099e5ae5a5b62598',1,'NonIPCTag::BufferType()'],['../structIPCTag.html#a764eb9f68c9e4bbdfadf1178a63a516d',1,'IPCTag::BufferType()'],['../structTCPIPTag.html#a42b1dca5731acdb60b1cc82e4f0c2d63',1,'TCPIPTag::BufferType()']]],
   ['bytesused_16',['bytesUsed',['../classBuffer.html#a214f5f715a0b618536a0b50be83ff1ed',1,'Buffer::bytesUsed()'],['../classTCPIP_1_1Buffer.html#aebf80e265e590d1f29df95d630da1fa4',1,'TCPIP::Buffer::bytesUsed()']]]

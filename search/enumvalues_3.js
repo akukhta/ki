@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['parallel_369',['PARALLEL',['../ToolTypeEnum_8hpp.html#acbb91b3762d5b1de61e4312a6087d8a6a90606f8ca5d91452541a74f1caef1d11',1,'ToolTypeEnum.hpp']]]
+  ['readerprocess_368',['ReaderProcess',['../IPCToolType_8hpp.html#afef3d7d0afec25786663538afdba3d44a8219708236d392f9d3a7f91cfcb1dfc7',1,'IPCToolType.hpp']]]
 ];

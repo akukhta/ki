@@ -85,8 +85,8 @@ Collaboration diagram for BufferedReader&lt; Tag &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3f653e948a1ed58a73ac166fdc00b9ad"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedReader.html#a3f653e948a1ed58a73ac166fdc00b9ad">BufferedReader</a> (std::string fileName, std::conditional_t&lt; std::is_same_v&lt; Tag, <a class="el" href="structNonIPCTag.html">NonIPCTag</a> &gt;, std::shared_ptr&lt; <a class="el" href="classFixedBufferQueue.html">QueueType</a> &gt;, <a class="el" href="classFixedBufferQueue.html">QueueType</a> * &gt; queue)</td></tr>
-<tr class="separator:a3f653e948a1ed58a73ac166fdc00b9ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e5e1ad3e877af75d7cf475bc0a5cdce"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedReader.html#a1e5e1ad3e877af75d7cf475bc0a5cdce">BufferedReader</a> (std::string fileName, typename Tag::QueueType queue)</td></tr>
+<tr class="separator:a1e5e1ad3e877af75d7cf475bc0a5cdce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a518a48c25e3676f16c09267b2c96c165"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedReader.html#a518a48c25e3676f16c09267b2c96c165">open</a> () override</td></tr>
 <tr class="memdesc:a518a48c25e3676f16c09267b2c96c165"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens the requested file for reading.  <a href="classBufferedReader.html#a518a48c25e3676f16c09267b2c96c165">More...</a><br /></td></tr>
 <tr class="separator:a518a48c25e3676f16c09267b2c96c165"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -123,8 +123,8 @@ Reading is done with direct accessing of the io buffer (for more info check "Lin
   </dd>
 </dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a3f653e948a1ed58a73ac166fdc00b9ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3f653e948a1ed58a73ac166fdc00b9ad">&#9670;&nbsp;</a></span>BufferedReader()</h2>
+<a id="a1e5e1ad3e877af75d7cf475bc0a5cdce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e5e1ad3e877af75d7cf475bc0a5cdce">&#9670;&nbsp;</a></span>BufferedReader()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -143,7 +143,7 @@ template&lt;class Tag &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::conditional_t&lt; std::is_same_v&lt; Tag, <a class="el" href="structNonIPCTag.html">NonIPCTag</a> &gt;, std::shared_ptr&lt; <a class="el" href="classFixedBufferQueue.html">QueueType</a> &gt;, <a class="el" href="classFixedBufferQueue.html">QueueType</a> * &gt;&#160;</td>
+          <td class="paramtype">typename Tag::QueueType&#160;</td>
           <td class="paramname"><em>queue</em>&#160;</td>
         </tr>
         <tr>
