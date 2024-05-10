@@ -1,3 +1,3 @@
 #pragma once
 
-enum ToolType : char {PARALLEL, BUFFERED_PARALLEL, IPC};
+enum ToolType : char {PARALLEL, BUFFERED_PARALLEL, IPC, TCPIPTOOL};

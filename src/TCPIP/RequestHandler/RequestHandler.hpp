@@ -19,6 +19,6 @@ namespace TCPIP
         std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue;
         std::shared_ptr<MultiFileWriter> fileWriter;
 
-        std::unordered_map<RequestState, std::shared_ptr<IHandler>> handlers;
+        std::shared_ptr<IHandler> handlers;
     };
 }

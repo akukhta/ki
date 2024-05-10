@@ -21,7 +21,7 @@ private:
     using QueueType = FixedBufferQueue<Tag>;
 public:
     explicit BufferedReader(std::string fileName,
-                            std::conditional_t<std::is_same_v<Tag, NonIPCTag>, std::shared_ptr<QueueType>, QueueType*> queue) :
+                            typename Tag::QueueType queue) :
         fileName(std::move(fileName)), queue(std::move(queue))
     {
         fileSize = std::filesystem::file_size(this->fileName);
@@ -118,5 +118,5 @@ private:
     std::atomic_bool readFinished{false};
 
     std::string fileName;
-    std::conditional_t<std::is_same_v<Tag, NonIPCTag>, std::shared_ptr<QueueType>, QueueType*> queue;
+    typename Tag::QueueType queue;
 };

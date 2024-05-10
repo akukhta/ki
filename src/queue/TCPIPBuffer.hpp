@@ -33,7 +33,7 @@ namespace TCPIP
             return data + bytesUsed;
         }
 
-        unsigned char const* getBufferData()
+        unsigned char* getData()
         {
             return data;
         }

@@ -20,6 +20,7 @@ struct NonIPCTag
     using BufferType = Buffer<unsigned char*>;
     using RAIILockType = std::unique_lock<MutexType>;
     using DequeType = std::deque<BufferType>;
+    using QueueType = std::shared_ptr<FixedBufferQueue<NonIPCTag>>;
 
     std::array<std::array<unsigned char, BUFFER_SIZE>, BUFFERS_IN_QUEUE> buffers{};
 };
@@ -31,6 +32,7 @@ struct IPCTag
     using BufferType = Buffer<boost::interprocess::offset_ptr<unsigned char>>;
     using RAIILockType = boost::interprocess::scoped_lock<MutexType>;
     using DequeType =  boost::interprocess::deque<ShmemBuffer, ShmemAllocator<BufferType>>;
+    using QueueType = FixedBufferQueue<IPCTag>*;
 };
 
 struct TCPIPTag
@@ -41,6 +43,7 @@ struct TCPIPTag
     using BufferType = TCPIP::Buffer;
     using RAIILockType = std::unique_lock<MutexType>;
     using DequeType = std::deque<BufferType>;
+    using QueueType = std::shared_ptr<FixedBufferQueue<TCPIPTag>>;
 
     std::vector<std::vector<unsigned char>> buffers = std::vector<std::vector<unsigned char>>{BUFFERS_IN_QUEUE * 4, std::vector<unsigned char>(BUFFER_SIZE)};
 };

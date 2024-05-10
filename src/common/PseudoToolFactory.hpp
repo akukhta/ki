@@ -3,10 +3,13 @@
 #include "../reader/BufferedFileReader.hpp"
 #include "../writer/MMapFileWriter.hpp"
 #include "../writer/BufferedFileWriter.hpp"
+#include "../writer/MultiFileWriter.hpp"
 #include "../queue/SynchronizedQueue.hpp"
 #include "../queue/BufferedQueue.hpp"
+#include "../TCPIP/TCPIPServer.hpp"
 #include "ParallelCopyTool.hpp"
 #include "BufferedParallelCopyTool.hpp"
+#include "TCPIPTool.hpp"
 #include "ToolTypeEnum.hpp"
 #include "IOptionsParser.hpp"
 #include "IPCTool.hpp"
@@ -104,6 +107,20 @@ public:
                 }
 
                 tool = std::make_unique<IPCTool>(std::move(reader), std::move(writer), queue, shMemManager, toolType);
+
+                break;
+            }
+
+            case ToolType::TCPIPTOOL:
+            {
+                auto queue = std::make_shared<FixedBufferQueue<TCPIPTag>>();
+
+                auto reader = std::make_unique<BufferedReader<TCPIPTag>>(std::move(parser.getSrc()), queue);
+                auto writer = std::make_shared<MultiFileWriter>(queue);
+
+                //auto server = std::make_unique<TCPIP::>
+                //tool = std::make_unique<TCPIPTool>(reader, writer, queue);
+                //tool = std::make_unique<BPCopyTool>(std::move(reader), std::move(writer), queue);
 
                 break;
             }

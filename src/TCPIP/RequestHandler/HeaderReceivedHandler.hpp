@@ -13,7 +13,7 @@ public:
         }
 
         auto buffer = request.getRequestBuffer();
-        request.header = *reinterpret_cast<TCPIP::RequestHeader const*>(buffer->getBufferData());
+        request.header = *reinterpret_cast<TCPIP::RequestHeader const*>(buffer->getData());
 
         request.state = TCPIP::RequestState::REQUEST_RECEIVING;
 

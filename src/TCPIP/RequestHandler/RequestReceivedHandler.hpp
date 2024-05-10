@@ -11,7 +11,8 @@ class RequestReceivedHandler : public IHandler
 {
 public:
     RequestReceivedHandler(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue,
-        std::shared_ptr<MultiFileWriter> fileWriter);
+        std::shared_ptr<MultiFileWriter> fileWriter)
+        : queue(queue), fileWriter(fileWriter) {}
 
     void handle(TCPIP::ClientRequest &request) override
     {
