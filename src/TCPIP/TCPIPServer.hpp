@@ -9,13 +9,14 @@
 #include <memory>
 #include "ClientRequest.hpp"
 #include "IServer.hpp"
+#include "RequestHandler/IRequestHandler.hpp"
 
 namespace TCPIP
 {
     class TCPIPServer :public IServer
     {
     public:
-        TCPIPServer(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue);
+        TCPIPServer(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue, std::unique_ptr<IRequestHandler> requestHandler);
 
         virtual void run() override;
         size_t getConnectedClientsAmount();
@@ -40,5 +41,6 @@ namespace TCPIP
 
         std::unordered_map<int, TCPIP::ClientRequest> clientRequests;
         std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue;
+        std::unique_ptr<IRequestHandler> requestHandler;
     };
 }

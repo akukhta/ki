@@ -7,6 +7,7 @@
 #include "../queue/SynchronizedQueue.hpp"
 #include "../queue/BufferedQueue.hpp"
 #include "../TCPIP/TCPIPServer.hpp"
+#include "../TCPIP/RequestHandler/RequestHandler.hpp"
 #include "ParallelCopyTool.hpp"
 #include "BufferedParallelCopyTool.hpp"
 #include "TCPIPTool.hpp"
@@ -117,10 +118,10 @@ public:
 
                 auto reader = std::make_unique<BufferedReader<TCPIPTag>>(std::move(parser.getSrc()), queue);
                 auto writer = std::make_shared<MultiFileWriter>(queue);
+                auto requestHandler = std::make_unique<TCPIP::RequestHandler>(queue, writer);
+                auto server = std::make_unique<TCPIP::TCPIPServer>(queue, std::move(requestHandler));
 
-                //auto server = std::make_unique<TCPIP::>
-                //tool = std::make_unique<TCPIPTool>(reader, writer, queue);
-                //tool = std::make_unique<BPCopyTool>(std::move(reader), std::move(writer), queue);
+                tool = std::make_unique<TCPIPTool>(std::move(reader), writer, queue, std::move(server));
 
                 break;
             }

@@ -5,8 +5,8 @@
 #include "TCPUtiles.hpp"
 #include "TCPIPRequests.hpp"
 
-TCPIP::TCPIPServer::TCPIPServer(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue) :
-    queue(queue)
+TCPIP::TCPIPServer::TCPIPServer(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue, std::unique_ptr<IRequestHandler> requestHandler) :
+    queue(queue), requestHandler(std::move(requestHandler))
 {
     masterSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
