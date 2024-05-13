@@ -1,8 +1,14 @@
 #include "TCPIPClient.hpp"
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <utility>
+#include <filesystem>
+#include "../common/Serializer.hpp"
+#include "TCPIPRequests.hpp"
+#include "FileInfo.hpp"
 
-TCPIP::TCPIPClient::TCPIPClient()
+TCPIP::TCPIPClient::TCPIPClient(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue, std::string const &fileName)
+    : queue(std::move(queue)), fileName(fileName)
 {
     socketFD = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     serverAddress.sin_family = AF_INET;
@@ -32,4 +38,44 @@ std::vector<unsigned char> TCPIP::TCPIPClient::receive()
     buffer.resize(sizeOfBuffer);
     recv(socketFD, buffer.data(), buffer.size(), 0);
     return buffer;
+}
+
+void TCPIP::TCPIPClient::run()
+{
+    while (!queue->isReadFinished() && !queue->isEmpty())
+    {
+        auto buffer = queue->getFilledBuffer().value();
+        createFileChunkRequest(buffer);
+        ssend(buffer.getData(), sizeof(TCPIP::RequestHeader) + buffer.bytesUsed);
+        queue->returnBuffer(std::move(buffer));
+    }
+}
+
+void TCPIP::TCPIPClient::runFunction() {
+
+}
+
+void TCPIP::TCPIPClient::createFileChunkRequest(TCPIP::Buffer &buffer)
+{
+    auto ptr = buffer.getData();
+
+    Serializer serializer;
+    serializer.serialize(&ptr, std::to_underlying(TCPIP::Request::FILE));
+    serializer.serialize(&ptr, buffer.bytesUsed);
+}
+
+void TCPIP::TCPIPClient::ssend(unsigned char *ptr, size_t bufferSize)
+{
+    ::send(socketFD, ptr, bufferSize, 0);
+}
+
+void TCPIP::TCPIPClient::sendFileInfo()
+{
+    FileInfo info;
+    info.fileSize = std::filesystem::file_size(fileName);
+    info.fileName = std::filesystem::path(fileName).filename();
+
+    auto fileInfoBuffer = info.serialize();
+
+    ssend(fileInfoBuffer.data(), fileInfoBuffer.size());
 }

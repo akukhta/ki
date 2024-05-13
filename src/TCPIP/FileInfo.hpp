@@ -40,6 +40,8 @@ namespace TCPIP {
             serializer.serialize(fileSize);
             serializer.serialize(fileName);
 
+            buffer.shrink_to_fit();
+
             return buffer;
         }
 

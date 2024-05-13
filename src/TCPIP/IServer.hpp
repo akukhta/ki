@@ -1,7 +1,10 @@
 #pragma once
 
-class IServer
+namespace TCPIP
 {
-public:
-    virtual void run() = 0;
-};
+    class IServer
+    {
+    public:
+        virtual void run() = 0;
+    };
+}

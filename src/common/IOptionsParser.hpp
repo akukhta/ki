@@ -21,5 +21,7 @@ public:
     /// Only usable for IPC tool (--type=IPC), any other tool ignores the option
     virtual std::string getSharedObjName() const = 0;
 
+    virtual bool getIsServer() const = 0;
+
     virtual ~IOptionsParser() = default;
 };

@@ -24,6 +24,25 @@ public:
         }
     }
 
+    template <typename T>
+    requires std::is_fundamental_v<T>
+    void serialize(unsigned char **externalBuffer, T const &data)
+    {
+        if (externalBuffer == nullptr)
+        {
+            throw std::runtime_error("Can`t serialize to the empty buffer");
+        }
+
+        auto dataInBytes = reinterpret_cast<unsigned char const *>(data);
+
+        for (size_t i = 0; i < sizeof(data); i++)
+        {
+            *externalBuffer[i] = dataInBytes[i];
+        }
+
+        externalBuffer += sizeof(data);
+    }
+
 
 
     template <typename T>
@@ -51,6 +70,27 @@ public:
         for (auto const &el : container)
         {
             serialize(el);
+        }
+    }
+
+    template <typename T>
+    requires (std::ranges::contiguous_range<T> && std::is_fundamental_v<typename T::value_type>)
+    void serialize(unsigned char *externalBuffer, T const& container)
+    {
+        if (externalBuffer == nullptr)
+        {
+            throw std::runtime_error("Buffer is nullptr");
+        }
+
+        size_t elementsCount = container.size();
+        size_t innerOffset = 0;
+        serialize(elementsCount);
+        innerOffset += sizeof(size_t);
+
+        for (auto const &el : container)
+        {
+            serialize(externalBuffer + innerOffset, el);
+            innerOffset += sizeof(el);
         }
     }
 

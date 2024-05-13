@@ -19,6 +19,7 @@ public:
             ("dst", value(&dst), "Output file")
             ("type", value(&type)->default_value("vbuf"), "Type of tool")
             ("shobj", value(&sharedObjName)->default_value(""), "Name of shared object");
+            ("server", value(&isServer)->default_value(true), "True if server, otherwise client");
 
 
         positional_options_description positionals;
@@ -26,6 +27,7 @@ public:
         positionals.add("dst", 1);
         positionals.add("type", 1);
         positionals.add("shobj", 1);
+        positionals.add("server", 1);
 
         variables_map vm;
 
@@ -78,6 +80,11 @@ public:
         return sharedObjName;
     }
 
+    [[nodiscard]] bool getIsServer() const override
+    {
+        return isServer;
+    }
+
     ~OptionsParser() override = default;
 private:
     options_description desc{"Kopieren Instrument"}; /// Objects that stores and parses options that could be passed to the process
@@ -86,4 +93,5 @@ private:
     std::string dst; /// Destination file (copy-to) absolute path
     std::string type; /// Type of tool to use, i.e in what mode perform the copying (buffered, buffered with optimized file IO, IPC)
     std::string sharedObjName; /// name of shared object, applicable for IPC tool only
+    bool isServer;
 };

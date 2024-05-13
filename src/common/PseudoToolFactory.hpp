@@ -7,6 +7,7 @@
 #include "../queue/SynchronizedQueue.hpp"
 #include "../queue/BufferedQueue.hpp"
 #include "../TCPIP/TCPIPServer.hpp"
+#include "../TCPIP/TCPIPClient.hpp"
 #include "../TCPIP/RequestHandler/RequestHandler.hpp"
 #include "ParallelCopyTool.hpp"
 #include "BufferedParallelCopyTool.hpp"
@@ -112,16 +113,26 @@ public:
                 break;
             }
 
-            case ToolType::TCPIPTOOL:
-            {
+            case ToolType::TCPIPTOOL: {
                 auto queue = std::make_shared<FixedBufferQueue<TCPIPTag>>();
 
                 auto reader = std::make_unique<BufferedReader<TCPIPTag>>(std::move(parser.getSrc()), queue);
                 auto writer = std::make_shared<MultiFileWriter>(queue);
                 auto requestHandler = std::make_unique<TCPIP::RequestHandler>(queue, writer);
-                auto server = std::make_unique<TCPIP::TCPIPServer>(queue, std::move(requestHandler));
 
-                tool = std::make_unique<TCPIPTool>(std::move(reader), writer, queue, std::move(server));
+                std::unique_ptr<TCPIP::IServer> server = nullptr;
+                std::unique_ptr<TCPIP::IClient> client = nullptr;
+
+                if (parser.getIsServer())
+                {
+                    server = std::make_unique<TCPIP::TCPIPServer>(queue, std::move(requestHandler));
+                }
+                else
+                {
+                    client = std::make_unique<TCPIP::TCPIPClient>(queue, std::move(parser.getSrc()));
+                }
+
+                tool = std::make_unique<TCPIPTool>(std::move(reader), writer, queue, std::move(server), std::move(client));
 
                 break;
             }
