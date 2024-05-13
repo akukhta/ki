@@ -7,13 +7,14 @@ var searchData=
   ['getfilledbuffer_45',['getFilledBuffer',['../classFixedBufferQueue.html#a54ef54764f7efd42c1ff32af8dae4af2',1,'FixedBufferQueue']]],
   ['getfreebuffer_46',['getFreeBuffer',['../classFixedBufferQueue.html#a974c28589c9e41a6f2a21d7453809f93',1,'FixedBufferQueue']]],
   ['getinstance_47',['getInstance',['../classProcessTerminator.html#a45adbc89dacf05409cfeb1ce01960d44',1,'ProcessTerminator']]],
-  ['getprocinfo_48',['getProcInfo',['../classSharedMemoryManager.html#ab3c2514bbb22c63e51ad5d6446f736c8',1,'SharedMemoryManager']]],
-  ['getqueue_49',['getQueue',['../classSharedMemoryManager.html#af9b3838aecff501c170522b8ee744e36',1,'SharedMemoryManager']]],
-  ['getrawallocator_50',['getRawAllocator',['../classSharedMemoryManager.html#a78b4d23fe3d8798361b053ff0ceaf417',1,'SharedMemoryManager']]],
-  ['getrequestdata_51',['getRequestData',['../classTCPIP_1_1Buffer.html#a234c3a333b06aec24d434f6fad1352d2',1,'TCPIP::Buffer']]],
-  ['getsharedobjname_52',['getSharedObjName',['../classIOptionsParser.html#a5c3071dd210b1da103fd8154f140237b',1,'IOptionsParser::getSharedObjName()'],['../classOptionsParser.html#a581cd5e94e9881b3be05871b08167a27',1,'OptionsParser::getSharedObjName()']]],
-  ['getsrc_53',['getSrc',['../classIOptionsParser.html#a7aa635555859be6c5b152275a6bc941b',1,'IOptionsParser::getSrc()'],['../classOptionsParser.html#ac84959cde2822c9e946c541ad1355be4',1,'OptionsParser::getSrc()']]],
-  ['getstamp_54',['getStamp',['../classStopWatch.html#aef0c24ed47389959575e17b6969acdbe',1,'StopWatch']]],
-  ['gettooltype_55',['getToolType',['../classIOptionsParser.html#af374117219397cf553ee4a849607cb22',1,'IOptionsParser::getToolType()'],['../classOptionsParser.html#aa4fc864d39f471303db93781ae3a4d41',1,'OptionsParser::getToolType()']]],
-  ['gettype_56',['getType',['../classBuffer.html#aeb492e182da6c71f7de6ef1700570cf2',1,'Buffer::getType()'],['../classTCPIP_1_1Buffer.html#ab6882b65f81338fd2b5c61417b0b8f91',1,'TCPIP::Buffer::getType()']]]
+  ['getisserver_48',['getIsServer',['../classIOptionsParser.html#a52bc384a50588c44937af09c50967930',1,'IOptionsParser::getIsServer()'],['../classOptionsParser.html#a154483b21d8080d15c88ad6eb57cd853',1,'OptionsParser::getIsServer()']]],
+  ['getprocinfo_49',['getProcInfo',['../classSharedMemoryManager.html#ab3c2514bbb22c63e51ad5d6446f736c8',1,'SharedMemoryManager']]],
+  ['getqueue_50',['getQueue',['../classSharedMemoryManager.html#af9b3838aecff501c170522b8ee744e36',1,'SharedMemoryManager']]],
+  ['getrawallocator_51',['getRawAllocator',['../classSharedMemoryManager.html#a78b4d23fe3d8798361b053ff0ceaf417',1,'SharedMemoryManager']]],
+  ['getrequestdata_52',['getRequestData',['../classTCPIP_1_1Buffer.html#a234c3a333b06aec24d434f6fad1352d2',1,'TCPIP::Buffer']]],
+  ['getsharedobjname_53',['getSharedObjName',['../classIOptionsParser.html#a5c3071dd210b1da103fd8154f140237b',1,'IOptionsParser::getSharedObjName()'],['../classOptionsParser.html#a581cd5e94e9881b3be05871b08167a27',1,'OptionsParser::getSharedObjName()']]],
+  ['getsrc_54',['getSrc',['../classIOptionsParser.html#a7aa635555859be6c5b152275a6bc941b',1,'IOptionsParser::getSrc()'],['../classOptionsParser.html#ac84959cde2822c9e946c541ad1355be4',1,'OptionsParser::getSrc()']]],
+  ['getstamp_55',['getStamp',['../classStopWatch.html#aef0c24ed47389959575e17b6969acdbe',1,'StopWatch']]],
+  ['gettooltype_56',['getToolType',['../classIOptionsParser.html#af374117219397cf553ee4a849607cb22',1,'IOptionsParser::getToolType()'],['../classOptionsParser.html#aa4fc864d39f471303db93781ae3a4d41',1,'OptionsParser::getToolType()']]],
+  ['gettype_57',['getType',['../classBuffer.html#aeb492e182da6c71f7de6ef1700570cf2',1,'Buffer::getType()'],['../classTCPIP_1_1Buffer.html#ab6882b65f81338fd2b5c61417b0b8f91',1,'TCPIP::Buffer::getType()']]]
 ];

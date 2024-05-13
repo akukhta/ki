@@ -81,6 +81,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9f8fac3a71dbbf7cc88cd5e7ecd13ba5"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a9f8fac3a71dbbf7cc88cd5e7ecd13ba5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classSerializer.html#a6b4e5e15e2993980646a01b6cad2e371">requires</a> std::is_fundamental_v&lt; T &gt; void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSerializer.html#a9f8fac3a71dbbf7cc88cd5e7ecd13ba5">serialize</a> (T const &amp;data)</td></tr>
 <tr class="separator:a9f8fac3a71dbbf7cc88cd5e7ecd13ba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25a0a10f478278dbb0a05c2aedfb8e4e"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a25a0a10f478278dbb0a05c2aedfb8e4e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classSerializer.html#a6b4e5e15e2993980646a01b6cad2e371">requires</a> std::is_fundamental_v&lt; T &gt; void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSerializer.html#a25a0a10f478278dbb0a05c2aedfb8e4e">serialize</a> (unsigned char **externalBuffer, T const &amp;data)</td></tr>
+<tr class="separator:a25a0a10f478278dbb0a05c2aedfb8e4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9eb6bda11832ebd72557fe62817a807d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a9eb6bda11832ebd72557fe62817a807d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classSerializer.html#a6b4e5e15e2993980646a01b6cad2e371">requires</a> std::is_fundamental_v&lt; T &gt; void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSerializer.html#a9eb6bda11832ebd72557fe62817a807d">deserialize</a> (T &amp;data)</td></tr>
 <tr class="separator:a9eb6bda11832ebd72557fe62817a807d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -88,23 +91,36 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aeb01f8962655a6218033a28c6f5800bc"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classSerializer.html#a6b4e5e15e2993980646a01b6cad2e371">requires</a> std::is_fundamental_v&lt; T &gt; void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSerializer.html#aeb01f8962655a6218033a28c6f5800bc">deserialize</a> (unsigned char const *externalBuffer, T &amp;data)</td></tr>
 <tr class="separator:aeb01f8962655a6218033a28c6f5800bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b4e5e15e2993980646a01b6cad2e371"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a6b4e5e15e2993980646a01b6cad2e371"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSerializer.html#a6b4e5e15e2993980646a01b6cad2e371">requires</a> (std::ranges::contiguous_range&lt; T &gt; &amp;&amp;std::is_fundamental_v&lt; typename T::value_type &gt;) void <a class="el" href="classSerializer.html#a9f8fac3a71dbbf7cc88cd5e7ecd13ba5">serialize</a>(T const &amp;<a class="el" href="classSerializer.html#a7de6866273060842b9903fcd7cf4cf03">container</a>)</td></tr>
+<tr class="memitem:a6b4e5e15e2993980646a01b6cad2e371"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSerializer.html#a6b4e5e15e2993980646a01b6cad2e371">requires</a> (std::ranges::contiguous_range&lt; T &gt; &amp;&amp;std::is_fundamental_v&lt; typename T::value_type &gt;) void <a class="el" href="classSerializer.html#a9f8fac3a71dbbf7cc88cd5e7ecd13ba5">serialize</a>(T const &amp;<a class="el" href="classSerializer.html#aabca34eb660650f8323f1b7575fd3a66">container</a>)</td></tr>
 <tr class="separator:a6b4e5e15e2993980646a01b6cad2e371"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a097cfab3baa90a02991fec0a6f2c0a98"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a097cfab3baa90a02991fec0a6f2c0a98"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSerializer.html#a097cfab3baa90a02991fec0a6f2c0a98">requires</a> (std::ranges::contiguous_range&lt; T &gt; &amp;&amp;std::is_fundamental_v&lt; typename T::value_type &gt;) void <a class="el" href="classSerializer.html#a9f8fac3a71dbbf7cc88cd5e7ecd13ba5">serialize</a>(unsigned char *externalBuffer</td></tr>
+<tr class="separator:a097cfab3baa90a02991fec0a6f2c0a98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b0575eda74a662e093a890c97c58b7d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerializer.html#a5b0575eda74a662e093a890c97c58b7d">serialize</a> (<a class="el" href="classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4">elementsCount</a>)</td></tr>
+<tr class="separator:a5b0575eda74a662e093a890c97c58b7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfca40c0e1f0c536a619ed2c2b97a990"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerializer.html#adfca40c0e1f0c536a619ed2c2b97a990">for</a> (auto const &amp;el :<a class="el" href="classSerializer.html#aabca34eb660650f8323f1b7575fd3a66">container</a>)</td></tr>
+<tr class="separator:adfca40c0e1f0c536a619ed2c2b97a990"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aacae6ebdff334f66ea9824ff962e9236"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aacae6ebdff334f66ea9824ff962e9236"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSerializer.html#aacae6ebdff334f66ea9824ff962e9236">requires</a> (std::ranges::contiguous_range&lt; T &gt; &amp;&amp;std::is_fundamental_v&lt; typename T::value_type &gt;) void <a class="el" href="classSerializer.html#a9eb6bda11832ebd72557fe62817a807d">deserialize</a>(T &amp;<a class="el" href="classSerializer.html#a7de6866273060842b9903fcd7cf4cf03">container</a>)</td></tr>
+<tr class="memitem:aacae6ebdff334f66ea9824ff962e9236"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSerializer.html#aacae6ebdff334f66ea9824ff962e9236">requires</a> (std::ranges::contiguous_range&lt; T &gt; &amp;&amp;std::is_fundamental_v&lt; typename T::value_type &gt;) void <a class="el" href="classSerializer.html#a9eb6bda11832ebd72557fe62817a807d">deserialize</a>(T &amp;<a class="el" href="classSerializer.html#aabca34eb660650f8323f1b7575fd3a66">container</a>)</td></tr>
 <tr class="separator:aacae6ebdff334f66ea9824ff962e9236"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac62ba2844d1c59aeb8b7e2e7dee9cc23"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ac62ba2844d1c59aeb8b7e2e7dee9cc23"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSerializer.html#ac62ba2844d1c59aeb8b7e2e7dee9cc23">requires</a> (std::ranges::contiguous_range&lt; T &gt; &amp;&amp;std::is_fundamental_v&lt; typename T::value_type &gt;) void <a class="el" href="classSerializer.html#a9eb6bda11832ebd72557fe62817a807d">deserialize</a>(unsigned char const *externalBuffer</td></tr>
 <tr class="separator:ac62ba2844d1c59aeb8b7e2e7dee9cc23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0167db46b4b7fca5e7f6fa86997ea26d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerializer.html#a0167db46b4b7fca5e7f6fa86997ea26d">deserialize</a> (externalBuffer, <a class="el" href="classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4">elementsCount</a>)</td></tr>
 <tr class="separator:a0167db46b4b7fca5e7f6fa86997ea26d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a332a94445735084755b70e7937fbae43"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSerializer.html#a7de6866273060842b9903fcd7cf4cf03">container</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerializer.html#a332a94445735084755b70e7937fbae43">reserve</a> (<a class="el" href="classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4">elementsCount</a>)</td></tr>
+<tr class="memitem:a332a94445735084755b70e7937fbae43"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSerializer.html#aabca34eb660650f8323f1b7575fd3a66">container</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerializer.html#a332a94445735084755b70e7937fbae43">reserve</a> (<a class="el" href="classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4">elementsCount</a>)</td></tr>
 <tr class="separator:a332a94445735084755b70e7937fbae43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aedf12fb2bb97ed47c0f2357c18e590f4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerializer.html#aedf12fb2bb97ed47c0f2357c18e590f4">for</a> (size_t i=0;i&lt; <a class="el" href="classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4">elementsCount</a>;i++)</td></tr>
 <tr class="separator:aedf12fb2bb97ed47c0f2357c18e590f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:aabca34eb660650f8323f1b7575fd3a66"><td class="memItemLeft" align="right" valign="top">T const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerializer.html#aabca34eb660650f8323f1b7575fd3a66">container</a></td></tr>
+<tr class="separator:aabca34eb660650f8323f1b7575fd3a66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e7cc70361888c21f3130fc1efdc0632"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerializer.html#a6e7cc70361888c21f3130fc1efdc0632">innerOffset</a> = 0</td></tr>
+<tr class="separator:a6e7cc70361888c21f3130fc1efdc0632"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f1a5c32bf31dd82d555d12eb60605e4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerializer.html#a9f1a5c32bf31dd82d555d12eb60605e4">innerOffset</a> = sizeof(size_t)</td></tr>
+<tr class="separator:a9f1a5c32bf31dd82d555d12eb60605e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7de6866273060842b9903fcd7cf4cf03"><td class="memItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerializer.html#a7de6866273060842b9903fcd7cf4cf03">container</a></td></tr>
 <tr class="separator:a7de6866273060842b9903fcd7cf4cf03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b2ab8b2d08d22da678cd4dd10f7c5a4"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4">elementsCount</a></td></tr>
@@ -234,8 +250,34 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="adfca40c0e1f0c536a619ed2c2b97a990"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfca40c0e1f0c536a619ed2c2b97a990">&#9670;&nbsp;</a></span>for() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Serializer::for </td>
+          <td>(</td>
+          <td class="paramtype">auto const &amp;el :<a class="el" href="classSerializer.html#aabca34eb660650f8323f1b7575fd3a66">container</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="aedf12fb2bb97ed47c0f2357c18e590f4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aedf12fb2bb97ed47c0f2357c18e590f4">&#9670;&nbsp;</a></span>for()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aedf12fb2bb97ed47c0f2357c18e590f4">&#9670;&nbsp;</a></span>for() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -260,7 +302,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="aacae6ebdff334f66ea9824ff962e9236"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aacae6ebdff334f66ea9824ff962e9236">&#9670;&nbsp;</a></span>requires() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aacae6ebdff334f66ea9824ff962e9236">&#9670;&nbsp;</a></span>requires() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -288,7 +330,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="ac62ba2844d1c59aeb8b7e2e7dee9cc23"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac62ba2844d1c59aeb8b7e2e7dee9cc23">&#9670;&nbsp;</a></span>requires() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac62ba2844d1c59aeb8b7e2e7dee9cc23">&#9670;&nbsp;</a></span>requires() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -308,7 +350,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a6b4e5e15e2993980646a01b6cad2e371"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b4e5e15e2993980646a01b6cad2e371">&#9670;&nbsp;</a></span>requires() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b4e5e15e2993980646a01b6cad2e371">&#9670;&nbsp;</a></span>requires() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -335,6 +377,26 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a097cfab3baa90a02991fec0a6f2c0a98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a097cfab3baa90a02991fec0a6f2c0a98">&#9670;&nbsp;</a></span>requires() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Serializer::requires </td>
+          <td>(</td>
+          <td class="paramtype">std::ranges::contiguous_range&lt; T &gt; &amp;&amp;std::is_fundamental_v&lt; typename T::value_type &gt;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a332a94445735084755b70e7937fbae43"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a332a94445735084755b70e7937fbae43">&#9670;&nbsp;</a></span>reserve()</h2>
 
@@ -342,7 +404,25 @@ template&lt;typename T &gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classSerializer.html#a7de6866273060842b9903fcd7cf4cf03">container</a> Serializer::reserve </td>
+          <td class="memname"><a class="el" href="classSerializer.html#aabca34eb660650f8323f1b7575fd3a66">container</a> Serializer::reserve </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4">elementsCount</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5b0575eda74a662e093a890c97c58b7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b0575eda74a662e093a890c97c58b7d">&#9670;&nbsp;</a></span>serialize() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Serializer::serialize </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4">elementsCount</a>&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -354,7 +434,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a9f8fac3a71dbbf7cc88cd5e7ecd13ba5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9f8fac3a71dbbf7cc88cd5e7ecd13ba5">&#9670;&nbsp;</a></span>serialize()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f8fac3a71dbbf7cc88cd5e7ecd13ba5">&#9670;&nbsp;</a></span>serialize() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -381,9 +461,70 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a25a0a10f478278dbb0a05c2aedfb8e4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25a0a10f478278dbb0a05c2aedfb8e4e">&#9670;&nbsp;</a></span>serialize() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSerializer.html#a6b4e5e15e2993980646a01b6cad2e371">requires</a> std::is_fundamental_v&lt;T&gt; void Serializer::serialize </td>
+          <td>(</td>
+          <td class="paramtype">unsigned char **&#160;</td>
+          <td class="paramname"><em>externalBuffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="aabca34eb660650f8323f1b7575fd3a66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabca34eb660650f8323f1b7575fd3a66">&#9670;&nbsp;</a></span>container <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">T const&amp; Serializer::container</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">{</div>
+<div class="line">        <span class="keywordflow">if</span> (externalBuffer == <span class="keyword">nullptr</span>)</div>
+<div class="line">        {</div>
+<div class="line">            <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Buffer is nullptr&quot;</span>);</div>
+<div class="line">        }</div>
+<div class="line"> </div>
+<div class="line">        <span class="keywordtype">size_t</span> <a class="code" href="classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4">elementsCount</a> = <a class="code" href="classSerializer.html#aabca34eb660650f8323f1b7575fd3a66">container</a>.size()</div>
+<div class="ttc" id="aclassSerializer_html_a6b2ab8b2d08d22da678cd4dd10f7c5a4"><div class="ttname"><a href="classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4">Serializer::elementsCount</a></div><div class="ttdeci">size_t elementsCount</div><div class="ttdef"><b>Definition:</b> Serializer.hpp:121</div></div>
+<div class="ttc" id="aclassSerializer_html_aabca34eb660650f8323f1b7575fd3a66"><div class="ttname"><a href="classSerializer.html#aabca34eb660650f8323f1b7575fd3a66">Serializer::container</a></div><div class="ttdeci">T const  &amp; container</div><div class="ttdef"><b>Definition:</b> Serializer.hpp:79</div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a7de6866273060842b9903fcd7cf4cf03"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7de6866273060842b9903fcd7cf4cf03">&#9670;&nbsp;</a></span>container</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7de6866273060842b9903fcd7cf4cf03">&#9670;&nbsp;</a></span>container <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -395,7 +536,7 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">{</div>
 <div class="line">        <span class="keywordtype">size_t</span> <a class="code" href="classSerializer.html#a28bfdbfe8a2bdf0cc1875508a1d3436c">externalBufferOffset</a> = 0</div>
-<div class="ttc" id="aclassSerializer_html_a28bfdbfe8a2bdf0cc1875508a1d3436c"><div class="ttname"><a href="classSerializer.html#a28bfdbfe8a2bdf0cc1875508a1d3436c">Serializer::externalBufferOffset</a></div><div class="ttdeci">externalBufferOffset</div><div class="ttdef"><b>Definition:</b> Serializer.hpp:85</div></div>
+<div class="ttc" id="aclassSerializer_html_a28bfdbfe8a2bdf0cc1875508a1d3436c"><div class="ttname"><a href="classSerializer.html#a28bfdbfe8a2bdf0cc1875508a1d3436c">Serializer::externalBufferOffset</a></div><div class="ttdeci">externalBufferOffset</div><div class="ttdef"><b>Definition:</b> Serializer.hpp:125</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -421,6 +562,34 @@ template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">Serializer::externalBufferOffset = sizeof(size_t)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6e7cc70361888c21f3130fc1efdc0632"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e7cc70361888c21f3130fc1efdc0632">&#9670;&nbsp;</a></span>innerOffset <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t Serializer::innerOffset = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9f1a5c32bf31dd82d555d12eb60605e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f1a5c32bf31dd82d555d12eb60605e4">&#9670;&nbsp;</a></span>innerOffset <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Serializer::innerOffset = sizeof(size_t)</td>
         </tr>
       </table>
 </div><div class="memdoc">
