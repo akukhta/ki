@@ -42,6 +42,8 @@ std::vector<unsigned char> TCPIP::TCPIPClient::receive()
 
 void TCPIP::TCPIPClient::run()
 {
+    sendFileInfo();
+
     while (!queue->isReadFinished() && !queue->isEmpty())
     {
         auto buffer = queue->getFilledBuffer().value();

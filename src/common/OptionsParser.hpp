@@ -37,7 +37,7 @@ public:
 
         notify (vm);
 
-        if (vm.count ("help") || ((!vm.count ("src") || !vm.count("dst")) && type != "ipc") || (vm.count("type") && !vm.count("shobj")))
+        if (vm.count ("help") || ((!vm.count ("src") || !vm.count("dst")) && (type != "ipc" && type != "tcpip")) || (vm.count("type") && !vm.count("shobj")))
         {
             std::cerr << desc << "\n";
 
@@ -70,7 +70,12 @@ public:
         {
             return IPC;
         }
-        else {
+        else if (type == "tcpip")
+        {
+            return TCPIPTOOL;
+        }
+        else
+        {
             throw std::runtime_error("incorrect tool type");
         }
     }

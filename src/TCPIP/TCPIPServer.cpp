@@ -54,6 +54,8 @@ void TCPIP::TCPIPServer::runFunction()
                 size_t bytesRead = recv(events[i].data.fd, buffer->appendBufferData(), request.bytesToRead, MSG_NOSIGNAL);
 
                 buffer->bytesUsed += bytesRead;
+
+                requestHandler->handleRequest(request);
             }
         }
     }

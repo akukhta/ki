@@ -16,7 +16,7 @@ public:
             throw std::runtime_error("Can`t serialize to the empty buffer");
         }
 
-        auto dataInBytes = reinterpret_cast<unsigned char const *>(data);
+        auto dataInBytes = reinterpret_cast<unsigned char const *>(&data);
 
         for (size_t i = 0; i < sizeof(data); i++)
         {

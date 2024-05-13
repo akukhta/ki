@@ -24,26 +24,13 @@ public:
         if (client)
         {
             client->run();
+            readingFunction();
         }
         else if (server)
         {
-
+            server->run();
+            writingFunction();
         }
-        /*
-        if (type == TCPIP::Client)
-        {
-            queue->open();
-
-            fileReader->open();
-            fileioThread = std::jthread(&TCPIPTool::readingFunction, this);
-
-            queue->close(); // ???
-        }
-        else if (type == TCPIP::Server)
-        {
-            fileioThread = std::jthread(&TCPIPTool::writingFunction, this);
-        }
-         */
     }
 
 private:
@@ -65,6 +52,8 @@ private:
         }
 
         fileReader->finishRead();
+        queue->finishRead();
+        queue->close();
     }
 
     void writingFunction()
