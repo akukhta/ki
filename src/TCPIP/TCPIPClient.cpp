@@ -18,7 +18,7 @@ void TCPIP::TCPIPClient::connectToServer()
 {
     serverAddress.sin_addr.s_addr = inet_addr("127.0.0.1");
     serverAddress.sin_port = htons(5505);
-    isConnected = connect(socketFD, reinterpret_cast<sockaddr*>(&serverAddress), sizeof(serverAddress));
+    isConnected = connect(socketFD, reinterpret_cast<sockaddr*>(&serverAddress), sizeof(serverAddress)) == 0;
 }
 
 void TCPIP::TCPIPClient::send(const std::vector<unsigned char> &data)
@@ -42,6 +42,8 @@ std::vector<unsigned char> TCPIP::TCPIPClient::receive()
 
 void TCPIP::TCPIPClient::run()
 {
+    connectToServer();
+
     sendFileInfo();
 
     while (!queue->isReadFinished() && !queue->isEmpty())

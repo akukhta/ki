@@ -18,8 +18,8 @@ public:
             ("src", value(&src), "Input file")
             ("dst", value(&dst), "Output file")
             ("type", value(&type)->default_value("vbuf"), "Type of tool")
-            ("shobj", value(&sharedObjName)->default_value(""), "Name of shared object");
-            ("server", value(&isServer)->default_value(true), "True if server, otherwise client");
+            ("shobj", value(&sharedObjName)->default_value(""), "Name of shared object")
+            ("server", bool_switch()->default_value(false), "True if server, otherwise client");
 
 
         positional_options_description positionals;
@@ -43,6 +43,8 @@ public:
 
             throw std::runtime_error("Too few arguments were passed");
         }
+
+        isServer = vm.count("server");
     }
 
     [[nodiscard]] std::string getSrc() const override

@@ -58,7 +58,7 @@ private:
 
     void writingFunction()
     {
-        while (!queue->isReadFinished() && !queue->isEmpty())
+        while (true)
         {
             fileWriter->write();
         }

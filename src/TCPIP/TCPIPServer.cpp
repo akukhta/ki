@@ -2,6 +2,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/epoll.h>
+#include <iostream>
 #include "TCPUtiles.hpp"
 #include "TCPIPRequests.hpp"
 
@@ -16,7 +17,7 @@ TCPIP::TCPIPServer::TCPIPServer(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queu
 
     bind(masterSocket, reinterpret_cast<sockaddr*>(&socketAddress), sizeof(socketAddress));
     TCPIP::Utiles::setSocketNonBlock(masterSocket);
-
+    listen(masterSocket, SOMAXCONN);
     epollFD = epoll_create1(0);
 
     masterSocketEvent.data.fd = masterSocket;
@@ -33,9 +34,14 @@ void TCPIP::TCPIPServer::runFunction()
 {
     while(true)
     {
-        size_t eventsTriggered = epoll_wait(epollFD, events, MAX_EVENTS_PER_ITER, -1);
+        int eventsTriggered = epoll_wait(epollFD, events, MAX_EVENTS_PER_ITER, -1);
 
-        for (size_t i = 0; i < eventsTriggered; i++)
+        if (eventsTriggered == -1)
+        {
+            std::cout << "epoll_wait error: " << std::strerror(errno) << std::endl;
+        }
+
+        for (int i = 0; i < eventsTriggered; i++)
         {
             if (events[i].data.fd == masterSocket)
             {
