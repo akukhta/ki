@@ -116,19 +116,21 @@ public:
             case ToolType::TCPIPTOOL: {
                 auto queue = std::make_shared<FixedBufferQueue<TCPIPTag>>();
 
-                auto reader = std::make_unique<BufferedReader<TCPIPTag>>(std::move(parser.getSrc()), queue);
-                auto writer = std::make_shared<MultiFileWriter>(queue);
-                auto requestHandler = std::make_unique<TCPIP::RequestHandler>(queue, writer);
+                std::unique_ptr<BufferedReader<TCPIPTag>> reader = nullptr;
+                std::shared_ptr<MultiFileWriter> writer = nullptr;
 
                 std::unique_ptr<TCPIP::IServer> server = nullptr;
                 std::unique_ptr<TCPIP::IClient> client = nullptr;
 
                 if (parser.getIsServer())
                 {
+                    writer = std::make_shared<MultiFileWriter>(queue);
+                    auto requestHandler = std::make_unique<TCPIP::RequestHandler>(queue, writer);
                     server = std::make_unique<TCPIP::TCPIPServer>(queue, std::move(requestHandler));
                 }
                 else
                 {
+                    reader = std::make_unique<BufferedReader<TCPIPTag>>(std::move(parser.getSrc()), queue);
                     client = std::make_unique<TCPIP::TCPIPClient>(queue, std::move(parser.getSrc()));
                 }
 

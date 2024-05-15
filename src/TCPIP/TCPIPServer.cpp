@@ -3,8 +3,10 @@
 #include <arpa/inet.h>
 #include <sys/epoll.h>
 #include <iostream>
+#include <format>
 #include "TCPUtiles.hpp"
 #include "TCPIPRequests.hpp"
+#include "../common/Logger.hpp"
 
 TCPIP::TCPIPServer::TCPIPServer(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue, std::unique_ptr<IRequestHandler> requestHandler) :
     queue(queue), requestHandler(std::move(requestHandler))
@@ -61,6 +63,8 @@ void TCPIP::TCPIPServer::runFunction()
 
                 buffer->bytesUsed += bytesRead;
 
+                Logger::log(std::format("Client {}:{} : read {}, current request length {}", request.clientIP, request.clientPort, bytesRead, buffer->bytesUsed));
+
                 requestHandler->handleRequest(request);
             }
         }
@@ -89,6 +93,8 @@ void TCPIP::TCPIPServer::connectClient()
     epoll_ctl(epollFD, EPOLL_CTL_ADD, slaveSocket, &slaveSocketEvent);
 
     clientRequests.insert({slaveSocket, TCPIP::ClientRequest{clientIP, clientAddress.sin_port, queue, slaveSocket}});
+
+    Logger::log(std::format("New Client {}:{} connected", clientIP, clientAddress.sin_port));
 }
 
 void TCPIP::TCPIPServer::processRequest(int clientSocket)

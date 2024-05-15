@@ -1,11 +1,13 @@
 #pragma once
 #include <memory>
+#include <format>
 #include "IHandler.hpp"
 #include "../../queue/BufferedQueue.hpp"
 #include "../../writer/MultiFileWriter.hpp"
 #include "../RequestHeader.hpp"
 #include "../../common/Serializer.hpp"
 #include "../FileInfo.hpp"
+#include "../../common/Logger.hpp"
 
 class RequestReceivedHandler : public IHandler
 {
@@ -34,6 +36,8 @@ public:
 
                 request.completeRequest();
 
+                Logger::log(std::format("Client {}:{} : file info received({}/{})", request.clientIP, request.clientPort, fileInfo.fileName, fileInfo.fileSize));
+
                 break;
             }
 
@@ -41,7 +45,7 @@ public:
             {
                 queue->returnBuffer(std::move(*request.getRequestBuffer()));
                 request.completeRequest();
-
+                Logger::log(std::format("Client {}:{} : file chunk received", request.clientIP, request.clientPort));
                 break;
             }
         }

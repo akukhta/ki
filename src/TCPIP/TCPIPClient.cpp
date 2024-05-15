@@ -3,7 +3,9 @@
 #include <arpa/inet.h>
 #include <utility>
 #include <filesystem>
+#include <format>
 #include "../common/Serializer.hpp"
+#include "../common/Logger.hpp"
 #include "TCPIPRequests.hpp"
 #include "FileInfo.hpp"
 
@@ -46,6 +48,8 @@ void TCPIP::TCPIPClient::run()
 
     sendFileInfo();
 
+    std::getchar();
+
     while (!queue->isReadFinished() && !queue->isEmpty())
     {
         auto buffer = queue->getFilledBuffer().value();
@@ -63,23 +67,28 @@ void TCPIP::TCPIPClient::createFileChunkRequest(TCPIP::Buffer &buffer)
 {
     auto ptr = buffer.getData();
 
-    Serializer serializer;
-    serializer.serialize(&ptr, std::to_underlying(TCPIP::Request::FILE));
-    serializer.serialize(&ptr, buffer.bytesUsed);
+    Serializer<SerializerType::NoBuffer>::serialize(ptr, std::to_underlying(TCPIP::Request::FILE));
+    Serializer<SerializerType::NoBuffer>::serialize(ptr, buffer.bytesUsed);
 }
 
 void TCPIP::TCPIPClient::ssend(unsigned char *ptr, size_t bufferSize)
 {
-    ::send(socketFD, ptr, bufferSize, 0);
+    size_t sentBytes = ::send(socketFD, ptr, bufferSize, 0);
+    Logger::log(std::format("Sent {} from {} bytes requested", sentBytes, bufferSize));
 }
 
 void TCPIP::TCPIPClient::sendFileInfo()
 {
-    FileInfo info;
-    info.fileSize = std::filesystem::file_size(fileName);
-    info.fileName = std::filesystem::path(fileName).filename();
+    Serializer<SerializerType::InternalBuffer> serializer;
+    serializer.serialize(std::to_underlying(TCPIP::Request::FILE_INFO));
+    serializer.serialize(size_t{0});
+    serializer.serialize(fileName);
+    serializer.serialize(std::filesystem::path(fileName).filename().string());
 
-    auto fileInfoBuffer = info.serialize();
+    auto &buffer = serializer.getBuffer();
 
-    ssend(fileInfoBuffer.data(), fileInfoBuffer.size());
+    serializer.overwrite(sizeof(TCPIP::Request), buffer.size() - sizeof(TCPIP::Request) - sizeof(size_t));
+    Logger::log("TCPIPClient: File info sent");
+
+    ssend(buffer.data(), buffer.size());
 }

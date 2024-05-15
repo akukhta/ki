@@ -58,6 +58,8 @@ add_executable(${PROJECT_NAME}
 		src/common/Serializer.hpp
 		src/TCPIP/RequestHandler/HeaderReceivingHandler.hpp
 		src/TCPIP/IClient.hpp
+		src/common/Logger.cpp
+		src/common/Logger.hpp
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)

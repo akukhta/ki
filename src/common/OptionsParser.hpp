@@ -19,7 +19,7 @@ public:
             ("dst", value(&dst), "Output file")
             ("type", value(&type)->default_value("vbuf"), "Type of tool")
             ("shobj", value(&sharedObjName)->default_value(""), "Name of shared object")
-            ("server", bool_switch()->default_value(false), "True if server, otherwise client");
+            ("server", bool_switch(&isServer), "True if server, otherwise client");
 
 
         positional_options_description positionals;
@@ -43,8 +43,6 @@ public:
 
             throw std::runtime_error("Too few arguments were passed");
         }
-
-        isServer = vm.count("server");
     }
 
     [[nodiscard]] std::string getSrc() const override
@@ -100,5 +98,5 @@ private:
     std::string dst; /// Destination file (copy-to) absolute path
     std::string type; /// Type of tool to use, i.e in what mode perform the copying (buffered, buffered with optimized file IO, IPC)
     std::string sharedObjName; /// name of shared object, applicable for IPC tool only
-    bool isServer;
+    bool isServer = false;
 };

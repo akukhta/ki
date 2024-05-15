@@ -24,7 +24,7 @@ namespace TCPIP
 
         std::shared_ptr<TCPIP::Buffer> getRequestBuffer()
         {
-            if (state == RequestState::NEW || !buffer)
+            if (!buffer)
             {
                 buffer = std::make_shared<TCPIP::Buffer>(queue->getFreeBuffer().value());
                 buffer->setOwnerID(clientID);
