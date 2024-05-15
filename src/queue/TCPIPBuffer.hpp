@@ -40,7 +40,7 @@ namespace TCPIP
 
         unsigned char const* getRequestData()
         {
-            return data + sizeof(TCPIP::RequestHeader);
+            return data + sizeof(TCPIP::RequestHeader::requestType) + sizeof(TCPIP::RequestHeader::requestLength);
         }
 
         void setOwnerID(int id)

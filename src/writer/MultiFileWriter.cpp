@@ -40,7 +40,10 @@ void MultiFileWriter::finishWriteOfFile(unsigned int ID)
 
 MultiFileWriter::MultiFileWriter(MultiFileWriter::queueType queue) : queue(std::move(queue))
 {
-    ;
+    if (!std::filesystem::exists(rootDir))
+    {
+        std::filesystem::create_directory(rootDir);
+    }
 }
 
 void MultiFileWriter::write()

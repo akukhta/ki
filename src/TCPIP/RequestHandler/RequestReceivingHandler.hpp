@@ -13,7 +13,7 @@ public:
 
         auto buffer = request.getRequestBuffer();
 
-        if (buffer->bytesUsed - sizeof(request.header) == request.header.requestLength)
+        if (buffer->bytesUsed - sizeof(request.header.requestType) - sizeof(request.header.requestLength) == request.header.requestLength)
         {
             request.state = TCPIP::RequestState::REQUEST_RECEIVED;
             IHandler::handle(request);

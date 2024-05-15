@@ -44,6 +44,11 @@ std::vector<unsigned char> TCPIP::TCPIPClient::receive()
 
 void TCPIP::TCPIPClient::run()
 {
+    clientThread = std::jthread(&TCPIP::TCPIPClient::runFunction, this);
+}
+
+void TCPIP::TCPIPClient::runFunction()
+{
     connectToServer();
 
     sendFileInfo();
@@ -59,12 +64,9 @@ void TCPIP::TCPIPClient::run()
     }
 }
 
-void TCPIP::TCPIPClient::runFunction() {
-
-}
-
 void TCPIP::TCPIPClient::createFileChunkRequest(TCPIP::Buffer &buffer)
 {
+    // Overwriting the chunk actually, should allocate an offset
     auto ptr = buffer.getData();
 
     Serializer<SerializerType::NoBuffer>::serialize(ptr, std::to_underlying(TCPIP::Request::FILE));
@@ -82,7 +84,7 @@ void TCPIP::TCPIPClient::sendFileInfo()
     Serializer<SerializerType::InternalBuffer> serializer;
     serializer.serialize(std::to_underlying(TCPIP::Request::FILE_INFO));
     serializer.serialize(size_t{0});
-    serializer.serialize(fileName);
+    serializer.serialize(std::filesystem::file_size(fileName));
     serializer.serialize(std::filesystem::path(fileName).filename().string());
 
     auto &buffer = serializer.getBuffer();

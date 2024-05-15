@@ -135,6 +135,7 @@ public:
 
     std::vector<unsigned char>& getBuffer()
     {
+        buffer.shrink_to_fit();
         return buffer;
     }
 

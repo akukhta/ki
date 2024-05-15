@@ -46,6 +46,8 @@ private:
 
     void readingFunction()
     {
+        queue->open();
+
         fileReader->open();
 
         while (!fileReader->isReadFinished())

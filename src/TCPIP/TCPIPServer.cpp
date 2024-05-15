@@ -99,23 +99,5 @@ void TCPIP::TCPIPServer::connectClient()
 
 void TCPIP::TCPIPServer::processRequest(int clientSocket)
 {
-    /*
-    auto buffer = clientRequests[clientSocket].getRequestBuffer();
 
-    auto type = static_cast<Request>(buffer->getData()[0]);
-    auto size = *reinterpret_cast<short*>(buffer->getData()[1]);
-
-    switch(type)
-    {
-        case Request::FILE_INFO:
-        {
-            //
-        }
-
-        case Request::FILE:
-        {
-            //
-        }
-    }
-    */
 }

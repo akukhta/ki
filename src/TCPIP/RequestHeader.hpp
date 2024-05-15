@@ -2,11 +2,16 @@
 #include "TCPIPRequests.hpp"
 #include <cstdlib>
 
-namespace TCPIP
-{
+namespace TCPIP {
     struct RequestHeader
     {
+
+    union
+    {
         Request requestType;
-        size_t requestLength;
+        char requestTypeAsByte;
+    };
+
+    size_t requestLength;
     };
 }

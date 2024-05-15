@@ -1,5 +1,6 @@
 #pragma once
 #include "IHandler.hpp"
+#include "../../common/Serializer.hpp"
 
 class HeaderReceived : public IHandler
 {
@@ -13,7 +14,9 @@ public:
         }
 
         auto buffer = request.getRequestBuffer();
-        request.header = *reinterpret_cast<TCPIP::RequestHeader const*>(buffer->getData());
+
+        Serializer<SerializerType::NoBuffer>::deserialize(buffer->getData(), request.header.requestTypeAsByte);
+        Serializer<SerializerType::NoBuffer>::deserialize(buffer->getData() + sizeof(request.header.requestType), request.header.requestLength);
 
         request.state = TCPIP::RequestState::REQUEST_RECEIVING;
 
