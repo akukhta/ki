@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['write_313',['write',['../classBufferedFileWriter.html#a263c13eb2282cd3bdf1e372ad3fac4a3',1,'BufferedFileWriter::write()'],['../classIFileWriter.html#a9434fc6b0818493e392d8562657c5d5c',1,'IFileWriter::write()'],['../classIFileWriter_3_01void_01_4.html#a80efa400acf12ac30409e40b78144791',1,'IFileWriter&lt; void &gt;::write()'],['../classMMapFileWriter.html#a1b56a9cc26f4c6a3eaccf27526ddb131',1,'MMapFileWriter::write()'],['../classMultiFileWriter.html#aa16860ca258a38965621ba7544de55b3',1,'MultiFileWriter::write()']]]
+  ['tcpiptool_335',['TCPIPTool',['../classTCPIPTool.html#afed5139032644344baef6dee2388439f',1,'TCPIPTool']]],
+  ['toolfactory_336',['ToolFactory',['../classToolFactory.html#aebfac6a3565566f66ca83653ca879a98',1,'ToolFactory']]],
+  ['tryremoveactivesharedmemoryobject_337',['tryRemoveActiveSharedMemoryObject',['../classSharedMemoryManager.html#a92975a2e6170bdba9fe98ebe39dc7ac1',1,'SharedMemoryManager']]]
 ];

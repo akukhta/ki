@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['parallelcopytool_199',['ParallelCopyTool',['../classParallelCopyTool.html',1,'']]],
-  ['processterminator_200',['ProcessTerminator',['../classProcessTerminator.html',1,'']]],
-  ['procinfo_201',['ProcInfo',['../structProcInfo.html',1,'']]]
+  ['nobuffer_212',['NoBuffer',['../structSerializerType_1_1NoBuffer.html',1,'SerializerType']]],
+  ['nonipctag_213',['NonIPCTag',['../structNonIPCTag.html',1,'']]]
 ];

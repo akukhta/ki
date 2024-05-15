@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['parallelcopytool_291',['ParallelCopyTool',['../classParallelCopyTool.html#a02e46ee5270744bcc7964478960ca6d3',1,'ParallelCopyTool']]],
-  ['pop_292',['pop',['../classIQueue.html#aa5b004c323f513d5c73d11ff61cf18da',1,'IQueue::pop()'],['../classSynchronizedQueue.html#ab35e7d8febd69f65a26e71193e713593',1,'SynchronizedQueue::pop()']]],
-  ['procinfo_293',['ProcInfo',['../structProcInfo.html#abd345ad3196c544883b535544918a5dc',1,'ProcInfo']]],
-  ['push_294',['push',['../classIQueue.html#ad3d1333947dd0444d5a4c63a362f15d1',1,'IQueue::push()'],['../classSynchronizedQueue.html#a9f4aa7568b30ef2c615e46983fa1c43c',1,'SynchronizedQueue::push()']]]
+  ['open_312',['open',['../classFixedBufferQueue.html#a016b716fa825361ff74d219961666ca4',1,'FixedBufferQueue::open()'],['../classIQueue.html#ac3c85dda34fef7cf6cd94feb629a83a3',1,'IQueue::open()'],['../classSynchronizedQueue.html#ab674d9b284362a5eb52f678ce1cdd7df',1,'SynchronizedQueue::open()'],['../classBufferedReader.html#a518a48c25e3676f16c09267b2c96c165',1,'BufferedReader::open()'],['../classIFileReader.html#a6493bc8c253c1803823647b35d4c1075',1,'IFileReader::open()'],['../classMMapFileReader.html#ac6363556af32439a725e5181dcd6ef9f',1,'MMapFileReader::open()']]],
+  ['operator_3d_313',['operator=',['../classSiblingProcessObserver.html#a8828d021454d72879c32c69dd7046013',1,'SiblingProcessObserver::operator=(SiblingProcessObserver const &amp;)=delete'],['../classSiblingProcessObserver.html#ada9ca48dbc5dabcc1e7f2dc598c4a1a3',1,'SiblingProcessObserver::operator=(SiblingProcessObserver &amp;&amp;)=delete'],['../classBuffer.html#a49352807ffdf8548bf7083358d27d4c3',1,'Buffer::operator=()'],['../classSynchronizedQueue.html#aab57c3fb9690db075c5f51e5cd3fbd23',1,'SynchronizedQueue::operator=(SynchronizedQueue const &amp;)=delete'],['../classSynchronizedQueue.html#ad42ff49c103493647df11e49842d11dc',1,'SynchronizedQueue::operator=(SynchronizedQueue &amp;&amp;)=delete'],['../classTCPIP_1_1Buffer.html#aed2e9065d6886170062a850b7138698d',1,'TCPIP::Buffer::operator=()']]],
+  ['optionsparser_314',['OptionsParser',['../classOptionsParser.html#adcb59f0c98e54dad07b72c754de0c216',1,'OptionsParser']]],
+  ['overwrite_315',['overwrite',['../classSerializer_3_01SerializerType_1_1ExternalBuffer_01_4.html#a39f05ba917c53c587361e9919340bcda',1,'Serializer&lt; SerializerType::ExternalBuffer &gt;']]]
 ];

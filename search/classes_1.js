@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['fixedbufferqueue_183',['FixedBufferQueue',['../classFixedBufferQueue.html',1,'']]],
-  ['fixedbufferqueue_3c_20ipctag_20_3e_184',['FixedBufferQueue&lt; IPCTag &gt;',['../classFixedBufferQueue.html',1,'']]]
+  ['externalbuffer_195',['ExternalBuffer',['../structSerializerType_1_1ExternalBuffer.html',1,'SerializerType']]]
 ];

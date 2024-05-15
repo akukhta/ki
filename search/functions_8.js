@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['open_288',['open',['../classFixedBufferQueue.html#a016b716fa825361ff74d219961666ca4',1,'FixedBufferQueue::open()'],['../classIQueue.html#ac3c85dda34fef7cf6cd94feb629a83a3',1,'IQueue::open()'],['../classSynchronizedQueue.html#ab674d9b284362a5eb52f678ce1cdd7df',1,'SynchronizedQueue::open()'],['../classBufferedReader.html#a518a48c25e3676f16c09267b2c96c165',1,'BufferedReader::open()'],['../classIFileReader.html#a6493bc8c253c1803823647b35d4c1075',1,'IFileReader::open()'],['../classMMapFileReader.html#ac6363556af32439a725e5181dcd6ef9f',1,'MMapFileReader::open()']]],
-  ['operator_3d_289',['operator=',['../classSiblingProcessObserver.html#a8828d021454d72879c32c69dd7046013',1,'SiblingProcessObserver::operator=(SiblingProcessObserver const &amp;)=delete'],['../classSiblingProcessObserver.html#ada9ca48dbc5dabcc1e7f2dc598c4a1a3',1,'SiblingProcessObserver::operator=(SiblingProcessObserver &amp;&amp;)=delete'],['../classBuffer.html#a49352807ffdf8548bf7083358d27d4c3',1,'Buffer::operator=()'],['../classSynchronizedQueue.html#aab57c3fb9690db075c5f51e5cd3fbd23',1,'SynchronizedQueue::operator=(SynchronizedQueue const &amp;)=delete'],['../classSynchronizedQueue.html#ad42ff49c103493647df11e49842d11dc',1,'SynchronizedQueue::operator=(SynchronizedQueue &amp;&amp;)=delete'],['../classTCPIP_1_1Buffer.html#aed2e9065d6886170062a850b7138698d',1,'TCPIP::Buffer::operator=()']]],
-  ['optionsparser_290',['OptionsParser',['../classOptionsParser.html#adcb59f0c98e54dad07b72c754de0c216',1,'OptionsParser']]]
+  ['main_308',['main',['../main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main.cpp']]],
+  ['mmapfilereader_309',['MMapFileReader',['../classMMapFileReader.html#a35ea6311ec064e3e672ee9894737fb28',1,'MMapFileReader']]],
+  ['mmapfilewriter_310',['MMapFileWriter',['../classMMapFileWriter.html#ade32c05aafa715b308bbd5db688f6793',1,'MMapFileWriter']]],
+  ['multifilewriter_311',['MultiFileWriter',['../classMultiFileWriter.html#a882424de3a142039e64c32098007f731',1,'MultiFileWriter']]]
 ];

@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['read_295',['read',['../classBufferedReader.html#a6966d2525458df6522f8199c0301fe3c',1,'BufferedReader::read()'],['../classIFileReader.html#a0ddf9977b656d7e3caf0ec2327d4a5cf',1,'IFileReader::read()'],['../classMMapFileReader.html#acb2e9c2eadc48c71e36e807e1467b2c0',1,'MMapFileReader::read()']]],
-  ['registernewfile_296',['registerNewFile',['../classMultiFileWriter.html#aae884012a1a313dee879fc50b9018796',1,'MultiFileWriter']]],
-  ['requires_297',['requires',['../classSerializer.html#a6b4e5e15e2993980646a01b6cad2e371',1,'Serializer::requires(std::ranges::contiguous_range&lt; T &gt; &amp;&amp;std::is_fundamental_v&lt; typename T::value_type &gt;) void serialize(T const &amp;container)'],['../classSerializer.html#a097cfab3baa90a02991fec0a6f2c0a98',1,'Serializer::requires(std::ranges::contiguous_range&lt; T &gt; &amp;&amp;std::is_fundamental_v&lt; typename T::value_type &gt;) void serialize(unsigned char *externalBuffer'],['../classSerializer.html#aacae6ebdff334f66ea9824ff962e9236',1,'Serializer::requires(std::ranges::contiguous_range&lt; T &gt; &amp;&amp;std::is_fundamental_v&lt; typename T::value_type &gt;) void deserialize(T &amp;container)'],['../classSerializer.html#ac62ba2844d1c59aeb8b7e2e7dee9cc23',1,'Serializer::requires(std::ranges::contiguous_range&lt; T &gt; &amp;&amp;std::is_fundamental_v&lt; typename T::value_type &gt;) void deserialize(unsigned char const *externalBuffer'],['../classFixedBufferQueue.html#a311ad3217cf6ce7f84729c28fb00680a',1,'FixedBufferQueue::requires()']]],
-  ['reserve_298',['reserve',['../classSerializer.html#a332a94445735084755b70e7937fbae43',1,'Serializer']]],
-  ['returnbuffer_299',['returnBuffer',['../classFixedBufferQueue.html#a58ef6b6b0f0206c2af9452cdd36d0d60',1,'FixedBufferQueue']]]
+  ['parallelcopytool_316',['ParallelCopyTool',['../classParallelCopyTool.html#a02e46ee5270744bcc7964478960ca6d3',1,'ParallelCopyTool']]],
+  ['pop_317',['pop',['../classIQueue.html#aa5b004c323f513d5c73d11ff61cf18da',1,'IQueue::pop()'],['../classSynchronizedQueue.html#ab35e7d8febd69f65a26e71193e713593',1,'SynchronizedQueue::pop()']]],
+  ['procinfo_318',['ProcInfo',['../structProcInfo.html#abd345ad3196c544883b535544918a5dc',1,'ProcInfo']]],
+  ['push_319',['push',['../classIQueue.html#ad3d1333947dd0444d5a4c63a362f15d1',1,'IQueue::push()'],['../classSynchronizedQueue.html#a9f4aa7568b30ef2c615e46983fa1c43c',1,'SynchronizedQueue::push()']]]
 ];

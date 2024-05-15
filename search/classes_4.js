@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['nonipctag_197',['NonIPCTag',['../structNonIPCTag.html',1,'']]]
+  ['logger_208',['Logger',['../classLogger.html',1,'']]]
 ];

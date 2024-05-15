@@ -5,5 +5,5 @@ var searchData=
   ['finishwriteoffile_37',['finishWriteOfFile',['../classMultiFileWriter.html#aeeaec381bb518b8a48233fad107216ff',1,'MultiFileWriter']]],
   ['fixedbufferqueue_38',['FixedBufferQueue',['../classFixedBufferQueue.html',1,'FixedBufferQueue&lt; Tag &gt;'],['../classFixedBufferQueue.html#a77f138873fdd02e5dfc51716141f9349',1,'FixedBufferQueue::FixedBufferQueue()']]],
   ['fixedbufferqueue_3c_20ipctag_20_3e_39',['FixedBufferQueue&lt; IPCTag &gt;',['../classFixedBufferQueue.html',1,'']]],
-  ['for_40',['for',['../classSerializer.html#adfca40c0e1f0c536a619ed2c2b97a990',1,'Serializer::for(auto const &amp;el :container)'],['../classSerializer.html#aedf12fb2bb97ed47c0f2357c18e590f4',1,'Serializer::for(size_t i=0;i&lt; elementsCount;i++)']]]
+  ['for_40',['for',['../classSerializer_3_01SerializerType_1_1NoBuffer_01_4.html#afd21f90291d7663c09e2f0081e268ebc',1,'Serializer&lt; SerializerType::NoBuffer &gt;::for(auto const &amp;el :container)'],['../classSerializer_3_01SerializerType_1_1NoBuffer_01_4.html#a6e337b6d91fb232d93222d67625a202c',1,'Serializer&lt; SerializerType::NoBuffer &gt;::for(size_t i=0;i&lt; elementsCount;i++)']]]
 ];

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['elementscount_33',['elementsCount',['../classSerializer.html#a6b2ab8b2d08d22da678cd4dd10f7c5a4',1,'Serializer']]],
-  ['externalbufferoffset_34',['externalBufferOffset',['../classSerializer.html#a28bfdbfe8a2bdf0cc1875508a1d3436c',1,'Serializer']]]
+  ['elementscount_33',['elementsCount',['../classSerializer_3_01SerializerType_1_1NoBuffer_01_4.html#afb561783139dbe15b9d9d12ad2cad3a9',1,'Serializer&lt; SerializerType::NoBuffer &gt;']]],
+  ['externalbuffer_34',['ExternalBuffer',['../structSerializerType_1_1ExternalBuffer.html',1,'SerializerType']]]
 ];
