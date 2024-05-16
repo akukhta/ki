@@ -4,8 +4,8 @@
 #include "../writer/MultiFileWriter.hpp"
 #include "../reader/BufferedFileReader.hpp"
 #include "../queue/BufferedQueue.hpp"
-#include "../TCPIP/IServer.hpp"
-#include "../TCPIP/IClient.hpp"
+#include "../TCPIP/Server/IServer.hpp"
+#include "../TCPIP/Client/IClient.hpp"
 
 class TCPIPTool : public ICopyTool
 {

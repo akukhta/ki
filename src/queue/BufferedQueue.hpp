@@ -57,8 +57,6 @@ struct TCPIPTag
 template <class Tag>
 class FixedBufferQueue : public Tag
 {
-    /// Typename to determine which buffers to use: ipc(allocated within shared memory) or non-ipc(allocated on the stack)
-private:
 public:
 
     /// Constructor for non-IPC tool queue

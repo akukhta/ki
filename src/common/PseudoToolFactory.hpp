@@ -6,9 +6,8 @@
 #include "../writer/MultiFileWriter.hpp"
 #include "../queue/SynchronizedQueue.hpp"
 #include "../queue/BufferedQueue.hpp"
-#include "../TCPIP/TCPIPServer.hpp"
-#include "../TCPIP/TCPIPClient.hpp"
-#include "../TCPIP/RequestHandler/RequestHandler.hpp"
+#include "../TCPIP/Server/TCPIPServer.hpp"
+#include "../TCPIP/Client/TCPIPClient.hpp"
 #include "ParallelCopyTool.hpp"
 #include "BufferedParallelCopyTool.hpp"
 #include "TCPIPTool.hpp"
@@ -115,8 +114,6 @@ public:
             }
 
             case ToolType::TCPIPTOOL: {
-                auto queue = std::make_shared<FixedBufferQueue<TCPIPTag>>();
-
                 std::unique_ptr<BufferedReader<TCPIPTag>> reader = nullptr;
                 std::shared_ptr<MultiFileWriter> writer = nullptr;
 
@@ -125,17 +122,18 @@ public:
 
                 if (parser.getIsServer())
                 {
+                    auto queue = std::make_shared<TCPIP::FixedBufferQueue>();
                     writer = std::make_shared<MultiFileWriter>(queue);
-                    auto requestHandler = std::make_unique<TCPIP::RequestHandler>(queue, writer);
-                    server = std::make_unique<TCPIP::TCPIPServer>(queue, std::move(requestHandler));
+                    server = std::make_unique<TCPIP::TCPIPServer>(queue);
+                    tool = std::make_unique<TCPIPTool>(std::move(reader), writer, queue, std::move(server), std::move(client));
                 }
                 else
                 {
+                    auto queue = std::make_shared<FixedBufferQueue<TCPIPTag>>();
                     reader = std::make_unique<TCPIP::BufferedReader>(std::move(parser.getSrc()), queue);
                     client = std::make_unique<TCPIP::TCPIPClient>(queue, std::move(parser.getSrc()));
+                    tool = std::make_unique<TCPIPTool>(std::move(reader), writer, queue, std::move(server), std::move(client));
                 }
-
-                tool = std::make_unique<TCPIPTool>(std::move(reader), writer, queue, std::move(server), std::move(client));
 
                 break;
             }

@@ -6,14 +6,14 @@
 #include <thread>
 #include <memory>
 #include "IClient.hpp"
-#include "../queue/BufferedQueue.hpp"
+#include "../../queue/BufferedQueue.hpp"
 
 namespace TCPIP
 {
     class TCPIPClient : public IClient
     {
     public:
-        TCPIPClient(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue, std::string const &fileName);
+        TCPIPClient(std::shared_ptr<::FixedBufferQueue<TCPIPTag>> queue, std::string const &fileName);
 
         virtual void run() override;
 
@@ -35,7 +35,7 @@ namespace TCPIP
         int socketFD;
         sockaddr_in serverAddress;
         bool isConnected = false;
-        std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue;
+        std::shared_ptr<::FixedBufferQueue<TCPIPTag>> queue;
 
         std::jthread clientThread;
         std::string fileName;

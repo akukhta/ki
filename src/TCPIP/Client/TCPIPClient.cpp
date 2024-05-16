@@ -4,10 +4,9 @@
 #include <utility>
 #include <filesystem>
 #include <format>
-#include "../common/Serializer.hpp"
-#include "../common/Logger.hpp"
-#include "TCPIPRequests.hpp"
-#include "FileInfo.hpp"
+#include "../../common/Serializer.hpp"
+#include "../../common/Logger.hpp"
+#include "../Common/FileInfo.hpp"
 
 TCPIP::TCPIPClient::TCPIPClient(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue, std::string const &fileName)
     : queue(std::move(queue)), fileName(fileName)
@@ -67,11 +66,7 @@ void TCPIP::TCPIPClient::runFunction()
 void TCPIP::TCPIPClient::createFileChunkRequest(TCPIP::Buffer &buffer)
 {
     // Overwriting the chunk actually, should allocate an offset
-    auto ptr = buffer.getData();
-    Serializer<SerializerType::NoBuffer>::overwrite(ptr, 0, std::to_underlying(TCPIP::Request::FILE));
-    Serializer<SerializerType::NoBuffer>::overwrite(ptr, sizeof(RequestHeader::requestType), buffer.bytesUsed);
-
-    ssend(ptr, buffer.bytesUsed + RequestHeader::StructureSizeNoAligment());
+    //
 }
 
 void TCPIP::TCPIPClient::ssend(unsigned char *ptr, size_t bufferSize)
@@ -83,14 +78,12 @@ void TCPIP::TCPIPClient::ssend(unsigned char *ptr, size_t bufferSize)
 void TCPIP::TCPIPClient::sendFileInfo()
 {
     Serializer<SerializerType::InternalBuffer> serializer;
-    serializer.serialize(std::to_underlying(TCPIP::Request::FILE_INFO));
     serializer.serialize(size_t{0});
     serializer.serialize(std::filesystem::file_size(fileName));
     serializer.serialize(std::filesystem::path(fileName).filename().string());
 
     auto &buffer = serializer.getBuffer();
 
-    serializer.overwrite(sizeof(TCPIP::Request), buffer.size() - sizeof(TCPIP::Request) - sizeof(size_t));
     Logger::log("TCPIPClient: File info sent");
 
     ssend(buffer.data(), buffer.size());

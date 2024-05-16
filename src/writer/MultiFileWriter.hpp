@@ -3,7 +3,7 @@
 #include <memory>
 #include "IFileWriter.hpp"
 #include "../queue/BufferedQueue.hpp"
-#include "../TCPIP/FileInfo.hpp"
+#include "../TCPIP/Common/FileInfo.hpp"
 #include <fstream>
 #include <thread>
 

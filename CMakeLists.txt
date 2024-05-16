@@ -34,33 +34,32 @@ add_executable(${PROJECT_NAME}
 		src/IPC/SiblingProcessObserver.cpp
 		src/writer/MultiFileWriter.cpp
 		src/writer/MultiFileWriter.hpp
-		src/TCPIP/FileInfo.hpp
+		src/TCPIP/Common/FileInfo.hpp
 		src/queue/Buffer/BufferType.hpp
 		src/common/TCPIPTool.hpp
-		src/TCPIP/TCPUtiles.hpp
-		src/TCPIP/TCPIPClient.cpp
-		src/TCPIP/TCPIPClient.hpp
-		src/TCPIP/TCPIPRequests.hpp
-		src/TCPIP/TCPIPServer.cpp
-		src/TCPIP/TCPIPServer.hpp
-		src/TCPIP/ClientRequest.hpp
+		src/TCPIP/Common/TCPUtiles.hpp
+		src/TCPIP/Client/TCPIPClient.cpp
+		src/TCPIP/Client/TCPIPClient.hpp
+		src/TCPIP/Server/TCPIPServer.cpp
+		src/TCPIP/Server/TCPIPServer.hpp
 		src/queue/TCPIPBuffer.hpp
-		src/TCPIP/RequestHeader.hpp
-		src/TCPIP/RequestHandler/RequestHandler.cpp
-		src/TCPIP/RequestHandler/RequestHandler.hpp
-		src/TCPIP/RequestHandler/IRequestHandler.hpp
-		src/TCPIP/IServer.hpp
-		src/TCPIP/RequestHandler/IHandler.hpp
-		src/TCPIP/RequestHandler/NewRequestHandler.hpp
-		src/TCPIP/RequestHandler/HeaderReceivedHandler.hpp
-		src/TCPIP/RequestHandler/RequestReceivingHandler.hpp
-		src/TCPIP/RequestHandler/RequestReceivedHandler.hpp
+		src/TCPIP/Server/IServer.hpp
 		src/common/Serializer.hpp
-		src/TCPIP/RequestHandler/HeaderReceivingHandler.hpp
-		src/TCPIP/IClient.hpp
+		src/TCPIP/Client/IClient.hpp
 		src/common/Logger.cpp
 		src/common/Logger.hpp
 		src/reader/TCPIPBufferedFileReader.h
+		src/TCPIP/Request/RequestTypes.h
+		src/TCPIP/Request/IRequest.h
+		src/TCPIP/Request/ObtainBufferRequest.hpp
+		src/TCPIP/Server/ConnectedClient.cpp
+		src/TCPIP/Server/ConnectedClient.hpp
+		src/TCPIP/Server/TCPIPQueue.hpp
+		src/TCPIP/Request/RequestHandler.cpp
+		src/TCPIP/Request/RequestHandler.hpp
+		src/TCPIP/Request/RequestParser.hpp
+		src/TCPIP/Request/RequestHeader.hpp
+		src/TCPIP/Request/FileInfoReceived.hpp
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)

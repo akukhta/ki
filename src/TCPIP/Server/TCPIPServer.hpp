@@ -7,16 +7,17 @@
 #include <vector>
 #include <unordered_map>
 #include <memory>
-#include "ClientRequest.hpp"
 #include "IServer.hpp"
-#include "RequestHandler/IRequestHandler.hpp"
+#include "TCPIPQueue.hpp"
+#include "ConnectedClient.hpp"
+#include "../Request/RequestHeader.hpp"
 
 namespace TCPIP
 {
     class TCPIPServer :public IServer
     {
     public:
-        TCPIPServer(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue, std::unique_ptr<IRequestHandler> requestHandler);
+        TCPIPServer(std::shared_ptr<FixedBufferQueue> queue);
 
         virtual void run() override;
         size_t getConnectedClientsAmount();
@@ -36,11 +37,11 @@ namespace TCPIP
         std::jthread serverThread;
 
         void connectClient();
+        void validateRequest(ConnectedClient &client);
+        void receiveRequest(ConnectedClient &client);
 
-        void processRequest(int clientSocket);
-
-        std::unordered_map<int, TCPIP::ClientRequest> clientRequests;
-        std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue;
-        std::unique_ptr<IRequestHandler> requestHandler;
+        std::unordered_map<int, TCPIP::RequestHeader> headerCache;
+        std::unordered_map<int, TCPIP::ConnectedClient> clients;
+        std::shared_ptr<FixedBufferQueue> queue;
     };
 }

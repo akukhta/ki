@@ -1,6 +1,5 @@
 #pragma once
 #include "Buffer/BufferType.hpp"
-#include "../TCPIP/RequestHeader.hpp"
 #include <cstdlib>
 
 namespace TCPIP
@@ -40,7 +39,7 @@ namespace TCPIP
 
         unsigned char const* getRequestData()
         {
-            return data + sizeof(TCPIP::RequestHeader::requestType) + sizeof(TCPIP::RequestHeader::requestLength);
+            return data;
         }
 
         void setOwnerID(int id)
