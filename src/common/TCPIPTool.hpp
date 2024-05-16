@@ -31,6 +31,8 @@ public:
             server->run();
             writingFunction();
         }
+
+        std::cout << "end" << std::endl;
     }
 
 private:
@@ -62,9 +64,13 @@ private:
 
     void writingFunction()
     {
+        queue->open();
+
         while (true)
         {
             fileWriter->write();
         }
+
+        queue->close();
     }
 };
