@@ -83,6 +83,23 @@ public:
             container.push_back(element);
         }
     }
+
+    template <typename T>
+        requires std::is_fundamental_v<T>
+    static void overwrite(unsigned char *externalBuffer, size_t pos, T const &data)
+    {
+        if (externalBuffer == nullptr)
+        {
+            throw std::runtime_error("Buffer is nullptr");
+        }
+
+        auto dataInBytes = reinterpret_cast<unsigned char const *>(&data);
+
+        for (size_t i = 0, memoryPos = pos; i < sizeof(data); i++, memoryPos++)
+        {
+            externalBuffer[memoryPos] = dataInBytes[i];
+        }
+    }
 };
 
 template<>

@@ -19,7 +19,7 @@ namespace TCPIP
             // Determine amount of bytes to read and store in the buffer
             if (currentOffset + BUFFER_SIZE <= fileSize)
             {
-                buf.bytesUsed = BUFFER_SIZE;
+                buf.bytesUsed = BUFFER_SIZE - RequestHeader::StructureSizeNoAligment();
             }
             else
             {
@@ -28,7 +28,7 @@ namespace TCPIP
 
             auto readCount = std::min(currentOffset + BUFFER_SIZE, fileSize);
 
-            if (setvbuf(fileDesc, reinterpret_cast<char*>(buf.getData() + RequestHeader::StructureSizeNoAligment()), _IOFBF, BUFFER_SIZE))
+            if (setvbuf(fileDesc, reinterpret_cast<char*>(buf.getData() + RequestHeader::StructureSizeNoAligment()), _IOFBF, BUFFER_SIZE - RequestHeader::StructureSizeNoAligment()))
             {
                 throw std::runtime_error("can`t set buffering mode");
             }

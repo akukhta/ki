@@ -18,7 +18,7 @@ TCPIP::TCPIPClient::TCPIPClient(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queu
 
 void TCPIP::TCPIPClient::connectToServer()
 {
-    serverAddress.sin_addr.s_addr = inet_addr("127.0.0.1");
+    serverAddress.sin_addr.s_addr = inet_addr("192.168.0.80");
     serverAddress.sin_port = htons(5505);
     isConnected = connect(socketFD, reinterpret_cast<sockaddr*>(&serverAddress), sizeof(serverAddress)) == 0;
 }
@@ -53,14 +53,14 @@ void TCPIP::TCPIPClient::runFunction()
 
     sendFileInfo();
 
-    std::getchar();
+    //std::getchar();
 
     while (!queue->isReadFinished() && !queue->isEmpty())
     {
         auto buffer = queue->getFilledBuffer().value();
         createFileChunkRequest(buffer);
-        ssend(buffer.getData(), sizeof(TCPIP::RequestHeader) + buffer.bytesUsed);
         queue->returnBuffer(std::move(buffer));
+    //    std::getchar();
     }
 }
 
@@ -68,9 +68,10 @@ void TCPIP::TCPIPClient::createFileChunkRequest(TCPIP::Buffer &buffer)
 {
     // Overwriting the chunk actually, should allocate an offset
     auto ptr = buffer.getData();
+    Serializer<SerializerType::NoBuffer>::overwrite(ptr, 0, std::to_underlying(TCPIP::Request::FILE));
+    Serializer<SerializerType::NoBuffer>::overwrite(ptr, sizeof(RequestHeader::requestType), buffer.bytesUsed);
 
-    Serializer<SerializerType::NoBuffer>::serialize(ptr, std::to_underlying(TCPIP::Request::FILE));
-    Serializer<SerializerType::NoBuffer>::serialize(ptr, buffer.bytesUsed);
+    ssend(ptr, buffer.bytesUsed + RequestHeader::StructureSizeNoAligment());
 }
 
 void TCPIP::TCPIPClient::ssend(unsigned char *ptr, size_t bufferSize)
