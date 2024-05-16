@@ -109,7 +109,7 @@ public:
 
     //static inline size_t defaultBufferSize = sysconf(_SC_PAGESIZE);
 
-private:
+protected:
     std::FILE* fileDesc = nullptr;
 
     size_t fileSize = 0;

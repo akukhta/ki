@@ -5,13 +5,17 @@
 namespace TCPIP {
     struct RequestHeader
     {
+        size_t requestLength;
 
-    union
-    {
-        Request requestType;
-        char requestTypeAsByte;
-    };
+        union
+        {
+            Request requestType;
+            char requestTypeAsByte;
+        };
 
-    size_t requestLength;
+        static size_t StructureSizeNoAligment()
+        {
+            return sizeof(requestLength) + sizeof(requestType);
+        }
     };
 }

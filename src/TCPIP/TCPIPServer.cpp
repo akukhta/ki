@@ -15,7 +15,7 @@ TCPIP::TCPIPServer::TCPIPServer(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queu
 
     socketAddress.sin_family = AF_INET;
     socketAddress.sin_port = htons(5505);
-    socketAddress.sin_addr.s_addr = inet_addr("127.0.0.1");
+    socketAddress.sin_addr.s_addr = inet_addr("192.168.0.80");
 
     bind(masterSocket, reinterpret_cast<sockaddr*>(&socketAddress), sizeof(socketAddress));
     TCPIP::Utiles::setSocketNonBlock(masterSocket);

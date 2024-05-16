@@ -60,6 +60,7 @@ add_executable(${PROJECT_NAME}
 		src/TCPIP/IClient.hpp
 		src/common/Logger.cpp
 		src/common/Logger.hpp
+		src/reader/TCPIPBufferedFileReader.h
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)

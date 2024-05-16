@@ -19,6 +19,7 @@
 #include <iostream>
 #include <vector>
 #include <boost/interprocess/interprocess_fwd.hpp>
+#include "../reader/TCPIPBufferedFileReader.h"
 
 /// Factory that creates proper copy tool based on passed arguments
 class ToolFactory
@@ -130,7 +131,7 @@ public:
                 }
                 else
                 {
-                    reader = std::make_unique<BufferedReader<TCPIPTag>>(std::move(parser.getSrc()), queue);
+                    reader = std::make_unique<TCPIP::BufferedReader>(std::move(parser.getSrc()), queue);
                     client = std::make_unique<TCPIP::TCPIPClient>(queue, std::move(parser.getSrc()));
                 }
 
