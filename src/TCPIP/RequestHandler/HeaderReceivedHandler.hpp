@@ -19,6 +19,7 @@ public:
         Serializer<SerializerType::NoBuffer>::deserialize(buffer->getData() + sizeof(request.header.requestType), request.header.requestLength);
 
         request.state = TCPIP::RequestState::REQUEST_RECEIVING;
+        buffer->bytesUsed -= TCPIP::RequestHeader::StructureSizeNoAligment();
 
         IHandler::handle(request);
     }

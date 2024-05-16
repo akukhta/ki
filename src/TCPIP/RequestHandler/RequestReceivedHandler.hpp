@@ -43,6 +43,8 @@ public:
 
             case TCPIP::Request::FILE:
             {
+                request.getRequestBuffer()->owningClientID = request.clientID;
+
                 queue->returnBuffer(std::move(*request.getRequestBuffer()));
                 request.completeRequest();
                 Logger::log(std::format("Client {}:{} : file chunk received", request.clientIP, request.clientPort));

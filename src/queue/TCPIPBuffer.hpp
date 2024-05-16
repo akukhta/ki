@@ -13,7 +13,7 @@ namespace TCPIP
 
         Buffer(Buffer && other) noexcept
                 :   data(other.data), bytesUsed(other.bytesUsed),
-                    bufferType(other.bufferType)
+                    bufferType(other.bufferType), owningClientID(other.owningClientID)
         {
             other.data = nullptr;
         }
