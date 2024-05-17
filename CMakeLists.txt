@@ -50,7 +50,7 @@ add_executable(${PROJECT_NAME}
 		src/common/Logger.hpp
 		src/reader/TCPIPBufferedFileReader.h
 		src/TCPIP/Request/RequestTypes.h
-		src/TCPIP/Request/IRequest.h
+        src/TCPIP/Request/ICommand.h
 		src/TCPIP/Request/ObtainBufferRequest.hpp
 		src/TCPIP/Server/ConnectedClient.cpp
 		src/TCPIP/Server/ConnectedClient.hpp
@@ -60,6 +60,9 @@ add_executable(${PROJECT_NAME}
 		src/TCPIP/Request/RequestParser.hpp
 		src/TCPIP/Request/RequestHeader.hpp
 		src/TCPIP/Request/FileInfoReceived.hpp
+		src/TCPIP/Request/CommandFactory.cpp
+		src/TCPIP/Request/CommandFactory.hpp
+		src/TCPIP/Request/FlyweightCommand.hpp
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)

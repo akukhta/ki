@@ -1,17 +1,14 @@
 #pragma once
-#include "IRequest.h"
+#include "ICommand.h"
 #include "RequestHeader.hpp"
 #include "../Server/ConnectedClient.hpp"
 
 namespace TCPIP
 {
-    class FileInfoReceived : public IRequest
+    class FileInfoReceived : public ICommand
     {
     public:
-        FileInfoReceived(std::span<unsigned>)
-        {}
-
-        void handle() override
+        void execute(std::shared_ptr<TCPIP::ConnectedClient> client) override
         {
             switch (header.type)
             {

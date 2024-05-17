@@ -2,7 +2,7 @@
 #include <memory>
 #include <optional>
 #include "../../queue/TCPIPBuffer.hpp"
-#include "../Request/IRequest.h"
+#include "../Request/ICommand.h"
 
 namespace TCPIP
 {
@@ -17,7 +17,7 @@ namespace TCPIP
             return buffer != nullptr;
         }
 
-        std::shared_ptr<IRequest> currentRequest = nullptr;
+        std::shared_ptr<ICommand> currentRequest = nullptr;
 
         auto getBuffer()
         {

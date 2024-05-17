@@ -1,31 +1,27 @@
 #pragma once
-#include "IRequest.h"
+#include "ICommand.h"
 #include "RequestHeader.hpp"
 #include "FileInfoReceived.hpp"
 #include "../Server/ConnectedClient.hpp"
 
 namespace TCPIP
 {
-    class RequestParser : public IRequest
+    class RequestParser : public ICommand
     {
     public:
-        RequestParser(ConnectedClient& client, TCPIP::RequestHeader const& header)
-            : client(client), header(header)
-        {}
+        RequestParser() = default;
 
-        void handle() override
+        void execute(std::shared_ptr<class ConnectedClient> client) override
         {
+            /*
             switch (header.type)
             {
                 case RequestType::FILE_INFO_RECEIVED:
                 {
-                    RequestHandler::addRequest(std::make_shared<TCPIP::File>())
+                    //RequestHandler::addRequest(std::make_shared<TCPIP::File>())
                 }
             }
+            */
         }
-
-    private:
-        ConnectedClient &client;
-        TCPIP::RequestHeader const &header;
     };
 }
