@@ -1,5 +1,7 @@
 #pragma once
+#include <vector>
 #include <span>
+#include "../queue/Buffer/BufferConfiguration.hpp"
 
 namespace SerializerType
 {

@@ -2,11 +2,11 @@
 #include <memory>
 #include <optional>
 #include "../../queue/TCPIPBuffer.hpp"
-#include "../Request/ICommand.h"
+#include "../Request/ClientRequest.hpp"
 
 namespace TCPIP
 {
-    class ConnectedClient
+    class ConnectedClient : public std::enable_shared_from_this<ConnectedClient>
     {
     public:
         ConnectedClient(int socket) : socket(socket){}
@@ -17,17 +17,14 @@ namespace TCPIP
             return buffer != nullptr;
         }
 
-        std::shared_ptr<ICommand> currentRequest = nullptr;
-
-        auto getBuffer()
+        void createRequest()
         {
-            return buffer;
+            currentRequest = std::make_shared<ClientRequest>(shared_from_this(), buffer);
         }
 
-        int socket;
-    private:
-        friend class std::hash<TCPIP::ConnectedClient>;
-        friend class ObtainBufferRequest;
+        std::shared_ptr<ClientRequest> currentRequest = nullptr;
         std::shared_ptr<TCPIP::Buffer> buffer;
+
+        int socket;
     };
 }

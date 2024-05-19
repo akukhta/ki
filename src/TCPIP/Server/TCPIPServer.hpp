@@ -37,11 +37,12 @@ namespace TCPIP
         std::jthread serverThread;
 
         void connectClient();
-        void validateRequest(ConnectedClient &client);
-        void receiveRequest(ConnectedClient &client);
+        void validateRequest(std::shared_ptr<ConnectedClient> client);
+        void receiveRequest(std::shared_ptr<ConnectedClient> client);
+        bool tryGetClientBuffer(std::shared_ptr<ConnectedClient> client);
 
         std::unordered_map<int, TCPIP::RequestHeader> headerCache;
-        std::unordered_map<int, TCPIP::ConnectedClient> clients;
+        std::unordered_map<int, std::shared_ptr<TCPIP::ConnectedClient>> clients;
         std::shared_ptr<FixedBufferQueue> queue;
     };
 }

@@ -7,10 +7,8 @@
 #include <memory>
 #include "../Common/TCPUtiles.hpp"
 #include "../../common/Logger.hpp"
-#include "../Request/ObtainBufferRequest.hpp"
 #include "../Request/RequestHandler.hpp"
 #include "../../common/Serializer.hpp"
-#include "../Request/RequestParser.hpp"
 
 TCPIP::TCPIPServer::TCPIPServer(std::shared_ptr<FixedBufferQueue> queue)
     : queue(std::move(queue))
@@ -93,54 +91,89 @@ void TCPIP::TCPIPServer::connectClient()
     epoll_ctl(epollFD, EPOLL_CTL_ADD, slaveSocket, &slaveSocketEvent);
 
     //clientRequests.insert({slaveSocket, TCPIP::ClientRequest{clientIP, clientAddress.sin_port, queue, slaveSocket}});
-    auto &connectedClient = clients.emplace(slaveSocket, slaveSocket).first->second;
+    auto &connectedClient = clients.emplace(slaveSocket, std::make_shared<TCPIP::ConnectedClient>(slaveSocket)).first->second;
     Logger::log(std::format("New Client {}:{} connected", clientIP, clientAddress.sin_port));
 
+    tryGetClientBuffer(connectedClient);
     // Try to obtain a buffer for the client
     // in order to store requests
-    RequestHandler::getInstance()->addRequest(std::make_shared<TCPIP::ObtainBufferRequest>(queue, connectedClient));
+    //RequestHandler::getInstance()->addRequest(commandFactory->createCommand(TCPIP::RequestType::CLIENT_CONNECTED, connectedClient));
 }
 
-void TCPIP::TCPIPServer::validateRequest(ConnectedClient &client)
+void TCPIP::TCPIPServer::validateRequest(std::shared_ptr<ConnectedClient> client)
 {
-    auto buffer = client.getBuffer();
-
-    // Check if buffer contains header
-    if (buffer->bytesUsed >= sizeof(RequestHeader::type) + sizeof(RequestHeader::messageLength))
+    // Header has been just received
+    if (!client->currentRequest)
     {
-        // Check if header has not been cached
-        if (headerCache.find(client.socket) == headerCache.end())
+        if (client->buffer->bytesUsed >= sizeof(RequestHeader::type) + sizeof(RequestHeader::messageLength))
         {
-            headerCache.insert(std::make_pair(client.socket, RequestHeader{}));
+            client->createRequest();
+            client->currentRequest->parseHeader();
+        }
+    }
 
-            Serializer<SerializerType::NoBuffer>::deserialize(buffer->getData(), headerCache[client.socket].typeAsByte);
-            Serializer<SerializerType::NoBuffer>::deserialize(buffer->getData() + sizeof(RequestHeader::type), headerCache[client.socket].messageLength);
+    client->currentRequest->updateRequestState();
+
+    switch(client->currentRequest->state)
+    {
+        case RequestState::RECEIVING:
+        {
+            // Request is still being received, nothing to do yet
+            return;
+            break;
+        }
+        case RequestState::RECEIVED:
+        {
+            // Request has been recived, can be processed by requestHandler
+            RequestHandler::getInstance()->addRequest(client->currentRequest);
+            break;
         }
 
-        // Check if we've already received the entire request from the client
-        if (buffer->bytesUsed - RequestHeader::noAligmentSize() == headerCache[client.socket].messageLength)
+        default:
         {
-            RequestHandler::getInstance()->addRequest(std::make_shared<TCPIP::RequestParser>(client, headerCache[client.socket]));
-            headerCache.erase(client.socket);
+            break;
         }
     }
 }
 
-void TCPIP::TCPIPServer::receiveRequest(TCPIP::ConnectedClient &client)
+void TCPIP::TCPIPServer::receiveRequest(std::shared_ptr<ConnectedClient> client)
 {
-    if (!client.isBufferAvailable() || (client.currentRequest && client.currentRequest->getType() != RequestType::RECEIVING_REQUEST))
+    // If client does not have buffer already
+    // try to obtain it
+    // If the attempt has failed, leave and try next time
+    if (!client->isBufferAvailable() && !tryGetClientBuffer(client))
     {
-        // The client already has an active request to be handled, ignore it for now
         return;
     }
 
-    auto buffer = client.getBuffer();
+    auto &buffer = client->buffer;
 
-    size_t bytesRead = recv(client.socket, buffer->appendBufferData(), BUFFER_SIZE, MSG_NOSIGNAL);
+    size_t bytesRead = recv(client->socket, buffer->appendBufferData(), BUFFER_SIZE, MSG_NOSIGNAL);
     buffer->bytesUsed += bytesRead;
 
     validateRequest(client);
 
     //Logger::log(std::format("Client {}:{} : read {}, current request length {}", request.clientIP, request.clientPort, bytesRead, buffer->bytesUsed));
+}
+
+bool TCPIP::TCPIPServer::tryGetClientBuffer(std::shared_ptr<ConnectedClient> client)
+{
+    if (!client->buffer && !client->currentRequest)
+    {
+        Logger::log("Client already owns a buffer or has active request");
+        return false;
+    }
+
+    auto rv = queue->getFreeBufferNonBlock();
+
+    if (rv)
+    {
+        client->buffer = std::make_shared<TCPIP::Buffer>(std::move(rv.value()));
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 

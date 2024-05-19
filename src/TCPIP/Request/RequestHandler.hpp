@@ -4,7 +4,7 @@
 #include <queue>
 #include <mutex>
 #include <thread>
-#include "ICommand.h"
+#include "ClientRequest.hpp"
 
 namespace TCPIP
 {
@@ -17,7 +17,7 @@ namespace TCPIP
             return instance;
         }
 
-        void addRequest(std::shared_ptr<ICommand> request)
+        void addRequest(std::shared_ptr<ClientRequest> request)
         {
             std::scoped_lock lk{mutex};
             requests.push(std::move(request));
@@ -31,7 +31,7 @@ namespace TCPIP
 
 
         std::mutex mutex;
-        std::queue<std::shared_ptr<ICommand>> requests;
+        std::queue<std::shared_ptr<ClientRequest>> requests;
         std::jthread handlingThread;
     };
 }
