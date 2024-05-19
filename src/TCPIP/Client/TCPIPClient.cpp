@@ -17,7 +17,7 @@ TCPIP::TCPIPClient::TCPIPClient(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queu
 
 void TCPIP::TCPIPClient::connectToServer()
 {
-    serverAddress.sin_addr.s_addr = inet_addr("192.168.0.80");
+    serverAddress.sin_addr.s_addr = inet_addr("192.168.0.87");
     serverAddress.sin_port = htons(5505);
     isConnected = connect(socketFD, reinterpret_cast<sockaddr*>(&serverAddress), sizeof(serverAddress)) == 0;
 }
@@ -51,7 +51,9 @@ void TCPIP::TCPIPClient::runFunction()
     connectToServer();
 
     sendFileInfo();
-
+    //std::this_thread::sleep_for(std::chrono::seconds (1));
+    char a;
+    recv(socketFD, &a, 1, MSG_NOSIGNAL);
     //std::getchar();
 
     while (!queue->isReadFinished() && !queue->isEmpty())
@@ -59,14 +61,19 @@ void TCPIP::TCPIPClient::runFunction()
         auto buffer = queue->getFilledBuffer().value();
         createFileChunkRequest(buffer);
         queue->returnBuffer(std::move(buffer));
-    //    std::getchar();
+        recv(socketFD, &a, 1, MSG_NOSIGNAL);
+        //std::getchar();
+        //std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 }
 
 void TCPIP::TCPIPClient::createFileChunkRequest(TCPIP::Buffer &buffer)
 {
-    // Overwriting the chunk actually, should allocate an offset
-    //
+    auto ptr = buffer.getData();
+    Serializer<SerializerType::NoBuffer>::overwrite(ptr, 0, std::to_underlying(TCPIP::RequestType::FILE_CHUNK_RECEIVED));
+    Serializer<SerializerType::NoBuffer>::overwrite(ptr, sizeof(RequestHeader::type), buffer.bytesUsed - RequestHeader::noAligmentSize());
+
+    ssend(ptr, buffer.bytesUsed);
 }
 
 void TCPIP::TCPIPClient::ssend(unsigned char *ptr, size_t bufferSize)
@@ -78,10 +85,11 @@ void TCPIP::TCPIPClient::ssend(unsigned char *ptr, size_t bufferSize)
 void TCPIP::TCPIPClient::sendFileInfo()
 {
     Serializer<SerializerType::InternalBuffer> serializer;
-    serializer.serialize(size_t{0});
+    serializer.serialize(std::to_underlying(RequestType::FILE_INFO_RECEIVED));
+    serializer.serialize(short{0});
     serializer.serialize(std::filesystem::file_size(fileName));
     serializer.serialize(std::filesystem::path(fileName).filename().string());
-
+    serializer.overwrite(sizeof(RequestType), static_cast<short>(serializer.getBuffer().size() - sizeof(RequestType) - sizeof(short)));
     auto &buffer = serializer.getBuffer();
 
     Logger::log("TCPIPClient: File info sent");
