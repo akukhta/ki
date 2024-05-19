@@ -175,7 +175,7 @@ public:
 
             dequeToPush.emplace_back(std::move(buffer)).setType(typeToSet);
 
-            Logger::log(std::format("Buffer returned {} readers/{} writers", readBuffers.size(), writeBuffers.size()));
+            //::log(std::format("Buffer returned {} readers/{} writers", readBuffers.size(), writeBuffers.size()));
         }
 
         cv.notify_all();

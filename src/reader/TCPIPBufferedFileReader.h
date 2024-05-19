@@ -17,18 +17,18 @@ namespace TCPIP
             auto buf = queue->getFreeBuffer().value();
 
             // Determine amount of bytes to read and store in the buffer
-            if (currentOffset + BUFFER_SIZE <= fileSize)
+            if (currentOffset + BUFFER_SIZE - RequestHeader::noAligmentSize() <= fileSize)
             {
-                buf.bytesUsed = BUFFER_SIZE;
+                buf.bytesUsed = BUFFER_SIZE - RequestHeader::noAligmentSize();
             }
             else
             {
-                buf.bytesUsed = fileSize - currentOffset;
+                buf.bytesUsed = fileSize - currentOffset - RequestHeader::noAligmentSize();
             }
 
-            auto readCount = std::min(currentOffset + BUFFER_SIZE, fileSize);
+            auto readCount = std::min(currentOffset + BUFFER_SIZE - RequestHeader::noAligmentSize(), fileSize);
 
-            if (setvbuf(fileDesc, reinterpret_cast<char*>(buf.getRequestData()), _IOFBF, BUFFER_SIZE))
+            if (setvbuf(fileDesc, reinterpret_cast<char*>(buf.getRequestData()), _IOFBF, BUFFER_SIZE - RequestHeader::noAligmentSize()))
             {
                 throw std::runtime_error("can`t set buffering mode");
             }
@@ -39,7 +39,7 @@ namespace TCPIP
 
             if (currentOffset < fileSize)
             {
-                fseek(fileDesc, BUFFER_SIZE - 1, SEEK_CUR);
+                fseek(fileDesc, BUFFER_SIZE - RequestHeader::noAligmentSize() - 1, SEEK_CUR);
             }
             else
             {

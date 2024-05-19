@@ -33,6 +33,7 @@ public:
         {
             client->run();
             readingFunction();
+            client->join();
         }
         else if (server)
         {
