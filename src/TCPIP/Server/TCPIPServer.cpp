@@ -17,7 +17,7 @@ TCPIP::TCPIPServer::TCPIPServer(std::shared_ptr<FixedBufferQueue> queue, std::un
 
     socketAddress.sin_family = AF_INET;
     socketAddress.sin_port = htons(5505);
-    socketAddress.sin_addr.s_addr = inet_addr("192.168.0.80");
+    socketAddress.sin_addr.s_addr = inet_addr("192.168.0.87");
 
     bind(masterSocket, reinterpret_cast<sockaddr*>(&socketAddress), sizeof(socketAddress));
     TCPIP::Utiles::setSocketNonBlock(masterSocket);
@@ -32,6 +32,7 @@ TCPIP::TCPIPServer::TCPIPServer(std::shared_ptr<FixedBufferQueue> queue, std::un
 void TCPIP::TCPIPServer::run()
 {
     serverThread = std::jthread(&TCPIPServer::runFunction, this);
+    requestHandler->startHandling();
 }
 
 void TCPIP::TCPIPServer::runFunction()

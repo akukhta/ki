@@ -4,8 +4,10 @@
 
 std::unordered_map<TCPIP::RequestType, std::function<void(TCPIP::RequestHandler&, std::shared_ptr<TCPIP::ClientRequest>)>> TCPIP::RequestHandler::handlerFunctions =
 {
-    std::make_pair(TCPIP::RequestType::FILE_INFO_RECEIVED,
-     std::bind(&TCPIP::RequestHandler::fileInfoReceived, std::placeholders::_1, std::placeholders::_2))
+    {TCPIP::RequestType::FILE_INFO_RECEIVED,
+     std::bind(&TCPIP::RequestHandler::fileInfoReceived, std::placeholders::_1, std::placeholders::_2)},
+    {TCPIP::RequestType::FILE_CHUNK_RECEIVED,
+     std::bind(&TCPIP::RequestHandler::fileChunkReceived, std::placeholders::_1, std::placeholders::_2)}
 };
 
 
@@ -30,7 +32,7 @@ void TCPIP::RequestHandler::startHandling()
 
 void TCPIP::RequestHandler::handle(std::stop_token token)
 {
-    while (token.stop_requested())
+    while (!token.stop_requested())
     {
         std::unique_lock<std::mutex> lk(mutex);
         cv.wait(lk, [this](){return !requests.empty();});
@@ -49,18 +51,20 @@ TCPIP::RequestHandler::~RequestHandler()
 
 void TCPIP::RequestHandler::fileInfoReceived(std::shared_ptr<ClientRequest> request)
 {
-    auto &buffer = request->ownerClient->buffer;
+    auto &buffer = request->buffer;
     FileInfo fileInfo = FileInfo::deserialize(buffer->getRequestData());
 
     writer->registerNewFile(request->ownerClient->socket, fileInfo);
 
-    request->ownerClient->buffer->reset();
+    request->buffer->reset();
+    queue->releaseBuffer(std::move(*request->buffer));
     request->ownerClient->currentRequest = nullptr;
 }
 
 void TCPIP::RequestHandler::fileChunkReceived(std::shared_ptr<ClientRequest> request)
 {
-    queue->returnBuffer(std::move(*request->ownerClient->buffer));
+    queue->returnBuffer(std::move(*request->buffer));
+    request->ownerClient->currentRequest = nullptr;
 }
 
 

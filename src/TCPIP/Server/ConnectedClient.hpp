@@ -14,7 +14,7 @@ namespace TCPIP
 
         bool isBufferAvailable() const noexcept
         {
-            return buffer != nullptr || currentRequest->buffer != nullptr;
+            return buffer != nullptr || (currentRequest && currentRequest->buffer != nullptr);
         }
 
         void createRequest()

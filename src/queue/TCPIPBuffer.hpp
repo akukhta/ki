@@ -38,7 +38,7 @@ namespace TCPIP
             return data;
         }
 
-        unsigned char const* getRequestData()
+        unsigned char* getRequestData()
         {
             return data + TCPIP::RequestHeader::noAligmentSize();
         }

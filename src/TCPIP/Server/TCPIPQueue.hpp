@@ -22,5 +22,19 @@ namespace TCPIP
             buffer.setType(::BufferType::READ);
             return buffer;
         }
+
+        void releaseBuffer(TCPIP::Buffer buffer)
+        {
+            RAIILockType lm(queueMutex);
+
+            if (buffer.getType() == ::BufferType::READ)
+            {
+                readBuffers.emplace_back(std::move(buffer));
+            }
+            else
+            {
+                writeBuffers.emplace_back(std::move(buffer));
+            }
+        }
     };
 }
