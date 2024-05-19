@@ -1,6 +1,4 @@
 #include "RequestHandler.hpp"
-#include "../../common/Serializer.hpp"
-#include "../../common/Logger.hpp"
 #include "../Server/ConnectedClient.hpp"
 
 std::unordered_map<TCPIP::RequestType, std::function<void(TCPIP::RequestHandler&, std::shared_ptr<TCPIP::ClientRequest>)>> TCPIP::RequestHandler::handlerFunctions =

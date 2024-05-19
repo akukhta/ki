@@ -9,7 +9,8 @@ namespace TCPIP
     class ConnectedClient : public std::enable_shared_from_this<ConnectedClient>
     {
     public:
-        ConnectedClient(int socket) : socket(socket){}
+        ConnectedClient(int socket, std::string const &clientIP, int clientPort)
+            : socket(socket), clientIP(clientIP), clientPort(clientPort) {}
         ConnectedClient() : socket(-1) {}
         ~ConnectedClient();
 
@@ -39,7 +40,9 @@ namespace TCPIP
 
         std::shared_ptr<ClientRequest> currentRequest = nullptr;
         std::shared_ptr<TCPIP::Buffer> buffer = nullptr;
+        std::string clientIP;
 
+        int clientPort;
         int socket;
     };
 }

@@ -1,6 +1,7 @@
 #include "TCPIPServer.hpp"
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <stdio.h>
 #include <sys/epoll.h>
 #include <iostream>
 #include <format>
@@ -88,18 +89,14 @@ void TCPIP::TCPIPServer::connectClient()
     slaveSocketEvent.data.fd = slaveSocket;
     slaveSocketEvent.events = EPOLLIN;
 
-    auto clientIP = inet_ntoa(*reinterpret_cast<in_addr*>(&clientAddress));
+    auto clientIP = inet_ntoa(*reinterpret_cast<in_addr*>(&clientAddress.sin_addr));
 
     epoll_ctl(epollFD, EPOLL_CTL_ADD, slaveSocket, &slaveSocketEvent);
 
-    //clientRequests.insert({slaveSocket, TCPIP::ClientRequest{clientIP, clientAddress.sin_port, queue, slaveSocket}});
-    auto &connectedClient = clients.emplace(slaveSocket, std::make_shared<TCPIP::ConnectedClient>(slaveSocket)).first->second;
-    Logger::log(std::format("New Client {}:{} connected", clientIP, clientAddress.sin_port));
+    auto &connectedClient = clients.emplace(slaveSocket, std::make_shared<TCPIP::ConnectedClient>(slaveSocket, clientIP, htons(clientAddress.sin_port))).first->second;
+    Logger::log(std::format("New Client {}:{} connected", clientIP, htons(clientAddress.sin_port)));
 
     tryGetClientBuffer(connectedClient);
-    // Try to obtain a buffer for the client
-    // in order to store requests
-    //RequestHandler::getInstance()->addRequest(commandFactory->createCommand(TCPIP::RequestType::CLIENT_CONNECTED, connectedClient));
 }
 
 void TCPIP::TCPIPServer::validateRequest(std::shared_ptr<ConnectedClient> client)
@@ -155,10 +152,7 @@ void TCPIP::TCPIPServer::receiveRequest(std::shared_ptr<ConnectedClient> client)
     }
 
     auto buffer = client->getBuffer();
-    //char b[BUFFER_SIZE];
     size_t bytesRead = recv(client->socket, buffer->appendBufferData(), BUFFER_SIZE - buffer->bytesUsed, MSG_NOSIGNAL);
-    //size_t bytesRead = recv(client->socket, buffer->appendBufferData(), BUFFER_SIZE, MSG_NOSIGNAL);
-    //size_t bytesRead = recv(client->socket, &b, BUFFER_SIZE, MSG_NOSIGNAL);
     buffer->bytesUsed += bytesRead;
 
     Logger::log(std::format("Read {}, current request length {}", bytesRead, buffer->bytesUsed));
