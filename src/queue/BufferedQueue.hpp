@@ -12,6 +12,8 @@
 #include "../IPC/SharedMemoryManager.hpp"
 #include "Buffer/BufferConfiguration.hpp"
 #include "TCPIPBuffer.hpp"
+#include "../common/Logger.hpp"
+#include <format>
 
 struct NonIPCTag
 {
@@ -172,6 +174,8 @@ public:
             auto &dequeToPush = typeToSet == BufferType::READ ? readBuffers : writeBuffers;
 
             dequeToPush.emplace_back(std::move(buffer)).setType(typeToSet);
+
+            Logger::log(std::format("Buffer returned {} readers/{} writers", readBuffers.size(), writeBuffers.size()));
         }
 
         cv.notify_all();

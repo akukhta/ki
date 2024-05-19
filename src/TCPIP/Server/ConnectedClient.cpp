@@ -1,5 +1,7 @@
-//
-// Created by alex on 16.05.24.
-//
-
 #include "ConnectedClient.hpp"
+
+TCPIP::ConnectedClient::~ConnectedClient()
+{
+    auto v = rand();
+    v += rand();
+}

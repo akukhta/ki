@@ -19,12 +19,13 @@ namespace TCPIP
     {
     public:
         TCPIPServer(std::shared_ptr<FixedBufferQueue> queue, std::unique_ptr<IRequestHandler> requestHandler);
+        ~TCPIPServer();
 
         virtual void run() override;
+        void runFunction();
         size_t getConnectedClientsAmount();
 
     private:
-        void runFunction();
 
         static size_t constexpr MAX_EVENTS_PER_ITER = 32;
         epoll_event events[MAX_EVENTS_PER_ITER];
@@ -40,6 +41,13 @@ namespace TCPIP
         void connectClient();
         void validateRequest(std::shared_ptr<ConnectedClient> client);
         void receiveRequest(std::shared_ptr<ConnectedClient> client);
+
+        template <typename T>
+        void send(int socket, T const &data)
+        {
+            ::send(socket, reinterpret_cast<char const*>(&data), sizeof(data), MSG_NOSIGNAL);
+        }
+
         bool tryGetClientBuffer(std::shared_ptr<ConnectedClient> client);
 
         std::unordered_map<int, TCPIP::RequestHeader> headerCache;
