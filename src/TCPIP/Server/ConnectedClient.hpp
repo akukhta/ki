@@ -11,6 +11,7 @@ namespace TCPIP
     public:
         ConnectedClient(int socket) : socket(socket){}
         ConnectedClient() : socket(-1) {}
+        ~ConnectedClient();
 
         bool isBufferAvailable() const noexcept
         {

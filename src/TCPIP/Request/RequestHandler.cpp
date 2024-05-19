@@ -1,5 +1,6 @@
 #include "RequestHandler.hpp"
 #include "../../common/Serializer.hpp"
+#include "../../common/Logger.hpp"
 #include "../Server/ConnectedClient.hpp"
 
 std::unordered_map<TCPIP::RequestType, std::function<void(TCPIP::RequestHandler&, std::shared_ptr<TCPIP::ClientRequest>)>> TCPIP::RequestHandler::handlerFunctions =
@@ -37,10 +38,17 @@ void TCPIP::RequestHandler::handle(std::stop_token token)
         std::unique_lock<std::mutex> lk(mutex);
         cv.wait(lk, [this](){return !requests.empty();});
 
-        auto &request = requests.front();
+        auto request = requests.front();
         requests.pop();
 
-        handlerFunctions[request->getRequestType()](*this, request);
+        if (handlerFunctions.find(request->getRequestType()) != handlerFunctions.end())
+        {
+            handlerFunctions[request->getRequestType()](*this, request);
+        }
+        else
+        {
+            std::cout << "Incorrect handler\n";
+        }
     }
 }
 
@@ -58,13 +66,14 @@ void TCPIP::RequestHandler::fileInfoReceived(std::shared_ptr<ClientRequest> requ
 
     request->buffer->reset();
     queue->releaseBuffer(std::move(*request->buffer));
-    request->ownerClient->currentRequest = nullptr;
+    //request->ownerClient->currentRequest = nullptr;
 }
 
 void TCPIP::RequestHandler::fileChunkReceived(std::shared_ptr<ClientRequest> request)
 {
     queue->returnBuffer(std::move(*request->buffer));
-    request->ownerClient->currentRequest = nullptr;
+    //request->ownerClient->currentRequest = nullptr;
+    Logger::log("File Chunk scheduled");
 }
 
 

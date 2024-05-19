@@ -1,5 +1,6 @@
 #include "MultiFileWriter.hpp"
 #include <filesystem>
+#include "../common/Logger.hpp"
 
 void MultiFileWriter::registerNewFile(unsigned int ID, TCPIP::FileInfo const &fileInfo)
 {
@@ -59,12 +60,25 @@ void MultiFileWriter::write()
         std::unique_lock lk(mutex);
 
         auto &id = buf->owningClientID;
-        fwrite(buf->getRequestData(), buf->bytesUsed, 1, filesDescs[id]);
+        auto data = buf->getRequestData();
+        if (data) {
+            fwrite(buf->getRequestData(), buf->bytesUsed, 1, filesDescs[id]);
+        }
+        else
+        {
+            auto v = rand();
+            v += rand();
+        }
         filesInfo[id].bytesWritten += buf->bytesUsed;
+        Logger::log("File Chunk write");
+
+        buf->reset();
+        queue->returnBuffer(std::move(buf.value()));
 
         if (filesInfo[id].bytesWritten + buf->bytesUsed >= filesInfo[id].fileSize)
         {
             finishWriteOfFile(id);
+            Logger::log("Finished writing of the file");
         }
     }
 }

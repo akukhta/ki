@@ -12,15 +12,17 @@ namespace TCPIP
             RAIILockType lm(queueMutex);
             // Check if we can actually return buffer
             // if we can`t, return nullopt
-            if (readBuffers.empty() && !isOpen.load())
+            if (readBuffers.empty())
             {
                 return std::nullopt;
             }
-
-            auto buffer = std::move(readBuffers.back());
-            readBuffers.pop_back();
-            buffer.setType(::BufferType::READ);
-            return buffer;
+            else
+            {
+                auto buffer = std::move(readBuffers.back());
+                readBuffers.pop_back();
+                buffer.setType(::BufferType::READ);
+                return buffer;
+            }
         }
 
         void releaseBuffer(TCPIP::Buffer buffer)
@@ -35,6 +37,8 @@ namespace TCPIP
             {
                 writeBuffers.emplace_back(std::move(buffer));
             }
+
+            Logger::log(std::format("Buffer returned {} readers/{} writers", readBuffers.size(), writeBuffers.size()));
         }
     };
 }

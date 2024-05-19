@@ -13,10 +13,21 @@ namespace TCPIP
 
         Buffer(Buffer && other) noexcept
                 :   data(other.data), bytesUsed(other.bytesUsed),
-                    bufferType(other.bufferType), owningClientID(other.owningClientID)
+                    bufferType(other.bufferType), owningClientID(other.owningClientID), mutex(std::move(other.mutex))
         {
             other.data = nullptr;
         }
+
+        void lock()
+        {
+            mutex->lock();
+        }
+
+        void unlock()
+        {
+            mutex->unlock();
+        }
+
 
         void setType(BufferType type)
         {
@@ -62,5 +73,6 @@ namespace TCPIP
 
     private:
         BufferType bufferType;
+        std::unique_ptr<std::mutex> mutex;
     };
 }
