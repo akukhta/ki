@@ -1,5 +1,6 @@
 #pragma once
 #include "Buffer/BufferType.hpp"
+#include "../TCPIP/Request/RequestHeader.hpp"
 #include <cstdlib>
 
 namespace TCPIP
@@ -39,12 +40,17 @@ namespace TCPIP
 
         unsigned char const* getRequestData()
         {
-            return data;
+            return data + TCPIP::RequestHeader::noAligmentSize();
         }
 
         void setOwnerID(int id)
         {
             owningClientID = id;
+        }
+
+        void reset()
+        {
+            bytesUsed = 0;
         }
 
         Buffer(Buffer const&) = delete;

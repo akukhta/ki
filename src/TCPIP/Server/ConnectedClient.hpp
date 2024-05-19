@@ -14,16 +14,30 @@ namespace TCPIP
 
         bool isBufferAvailable() const noexcept
         {
-            return buffer != nullptr;
+            return buffer != nullptr || currentRequest->buffer != nullptr;
         }
 
         void createRequest()
         {
+            // Once we've created a request, a buffer should be given to it
             currentRequest = std::make_shared<ClientRequest>(shared_from_this(), buffer);
+            buffer = nullptr;
+        }
+
+        std::shared_ptr<TCPIP::Buffer> getBuffer()
+        {
+            if (currentRequest)
+            {
+                return currentRequest->buffer;
+            }
+            else
+            {
+                return buffer;
+            }
         }
 
         std::shared_ptr<ClientRequest> currentRequest = nullptr;
-        std::shared_ptr<TCPIP::Buffer> buffer;
+        std::shared_ptr<TCPIP::Buffer> buffer = nullptr;
 
         int socket;
     };

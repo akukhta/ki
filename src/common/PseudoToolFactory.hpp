@@ -19,6 +19,7 @@
 #include <vector>
 #include <boost/interprocess/interprocess_fwd.hpp>
 #include "../reader/TCPIPBufferedFileReader.h"
+#include "../TCPIP/Request/RequestHandler.hpp"
 
 /// Factory that creates proper copy tool based on passed arguments
 class ToolFactory
@@ -124,7 +125,8 @@ public:
                 {
                     auto queue = std::make_shared<TCPIP::FixedBufferQueue>();
                     writer = std::make_shared<MultiFileWriter>(queue);
-                    server = std::make_unique<TCPIP::TCPIPServer>(queue);
+                    auto requestHandler = std::make_unique<TCPIP::RequestHandler>(queue, writer);
+                    server = std::make_unique<TCPIP::TCPIPServer>(queue, std::move(requestHandler));
                     tool = std::make_unique<TCPIPTool>(std::move(reader), writer, queue, std::move(server), std::move(client));
                 }
                 else

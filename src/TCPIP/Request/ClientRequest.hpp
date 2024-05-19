@@ -58,6 +58,8 @@ namespace TCPIP {
         RequestState state = RequestState::NEW;
 
     private:
+        friend class RequestHandler;
+        friend class ConnectedClient;
         std::shared_ptr<ConnectedClient> ownerClient;
         std::shared_ptr<TCPIP::Buffer> buffer;
         std::optional<RequestHeader> header = std::nullopt;

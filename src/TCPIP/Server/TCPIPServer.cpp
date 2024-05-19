@@ -10,8 +10,8 @@
 #include "../Request/RequestHandler.hpp"
 #include "../../common/Serializer.hpp"
 
-TCPIP::TCPIPServer::TCPIPServer(std::shared_ptr<FixedBufferQueue> queue)
-    : queue(std::move(queue))
+TCPIP::TCPIPServer::TCPIPServer(std::shared_ptr<FixedBufferQueue> queue, std::unique_ptr<IRequestHandler> requestHandler)
+    : queue(std::move(queue)), requestHandler(std::move(requestHandler))
 {
     masterSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
@@ -105,7 +105,7 @@ void TCPIP::TCPIPServer::validateRequest(std::shared_ptr<ConnectedClient> client
     // Header has been just received
     if (!client->currentRequest)
     {
-        if (client->buffer->bytesUsed >= sizeof(RequestHeader::type) + sizeof(RequestHeader::messageLength))
+        if (client->getBuffer()->bytesUsed >= sizeof(RequestHeader::type) + sizeof(RequestHeader::messageLength))
         {
             client->createRequest();
             client->currentRequest->parseHeader();
@@ -125,7 +125,7 @@ void TCPIP::TCPIPServer::validateRequest(std::shared_ptr<ConnectedClient> client
         case RequestState::RECEIVED:
         {
             // Request has been recived, can be processed by requestHandler
-            RequestHandler::getInstance()->addRequest(client->currentRequest);
+            requestHandler->addRequest(client->currentRequest);
             break;
         }
 
@@ -146,7 +146,7 @@ void TCPIP::TCPIPServer::receiveRequest(std::shared_ptr<ConnectedClient> client)
         return;
     }
 
-    auto &buffer = client->buffer;
+    auto buffer = client->getBuffer();
 
     size_t bytesRead = recv(client->socket, buffer->appendBufferData(), BUFFER_SIZE, MSG_NOSIGNAL);
     buffer->bytesUsed += bytesRead;
@@ -158,7 +158,7 @@ void TCPIP::TCPIPServer::receiveRequest(std::shared_ptr<ConnectedClient> client)
 
 bool TCPIP::TCPIPServer::tryGetClientBuffer(std::shared_ptr<ConnectedClient> client)
 {
-    if (!client->buffer && !client->currentRequest)
+    if (client->buffer || client->currentRequest)
     {
         Logger::log("Client already owns a buffer or has active request");
         return false;
