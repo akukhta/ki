@@ -20,6 +20,13 @@ void TCPIP::TCPIPClient::connectToServer()
     serverAddress.sin_addr.s_addr = inet_addr("192.168.0.87");
     serverAddress.sin_port = htons(5505);
     isConnected = connect(socketFD, reinterpret_cast<sockaddr*>(&serverAddress), sizeof(serverAddress)) == 0;
+
+    {
+        struct sockaddr_in sin;
+        socklen_t len = sizeof(sin);
+        if (getsockname(socketFD, (struct sockaddr *) &sin, &len) != -1)
+            std::cout << "Client socket uses " << ntohs(sin.sin_port) << " port";
+    }
 }
 
 void TCPIP::TCPIPClient::send(const std::vector<unsigned char> &data)
@@ -56,7 +63,7 @@ void TCPIP::TCPIPClient::runFunction()
     recv(socketFD, &a, 1, MSG_NOSIGNAL);
     //std::getchar();
 
-    while (!queue->isReadFinished() && !queue->isEmpty())
+    while (queue->isReadFinished() == false || queue->isEmpty() == false)
     {
         auto buffer = queue->getFilledBuffer().value();
         createFileChunkRequest(buffer);

@@ -24,6 +24,11 @@ namespace TCPIP
 
         virtual std::vector<unsigned char> receive() override;
 
+        void join() override
+        {
+            clientThread.join();
+        }
+
     private:
 
         void runFunction();
@@ -36,8 +41,7 @@ namespace TCPIP
         sockaddr_in serverAddress;
         bool isConnected = false;
         std::shared_ptr<::FixedBufferQueue<TCPIPTag>> queue;
-
-        std::jthread clientThread;
         std::string fileName;
+        std::jthread clientThread;
     };
 }
