@@ -39,9 +39,9 @@ namespace TCPIP
         std::jthread serverThread;
 
         void connectClient();
-        void validateRequest(std::shared_ptr<ConnectedClient> client);
-        void receiveRequest(std::shared_ptr<ConnectedClient> client);
-        void clientDisconnected(int clientID);
+        void processReceivedData(int clientSocket);
+        void receiveData(int clientSocket);
+        void clientDisconnected(int clientSocket);
 
         template <typename T>
         void send(int socket, T const &data)
@@ -49,7 +49,7 @@ namespace TCPIP
             ::send(socket, reinterpret_cast<char const*>(&data), sizeof(data), MSG_NOSIGNAL);
         }
 
-        bool tryGetClientBuffer(std::shared_ptr<ConnectedClient> client);
+        bool tryGetClientBuffer(int clientSocket);
 
         std::unordered_map<int, TCPIP::RequestHeader> headerCache;
         std::unordered_map<int, std::shared_ptr<TCPIP::ConnectedClient>> clients;

@@ -39,8 +39,14 @@ namespace TCPIP {
             }
             else
             {
+                requestReceived = true;
                 state = RequestState::RECEIVING;
             }
+        }
+
+        bool isRequestReceived() const
+        {
+            return requestReceived;
         }
 
         RequestType getRequestType()
@@ -63,6 +69,6 @@ namespace TCPIP {
         std::shared_ptr<ConnectedClient> ownerClient;
         std::shared_ptr<TCPIP::Buffer> buffer;
         std::optional<RequestHeader> header = std::nullopt;
-
+        bool requestReceived = false;
     };
 }

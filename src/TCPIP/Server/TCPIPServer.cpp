@@ -59,7 +59,7 @@ void TCPIP::TCPIPServer::runFunction()
                 else
                 {
                     auto &client = clients[events[i].data.fd];
-                    receiveRequest(client);
+                    receiveData(events[i].data.fd);
                 }
             }
 
@@ -82,112 +82,102 @@ void TCPIP::TCPIPServer::connectClient()
     sockaddr_in clientAddress;
     socklen_t addrLen = sizeof(clientAddress);
 
-    int slaveSocket = accept(masterSocket, reinterpret_cast<sockaddr*>(&clientAddress), &addrLen);
-    TCPIP::Utiles::setSocketNonBlock(slaveSocket);
+    int clientSocket = accept(masterSocket, reinterpret_cast<sockaddr*>(&clientAddress), &addrLen);
+    TCPIP::Utiles::setSocketNonBlock(clientSocket);
 
     epoll_event slaveSocketEvent;
-    slaveSocketEvent.data.fd = slaveSocket;
+    slaveSocketEvent.data.fd = clientSocket;
     slaveSocketEvent.events = EPOLLIN | EPOLLRDHUP | EPOLLHUP;
 
     auto clientIP = inet_ntoa(*reinterpret_cast<in_addr*>(&clientAddress.sin_addr));
 
-    epoll_ctl(epollFD, EPOLL_CTL_ADD, slaveSocket, &slaveSocketEvent);
+    epoll_ctl(epollFD, EPOLL_CTL_ADD, clientSocket, &slaveSocketEvent);
 
-    auto &connectedClient = clients.emplace(slaveSocket, std::make_shared<TCPIP::ConnectedClient>(slaveSocket, clientIP, htons(clientAddress.sin_port))).first->second;
+    clients.emplace(clientSocket, std::make_shared<TCPIP::ConnectedClient>(clientSocket, clientIP, htons(clientAddress.sin_port))).first->second;
     Logger::log(std::format("New Client {}:{} connected", clientIP, htons(clientAddress.sin_port)));
 
-    tryGetClientBuffer(connectedClient);
+    tryGetClientBuffer(clientSocket);
 }
 
-void TCPIP::TCPIPServer::validateRequest(std::shared_ptr<ConnectedClient> client)
+void TCPIP::TCPIPServer::processReceivedData(int clientSocket)
 {
-    //send(client->socket, char{0x01});
     // Header has been just received
+    auto client = clients[clientSocket];
+
+    // Create a request for a given client and
+    // parse header if possible
     if (!client->currentRequest)
     {
+        // Check if the client has received header
         if (client->getBuffer()->bytesUsed >= sizeof(RequestHeader::type) + sizeof(RequestHeader::messageLength))
         {
+            // Create request and parse header
             client->createRequest();
             client->currentRequest->parseHeader();
         }
         else
         {
+            // Return if header has not received yet (can`t be processed further)
             return;
         }
     }
 
+    // Update request state
+    // Check if the request has been received completely
     client->currentRequest->updateRequestState();
 
-    switch(client->currentRequest->state)
-    {
-        case RequestState::RECEIVING:
-        {
-            // Request is still being received, nothing to do yet
-            return;
-        }
-        case RequestState::RECEIVED:
-        {
-            // Request has been recived, can be processed by requestHandler
-            requestHandler->addRequest(client->currentRequest);
-            client->currentRequest = nullptr;
-            send(client->socket, char{0x01});
-            break;
-        }
+    // Check the request state
+    // And send to the processing pipeline if possible
 
-        default:
-        {
-            break;
-        }
+    if (client->currentRequest->isRequestReceived())
+    {
+        requestHandler->addRequest(client->currentRequest);
+        client->currentRequest = nullptr;
+        send(client->socket, char{0x01});
     }
 }
 
-void TCPIP::TCPIPServer::receiveRequest(std::shared_ptr<ConnectedClient> client)
+void TCPIP::TCPIPServer::receiveData(int clientSocket)
 {
+    auto buffer = clients[clientSocket]->getBuffer();
+
     // If client does not have buffer already
     // try to obtain it
     // If the attempt has failed, leave and try next time
-    if (!client->getBuffer() && !tryGetClientBuffer(client))
+    if (!buffer && !tryGetClientBuffer(clientSocket))
     {
         return;
     }
 
-    auto buffer = client->getBuffer();
-
-    size_t bytesRead = recv(client->socket, buffer->appendBufferData(), BUFFER_SIZE - buffer->bytesUsed, MSG_NOSIGNAL);
+    size_t bytesRead = recv(clientSocket, buffer->appendBufferData(), BUFFER_SIZE - buffer->bytesUsed, MSG_NOSIGNAL);
 
     if (!bytesRead)
     {
-        clientDisconnected(client->socket);
+        clientDisconnected(clientSocket);
         return;
     }
 
     buffer->bytesUsed += bytesRead;
-
     Logger::log(std::format("Read {}, current request length {}", bytesRead, buffer->bytesUsed));
-
-    validateRequest(client);
+    processReceivedData(clientSocket);
 }
 
-bool TCPIP::TCPIPServer::tryGetClientBuffer(std::shared_ptr<ConnectedClient> client)
+bool TCPIP::TCPIPServer::tryGetClientBuffer(int clientSocket)
 {
+    auto client = clients[clientSocket];
+
     if (client->getBuffer())
     {
         Logger::log("Client already owns a buffer or has active request");
-        return false;
     }
-
-    auto rv = queue->getFreeBufferNonBlock();
-
-    if (rv)
+    else if (auto rv = queue->getFreeBufferNonBlock(); rv)
     {
         client->buffer = std::make_shared<TCPIP::Buffer>(std::move(rv.value()));
         client->buffer->owningClientID = client->socket;
         return true;
     }
-    else
-    {
-        return false;
-    }
+
+    return false;
 }
 
 TCPIP::TCPIPServer::~TCPIPServer()
@@ -196,15 +186,15 @@ TCPIP::TCPIPServer::~TCPIPServer()
     v += rand();
 }
 
-void TCPIP::TCPIPServer::clientDisconnected(int clientID)
+void TCPIP::TCPIPServer::clientDisconnected(int clientSocket)
 {
-    if (clients.find(clientID) != clients.end())
+    if (clients.find(clientSocket) != clients.end())
     {
-        epoll_ctl(epollFD, EPOLL_CTL_DEL, clientID, nullptr);
-        shutdown(clientID, SHUT_RDWR);
-        close(clientID);
-        Logger::log(std::format("Client {}:{} has disconnected", clients[clientID]->clientIP, clients[clientID]->clientPort));
-        clients.erase(clientID);
+        epoll_ctl(epollFD, EPOLL_CTL_DEL, clientSocket, nullptr);
+        shutdown(clientSocket, SHUT_RDWR);
+        close(clientSocket);
+        Logger::log(std::format("Client {}:{} has disconnected", clients[clientSocket]->clientIP, clients[clientSocket]->clientPort));
+        clients.erase(clientSocket);
     }
 }
 
