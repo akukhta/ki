@@ -1,6 +1,7 @@
 #include "MultiFileWriter.hpp"
 #include <filesystem>
 #include "../common/Logger.hpp"
+#include "../TCPIP/Request/RequestHeader.hpp"
 
 void MultiFileWriter::registerNewFile(unsigned int ID, TCPIP::FileInfo fileInfo)
 {
@@ -22,7 +23,6 @@ void MultiFileWriter::registerNewFile(unsigned int ID, TCPIP::FileInfo fileInfo)
 void MultiFileWriter::finishWriteOfFile(unsigned int ID)
 {
     // Sync file content on the disc & close file desc
-    std::unique_lock lk(mutex);
 
     if (!checkClientID(ID))
     {
@@ -51,9 +51,13 @@ void MultiFileWriter::write()
 {
     auto buf = queue->getFilledBuffer();
 
-    if (!buf || !checkClientID(buf->owningClientID))
     {
-        return;
+        std::unique_lock lk(mutex);
+
+        if (!buf || !checkClientID(buf->owningClientID))
+        {
+            return;
+        }
     }
 
     {
@@ -61,30 +65,28 @@ void MultiFileWriter::write()
 
         auto &id = buf->owningClientID;
         auto data = buf->getRequestData();
-        if (data) {
-            fwrite(buf->getRequestData(), buf->bytesUsed, 1, filesDescs[id]);
-        }
-        else
+
+        if (data)
         {
-            auto v = rand();
-            v += rand();
+            fwrite(data, buf->bytesUsed - TCPIP::RequestHeader::noAligmentSize(), 1, filesDescs[id]);
         }
-        filesInfo[id].bytesWritten += buf->bytesUsed;
-        Logger::log("File Chunk write");
 
-        buf->reset();
-        queue->returnBuffer(std::move(buf.value()));
+        filesInfo[id].bytesWritten += buf->bytesUsed - TCPIP::RequestHeader::noAligmentSize();
 
-        if (filesInfo[id].bytesWritten + buf->bytesUsed >= filesInfo[id].fileSize)
+        Logger::log(std::format("File write: {} current/{} total", filesInfo[id].bytesWritten, filesInfo[id].fileSize));
+
+        if (filesInfo[id].bytesWritten >= filesInfo[id].fileSize)
         {
             finishWriteOfFile(id);
             Logger::log("Finished writing of the file");
         }
+
+        buf->reset();
+        queue->returnBuffer(std::move(buf.value()));
     }
 }
 
 bool MultiFileWriter::checkClientID(unsigned int clientID)
 {
-    std::unique_lock lk(mutex);
     return filesDescs.find(clientID) != filesDescs.end() && filesInfo.find(clientID) != filesInfo.end();
 }

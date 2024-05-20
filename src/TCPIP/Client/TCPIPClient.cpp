@@ -72,13 +72,16 @@ void TCPIP::TCPIPClient::runFunction()
         //std::getchar();
         //std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
+
+    shutdown(socketFD, SHUT_RDWR);
+    close(socketFD);
 }
 
 void TCPIP::TCPIPClient::createFileChunkRequest(TCPIP::Buffer &buffer)
 {
     auto ptr = buffer.getData();
     Serializer<SerializerType::NoBuffer>::overwrite(ptr, 0, std::to_underlying(TCPIP::RequestType::FILE_CHUNK_RECEIVED));
-    Serializer<SerializerType::NoBuffer>::overwrite(ptr, sizeof(RequestHeader::type), buffer.bytesUsed);
+    Serializer<SerializerType::NoBuffer>::overwrite(ptr, sizeof(RequestHeader::type), static_cast<short>(buffer.bytesUsed));
 
     ssend(ptr, buffer.bytesUsed + RequestHeader::noAligmentSize());
 }
