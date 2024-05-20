@@ -133,7 +133,10 @@ void TCPIP::TCPIPServer::receiveData(int clientSocket)
     if (!client->currentRequest)
     {
         client->currentRequest = std::make_shared<TCPIP::ClientRequest>(client);
+    }
 
+    if (!client->currentRequest->buffer)
+    {
         if (!tryGetClientBuffer(clientSocket))
         {
             Logger::log("Can`t obtain a buffer for the client right now, the request receiving postponed");
@@ -142,7 +145,11 @@ void TCPIP::TCPIPServer::receiveData(int clientSocket)
     }
 
     auto buffer = clients[clientSocket]->currentRequest->buffer;
-    size_t bytesRead = recv(clientSocket, buffer->appendBufferData(), BUFFER_SIZE - buffer->bytesUsed, MSG_NOSIGNAL);
+
+    size_t bytesRead = 0;
+
+    bytesRead = recv(clientSocket, buffer->appendBufferData(), BUFFER_SIZE - buffer->bytesUsed,
+                     MSG_NOSIGNAL);
 
     if (!bytesRead)
     {
@@ -163,7 +170,7 @@ bool TCPIP::TCPIPServer::tryGetClientBuffer(int clientSocket)
     {
         Logger::log("Client already owns a buffer or has active request");
     }
-    else if (auto rv = queue->getFreeBufferNonBlock(); rv)
+    else if (auto rv = queue->getFreeBufferNonBlock(); rv.has_value())
     {
         client->currentRequest->buffer = std::make_shared<TCPIP::Buffer>(std::move(rv.value()));
         client->currentRequest->buffer->owningClientID = client->socket;
