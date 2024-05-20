@@ -71,7 +71,7 @@ public:
                     std::bind(&IPCTool::timeout, this));
             }
 
-            ~IPCTool()
+            ~IPCTool() override
             {
                 if (procInfo)
                 {

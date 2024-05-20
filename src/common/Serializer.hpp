@@ -108,7 +108,7 @@ template<>
 class Serializer<SerializerType::ExternalBuffer>
 {
 public:
-    Serializer(std::vector<unsigned char> &buffer) : buffer(buffer) {}
+    explicit Serializer(std::vector<unsigned char> &buffer) : buffer(buffer) {}
 
     template <typename T>
         requires std::is_fundamental_v<T>
@@ -191,7 +191,7 @@ template<>
 class Serializer<SerializerType::InternalBuffer> : public Serializer<SerializerType::ExternalBuffer>
 {
 public:
-    Serializer(size_t bytesReserved = BUFFER_SIZE)
+    explicit Serializer(size_t bytesReserved = BUFFER_SIZE)
         :  Serializer<SerializerType::ExternalBuffer>(internalBuffer)
     {
         internalBuffer.reserve(bytesReserved);

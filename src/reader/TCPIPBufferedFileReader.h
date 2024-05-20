@@ -23,7 +23,7 @@ namespace TCPIP
             }
             else
             {
-                buf.bytesUsed = fileSize - currentOffset - RequestHeader::noAligmentSize();
+                buf.bytesUsed = fileSize - currentOffset;
             }
 
             auto readCount = std::min(currentOffset + BUFFER_SIZE - RequestHeader::noAligmentSize(), fileSize);

@@ -9,9 +9,9 @@ namespace TCPIP
     class ConnectedClient : public std::enable_shared_from_this<ConnectedClient>
     {
     public:
-        ConnectedClient(int socket, std::string const &clientIP, int clientPort)
-            : socket(socket), clientIP(clientIP), clientPort(clientPort) {}
-        ConnectedClient() : socket(-1) {}
+        ConnectedClient(int socket, std::string clientIP, int clientPort)
+            : socket(socket), clientIP(std::move(clientIP)), clientPort(clientPort) {}
+        ConnectedClient() : socket(-1), clientPort(-1){}
         ~ConnectedClient();
 
         bool isBufferAvailable() const noexcept

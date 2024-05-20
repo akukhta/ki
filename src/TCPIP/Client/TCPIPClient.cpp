@@ -78,9 +78,9 @@ void TCPIP::TCPIPClient::createFileChunkRequest(TCPIP::Buffer &buffer)
 {
     auto ptr = buffer.getData();
     Serializer<SerializerType::NoBuffer>::overwrite(ptr, 0, std::to_underlying(TCPIP::RequestType::FILE_CHUNK_RECEIVED));
-    Serializer<SerializerType::NoBuffer>::overwrite(ptr, sizeof(RequestHeader::type), buffer.bytesUsed - RequestHeader::noAligmentSize());
+    Serializer<SerializerType::NoBuffer>::overwrite(ptr, sizeof(RequestHeader::type), buffer.bytesUsed);
 
-    ssend(ptr, buffer.bytesUsed);
+    ssend(ptr, buffer.bytesUsed + RequestHeader::noAligmentSize());
 }
 
 void TCPIP::TCPIPClient::ssend(unsigned char *ptr, size_t bufferSize)

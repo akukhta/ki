@@ -31,7 +31,7 @@ namespace TCPIP {
             return info;
         }
 
-        std::vector<unsigned char> serialize()
+        std::vector<unsigned char> serialize() const
         {
             std::vector<unsigned char> buffer;
             buffer.reserve(259);
@@ -46,8 +46,8 @@ namespace TCPIP {
             return buffer;
         }
 
-        size_t fileSize;
-        size_t port;
+        size_t fileSize = 0;
+        size_t port = 0;
         std::string senderIP;
         std::string fileName;
 

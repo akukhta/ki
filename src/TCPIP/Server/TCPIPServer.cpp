@@ -1,7 +1,7 @@
 #include "TCPIPServer.hpp"
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <stdio.h>
+#include <cstdio>
 #include <sys/epoll.h>
 #include <iostream>
 #include <format>
@@ -63,7 +63,7 @@ void TCPIP::TCPIPServer::runFunction()
                     receiveRequest(client);
                 }
             }
-            else if (events[i].events & EPOLLHUP)
+            else if (events[i].events & EPOLLHUP || events[i].events & EPOLLRDHUP)
             {
                 Logger::log("Client disconnected");
                 // Disconnect triggered

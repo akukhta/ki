@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include <setjmp.h>
+#include <csetjmp>
 #include <csignal>
 
 /// Class that handles abnormal program termination (terminate, SIGINT, SIGABRT, other signals may be added and handled here)
