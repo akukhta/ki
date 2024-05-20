@@ -52,7 +52,6 @@ void TCPIP::TCPIPServer::runFunction()
             if (events[i].events & EPOLLIN)
             {
                 // Read Event Triggered
-
                 if (events[i].data.fd == masterSocket)
                 {
                     connectClient();
@@ -63,10 +62,11 @@ void TCPIP::TCPIPServer::runFunction()
                     receiveRequest(client);
                 }
             }
-            else if (events[i].events & EPOLLHUP || events[i].events & EPOLLRDHUP)
+
+            if ((events[i].events & EPOLLHUP) || (events[i].events & EPOLLRDHUP) || (events[i].events & EPOLLERR))
             {
-                Logger::log("Client disconnected");
-                // Disconnect triggered
+                clientDisconnected(events[i].data.fd);
+                continue;
             }
         }
     }
@@ -87,7 +87,7 @@ void TCPIP::TCPIPServer::connectClient()
 
     epoll_event slaveSocketEvent;
     slaveSocketEvent.data.fd = slaveSocket;
-    slaveSocketEvent.events = EPOLLIN;
+    slaveSocketEvent.events = EPOLLIN | EPOLLRDHUP | EPOLLHUP;
 
     auto clientIP = inet_ntoa(*reinterpret_cast<in_addr*>(&clientAddress.sin_addr));
 
@@ -152,7 +152,15 @@ void TCPIP::TCPIPServer::receiveRequest(std::shared_ptr<ConnectedClient> client)
     }
 
     auto buffer = client->getBuffer();
+
     size_t bytesRead = recv(client->socket, buffer->appendBufferData(), BUFFER_SIZE - buffer->bytesUsed, MSG_NOSIGNAL);
+
+    if (!bytesRead)
+    {
+        clientDisconnected(client->socket);
+        return;
+    }
+
     buffer->bytesUsed += bytesRead;
 
     Logger::log(std::format("Read {}, current request length {}", bytesRead, buffer->bytesUsed));
@@ -186,5 +194,17 @@ TCPIP::TCPIPServer::~TCPIPServer()
 {
     auto v = rand();
     v += rand();
+}
+
+void TCPIP::TCPIPServer::clientDisconnected(int clientID)
+{
+    if (clients.find(clientID) != clients.end())
+    {
+        epoll_ctl(epollFD, EPOLL_CTL_DEL, clientID, nullptr);
+        shutdown(clientID, SHUT_RDWR);
+        close(clientID);
+        Logger::log(std::format("Client {}:{} has disconnected", clients[clientID]->clientIP, clients[clientID]->clientPort));
+        clients.erase(clientID);
+    }
 }
 

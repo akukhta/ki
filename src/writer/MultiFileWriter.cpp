@@ -6,7 +6,7 @@
 void MultiFileWriter::registerNewFile(unsigned int ID, TCPIP::FileInfo fileInfo)
 {
     // Client dir format = Client IP - PID
-    std::filesystem::path clientDir = fileInfo.senderIP + "-" + std::to_string(fileInfo.port);
+    std::filesystem::path clientDir = fileInfo.senderIP;
 
     if (!std::filesystem::exists(rootDir / clientDir))
     {

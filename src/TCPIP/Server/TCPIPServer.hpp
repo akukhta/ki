@@ -41,6 +41,7 @@ namespace TCPIP
         void connectClient();
         void validateRequest(std::shared_ptr<ConnectedClient> client);
         void receiveRequest(std::shared_ptr<ConnectedClient> client);
+        void clientDisconnected(int clientID);
 
         template <typename T>
         void send(int socket, T const &data)
