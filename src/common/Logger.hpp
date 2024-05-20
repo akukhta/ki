@@ -16,13 +16,6 @@ public:
     {
         getInstance()->logImplementation(message);
     }
-
-    ~Logger()
-    {
-        auto v = rand();
-        v += rand();
-        v -= rand();
-    }
 private:
 
     void logImplementation(std::string const &message)

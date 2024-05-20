@@ -11,8 +11,8 @@ namespace TCPIP {
     class ClientRequest
     {
     public:
-        ClientRequest(std::shared_ptr<class ConnectedClient> ownerClient, std::shared_ptr<TCPIP::Buffer> buffer)
-                : ownerClient(std::move(ownerClient)), buffer(std::move(buffer))
+        ClientRequest(std::shared_ptr<class ConnectedClient> ownerClient)
+                : ownerClient(std::move(ownerClient))
         {
             ;
         }
@@ -27,20 +27,33 @@ namespace TCPIP {
 
         void updateRequestState()
         {
-            if (!header)
+            switch (state)
             {
-                state = RequestState::NEW;
-                return;
-            }
+                case RequestState::NEW:
+                {
+                    if (buffer->bytesUsed >= sizeof(RequestHeader::type) + sizeof(RequestHeader::messageLength))
+                    {
+                        parseHeader();
+                        state = RequestState::RECEIVING;
+                    }
+                }
 
-            if (buffer->bytesUsed - RequestHeader::noAligmentSize() == header->messageLength)
-            {
-                state = RequestState::RECEIVED;
-            }
-            else
-            {
-                requestReceived = true;
-                state = RequestState::RECEIVING;
+                case RequestState::RECEIVING:
+                {
+                    if (buffer->bytesUsed - RequestHeader::noAligmentSize() == header->messageLength)
+                    {
+                        state = RequestState::RECEIVED;
+                    }
+                }
+
+                case RequestState::RECEIVED:
+                {
+                    requestReceived = true;
+                    break;
+                }
+
+                default:
+                    break;
             }
         }
 
@@ -62,12 +75,12 @@ namespace TCPIP {
         }
 
         RequestState state = RequestState::NEW;
+        std::shared_ptr<TCPIP::Buffer> buffer;
 
     private:
         friend class RequestHandler;
         friend class ConnectedClient;
         std::shared_ptr<ConnectedClient> ownerClient;
-        std::shared_ptr<TCPIP::Buffer> buffer;
         std::optional<RequestHeader> header = std::nullopt;
         bool requestReceived = false;
     };

@@ -7,6 +7,7 @@
 #include <vector>
 #include <unordered_map>
 #include <memory>
+#include <concepts>
 #include "IServer.hpp"
 #include "TCPIPQueue.hpp"
 #include "ConnectedClient.hpp"
@@ -44,9 +45,15 @@ namespace TCPIP
         void clientDisconnected(int clientSocket);
 
         template <typename T>
-        void send(int socket, T const &data)
+            requires std::is_trivial_v<T>
+        bool send(int socket, T const &data)
         {
-            ::send(socket, reinterpret_cast<char const*>(&data), sizeof(data), MSG_NOSIGNAL);
+            return ::send(socket, reinterpret_cast<char const*>(&data), sizeof(data), MSG_NOSIGNAL) == sizeof(data);
+        }
+
+        bool send(unsigned char *data, size_t bufferSize, int socket)
+        {
+            return ::send(socket, data, bufferSize, MSG_NOSIGNAL) == bufferSize;
         }
 
         bool tryGetClientBuffer(int clientSocket);

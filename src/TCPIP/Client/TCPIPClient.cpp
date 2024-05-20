@@ -21,12 +21,14 @@ void TCPIP::TCPIPClient::connectToServer()
     serverAddress.sin_port = htons(5505);
     isConnected = connect(socketFD, reinterpret_cast<sockaddr*>(&serverAddress), sizeof(serverAddress)) == 0;
 
+#ifdef DEBUG
     {
         struct sockaddr_in sin;
         socklen_t len = sizeof(sin);
         if (getsockname(socketFD, (struct sockaddr *) &sin, &len) != -1)
             std::cout << "Client socket uses " << ntohs(sin.sin_port) << " port";
     }
+#endif
 }
 
 void TCPIP::TCPIPClient::send(const std::vector<unsigned char> &data)

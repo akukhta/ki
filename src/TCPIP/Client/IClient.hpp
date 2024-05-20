@@ -8,7 +8,6 @@ namespace TCPIP
     public:
         virtual void run() = 0;
         virtual ~IClient() = default;
-        virtual void join() = 0;
 
     protected:
         virtual void connectToServer() = 0;

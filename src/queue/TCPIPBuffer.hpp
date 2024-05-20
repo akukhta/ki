@@ -43,6 +43,11 @@ namespace TCPIP
             return data + TCPIP::RequestHeader::noAligmentSize();
         }
 
+        size_t getRequestDataSize() const
+        {
+            return bytesUsed - TCPIP::RequestHeader::noAligmentSize();
+        }
+
         void setOwnerID(int id)
         {
             owningClientID = id;

@@ -10,13 +10,11 @@ int main(int argc, char ** argv)
 	
 	auto cp = toolFactory.createTool();
 
-    /*
     if (setjmp(ProcessTerminator::getInstance()->buffer))
     {
         cp = nullptr;
         return 1;
     }
-    */
 
 	cp->copy();
 

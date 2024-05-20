@@ -95,8 +95,6 @@ void TCPIP::TCPIPServer::connectClient()
 
     clients.emplace(clientSocket, std::make_shared<TCPIP::ConnectedClient>(clientSocket, clientIP, htons(clientAddress.sin_port))).first->second;
     Logger::log(std::format("New Client {}:{} connected", clientIP, htons(clientAddress.sin_port)));
-
-    tryGetClientBuffer(clientSocket);
 }
 
 void TCPIP::TCPIPServer::processReceivedData(int clientSocket)
@@ -104,22 +102,11 @@ void TCPIP::TCPIPServer::processReceivedData(int clientSocket)
     // Header has been just received
     auto client = clients[clientSocket];
 
-    // Create a request for a given client and
-    // parse header if possible
+    // Check if the processing current request is valid
     if (!client->currentRequest)
     {
-        // Check if the client has received header
-        if (client->getBuffer()->bytesUsed >= sizeof(RequestHeader::type) + sizeof(RequestHeader::messageLength))
-        {
-            // Create request and parse header
-            client->createRequest();
-            client->currentRequest->parseHeader();
-        }
-        else
-        {
-            // Return if header has not received yet (can`t be processed further)
-            return;
-        }
+        Logger::log("Processed request is nullptr");
+        throw std::runtime_error("Processed request is nullptr");
     }
 
     // Update request state
@@ -128,7 +115,6 @@ void TCPIP::TCPIPServer::processReceivedData(int clientSocket)
 
     // Check the request state
     // And send to the processing pipeline if possible
-
     if (client->currentRequest->isRequestReceived())
     {
         requestHandler->addRequest(client->currentRequest);
@@ -139,16 +125,23 @@ void TCPIP::TCPIPServer::processReceivedData(int clientSocket)
 
 void TCPIP::TCPIPServer::receiveData(int clientSocket)
 {
-    auto buffer = clients[clientSocket]->getBuffer();
+    auto client = clients[clientSocket];
 
     // If client does not have buffer already
     // try to obtain it
     // If the attempt has failed, leave and try next time
-    if (!buffer && !tryGetClientBuffer(clientSocket))
+    if (!client->currentRequest)
     {
-        return;
+        client->currentRequest = std::make_shared<TCPIP::ClientRequest>(client);
+
+        if (!tryGetClientBuffer(clientSocket))
+        {
+            Logger::log("Can`t obtain a buffer for the client right now, the request receiving postponed");
+            return;
+        }
     }
 
+    auto buffer = clients[clientSocket]->currentRequest->buffer;
     size_t bytesRead = recv(clientSocket, buffer->appendBufferData(), BUFFER_SIZE - buffer->bytesUsed, MSG_NOSIGNAL);
 
     if (!bytesRead)
@@ -166,14 +159,14 @@ bool TCPIP::TCPIPServer::tryGetClientBuffer(int clientSocket)
 {
     auto client = clients[clientSocket];
 
-    if (client->getBuffer())
+    if (client->currentRequest->buffer)
     {
         Logger::log("Client already owns a buffer or has active request");
     }
     else if (auto rv = queue->getFreeBufferNonBlock(); rv)
     {
-        client->buffer = std::make_shared<TCPIP::Buffer>(std::move(rv.value()));
-        client->buffer->owningClientID = client->socket;
+        client->currentRequest->buffer = std::make_shared<TCPIP::Buffer>(std::move(rv.value()));
+        client->currentRequest->buffer->owningClientID = client->socket;
         return true;
     }
 

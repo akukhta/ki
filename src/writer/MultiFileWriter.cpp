@@ -68,10 +68,10 @@ void MultiFileWriter::write()
 
         if (data)
         {
-            fwrite(data, buf->bytesUsed - TCPIP::RequestHeader::noAligmentSize(), 1, filesDescs[id]);
+            fwrite(data, buf->getRequestDataSize(), 1, filesDescs[id]);
         }
 
-        filesInfo[id].bytesWritten += buf->bytesUsed - TCPIP::RequestHeader::noAligmentSize();
+        filesInfo[id].bytesWritten += buf->getRequestDataSize();
 
         Logger::log(std::format("File write: {} current/{} total", filesInfo[id].bytesWritten, filesInfo[id].fileSize));
 

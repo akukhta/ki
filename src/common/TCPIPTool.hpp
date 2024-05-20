@@ -14,17 +14,11 @@ public:
     explicit TCPIPTool(std::unique_ptr<BufferedReader<TCPIPTag>> fileReader,
         std::shared_ptr<MultiFileWriter> fileWriter,
         std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue,
-        std::shared_ptr<TCPIP::IServer> server, std::unique_ptr<TCPIP::IClient> client)
+        std::unique_ptr<TCPIP::IServer> server, std::unique_ptr<TCPIP::IClient> client)
         : fileReader(std::move(fileReader)),
           fileWriter(std::move(fileWriter)), queue(std::move(queue)), server(std::move(server)),
           client(std::move(client)), sw(StopWatch::createAutoStartWatch("tcpip copy tool benchmark"))
           {}
-
-    ~TCPIPTool()
-    {
-        auto v =rand();
-        v += rand();
-    }
 
     void copy() override
     {
@@ -33,15 +27,12 @@ public:
         {
             client->run();
             readingFunction();
-            client->join();
         }
         else if (server)
         {
             server->run();
             writingFunction();
         }
-
-        std::cout << "end" << std::endl;
     }
 
 private:
@@ -50,7 +41,7 @@ private:
     std::shared_ptr<MultiFileWriter> fileWriter;
     std::unique_ptr<BufferedReader<TCPIPTag>> fileReader;
     std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue;
-    std::shared_ptr<TCPIP::IServer> server;
+    std::unique_ptr<TCPIP::IServer> server;
     std::unique_ptr<TCPIP::IClient> client;
 
     std::jthread fileioThread;

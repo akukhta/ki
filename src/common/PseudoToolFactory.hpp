@@ -118,7 +118,7 @@ public:
                 std::unique_ptr<BufferedReader<TCPIPTag>> reader = nullptr;
                 std::shared_ptr<MultiFileWriter> writer = nullptr;
 
-                std::shared_ptr<TCPIP::IServer> server = nullptr;
+                std::unique_ptr<TCPIP::IServer> server = nullptr;
                 std::unique_ptr<TCPIP::IClient> client = nullptr;
 
                 if (parser.getIsServer())
@@ -126,7 +126,7 @@ public:
                     auto queue = std::make_shared<TCPIP::FixedBufferQueue>();
                     writer = std::make_shared<MultiFileWriter>(queue);
                     auto requestHandler = std::make_unique<TCPIP::RequestHandler>(queue, writer);
-                    server = std::make_shared<TCPIP::TCPIPServer>(queue, std::move(requestHandler));
+                    server = std::make_unique<TCPIP::TCPIPServer>(queue, std::move(requestHandler));
                     tool = std::make_unique<TCPIPTool>(std::move(reader), writer, queue, std::move(server), std::move(client));
                 }
                 else

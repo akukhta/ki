@@ -9,37 +9,14 @@ namespace TCPIP
     class ConnectedClient : public std::enable_shared_from_this<ConnectedClient>
     {
     public:
-        ConnectedClient(int socket, std::string clientIP, int clientPort)
-            : socket(socket), clientIP(std::move(clientIP)), clientPort(clientPort) {}
-        ConnectedClient() : socket(-1), clientPort(-1){}
-        ~ConnectedClient();
+        ConnectedClient(int socket, std::string clientIP, int clientPort);
+        ConnectedClient();
 
-        bool isBufferAvailable() const noexcept
-        {
-            return buffer != nullptr || (currentRequest && currentRequest->buffer != nullptr);
-        }
+        bool isBufferAvailable() const noexcept;
 
-        void createRequest()
-        {
-            // Once we've created a request, a buffer should be given to it
-            currentRequest = std::make_shared<ClientRequest>(shared_from_this(), buffer);
-            buffer = nullptr;
-        }
-
-        std::shared_ptr<TCPIP::Buffer> getBuffer()
-        {
-            if (currentRequest)
-            {
-                return currentRequest->buffer;
-            }
-            else
-            {
-                return buffer;
-            }
-        }
+        void createRequest();
 
         std::shared_ptr<ClientRequest> currentRequest = nullptr;
-        std::shared_ptr<TCPIP::Buffer> buffer = nullptr;
         std::string clientIP;
 
         int clientPort;

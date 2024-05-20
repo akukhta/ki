@@ -21,13 +21,7 @@ namespace TCPIP
         virtual void connectToServer() override;
         virtual void send(std::vector<unsigned char> const& data) override;
         void ssend(unsigned char *ptr, size_t bufferSize);
-
         virtual std::vector<unsigned char> receive() override;
-
-        void join() override
-        {
-            clientThread.join();
-        }
 
     private:
 
