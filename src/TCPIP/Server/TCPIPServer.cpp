@@ -40,35 +40,17 @@ void TCPIP::TCPIPServer::runFunction()
 {
     while(true)
     {
-        int eventsTriggered = epoll_wait(epollFD, events, MAX_EVENTS_PER_ITER, -1);
-
-        if (eventsTriggered == -1)
+        if (scheduledClients.empty())
         {
-            std::cout << "epoll_wait error: " << std::strerror(errno) << std::endl;
+            eventsTriggered = epoll_wait(epollFD, events, MAX_EVENTS_PER_ITER, -1);
+        }
+        else
+        {
+            handleScheduledClients();
+            eventsTriggered = epoll_wait(epollFD, events, MAX_EVENTS_PER_ITER, 500);
         }
 
-        for (int i = 0; i < eventsTriggered; i++)
-        {
-            if (events[i].events & EPOLLIN)
-            {
-                // Read Event Triggered
-                if (events[i].data.fd == masterSocket)
-                {
-                    connectClient();
-                }
-                else
-                {
-                    auto &client = clients[events[i].data.fd];
-                    receiveData(events[i].data.fd);
-                }
-            }
-
-            if ((events[i].events & EPOLLHUP) || (events[i].events & EPOLLRDHUP) || (events[i].events & EPOLLERR))
-            {
-                clientDisconnected(events[i].data.fd);
-                continue;
-            }
-        }
+        handleEpollEvents();
     }
 }
 
@@ -84,15 +66,9 @@ void TCPIP::TCPIPServer::connectClient()
 
     int clientSocket = accept(masterSocket, reinterpret_cast<sockaddr*>(&clientAddress), &addrLen);
     TCPIP::Utiles::setSocketNonBlock(clientSocket);
-
-    epoll_event slaveSocketEvent;
-    slaveSocketEvent.data.fd = clientSocket;
-    slaveSocketEvent.events = EPOLLIN | EPOLLRDHUP | EPOLLHUP;
+    addSocketToEpoll(clientSocket);
 
     auto clientIP = inet_ntoa(*reinterpret_cast<in_addr*>(&clientAddress.sin_addr));
-
-    epoll_ctl(epollFD, EPOLL_CTL_ADD, clientSocket, &slaveSocketEvent);
-
     clients.emplace(clientSocket, std::make_shared<TCPIP::ConnectedClient>(clientSocket, clientIP, htons(clientAddress.sin_port))).first->second;
     Logger::log(std::format("New Client {}:{} connected", clientIP, htons(clientAddress.sin_port)));
 }
@@ -105,7 +81,7 @@ void TCPIP::TCPIPServer::processReceivedData(int clientSocket)
     // Check if the processing current request is valid
     if (!client->currentRequest)
     {
-        Logger::log("Processed request is nullptr");
+        //Logger::log("Processed request is nullptr");
         throw std::runtime_error("Processed request is nullptr");
     }
 
@@ -139,10 +115,23 @@ void TCPIP::TCPIPServer::receiveData(int clientSocket)
     {
         if (!tryGetClientBuffer(clientSocket))
         {
+            epoll_ctl(epollFD, EPOLL_CTL_DEL, clientSocket, nullptr);
+            scheduledClients.push(clientSocket);
             Logger::log("Can`t obtain a buffer for the client right now, the request receiving postponed");
             return;
         }
     }
+
+    // Load balancing idea:
+    // If client can`t obtain a buffer, remove it from the epoll
+    // and add it to the pending clients queue
+    // in epoll call
+    // check if the pending queue is not empty
+    // then do epoll call with 1s wait
+    // and start handling with pending clients first
+    // then handle clients return with epoll
+    // if penging queue is empty
+    // do blocking epoll_wait
 
     auto buffer = clients[clientSocket]->currentRequest->buffer;
 
@@ -151,20 +140,24 @@ void TCPIP::TCPIPServer::receiveData(int clientSocket)
     bytesRead = recv(clientSocket, buffer->appendBufferData(), BUFFER_SIZE - buffer->bytesUsed,
                      MSG_NOSIGNAL);
 
-    if (!bytesRead)
+    if (!bytesRead && errno != EWOULDBLOCK && errno != EAGAIN)
     {
         clientDisconnected(clientSocket);
         return;
     }
 
     buffer->bytesUsed += bytesRead;
-    Logger::log(std::format("Read {}, current request length {}", bytesRead, buffer->bytesUsed));
     processReceivedData(clientSocket);
 }
 
 bool TCPIP::TCPIPServer::tryGetClientBuffer(int clientSocket)
 {
     auto client = clients[clientSocket];
+
+    if (!client->currentRequest)
+    {
+        client->currentRequest = std::make_shared<TCPIP::ClientRequest>(client);
+    }
 
     if (client->currentRequest->buffer)
     {
@@ -198,3 +191,63 @@ void TCPIP::TCPIPServer::clientDisconnected(int clientSocket)
     }
 }
 
+void TCPIP::TCPIPServer::addSocketToEpoll(int socket)
+{
+    epoll_event slaveSocketEvent;
+    slaveSocketEvent.data.fd = socket;
+    slaveSocketEvent.events = EPOLLIN | EPOLLRDHUP | EPOLLHUP;
+    epoll_ctl(epollFD, EPOLL_CTL_ADD, socket, &slaveSocketEvent);
+}
+
+void TCPIP::TCPIPServer::handleEpollEvents()
+{
+    for (int i = 0; i < eventsTriggered; i++)
+    {
+        if (events[i].events & EPOLLIN)
+        {
+            // Read Event Triggered
+            if (events[i].data.fd == masterSocket)
+            {
+                connectClient();
+            }
+            else
+            {
+                auto &client = clients[events[i].data.fd];
+                receiveData(events[i].data.fd);
+            }
+        }
+
+        if ((events[i].events & EPOLLHUP) || (events[i].events & EPOLLRDHUP) || (events[i].events & EPOLLERR))
+        {
+            clientDisconnected(events[i].data.fd);
+            continue;
+        }
+    }
+}
+
+void TCPIP::TCPIPServer::handleScheduledClients()
+{
+    Logger::log("handling scheduled events");
+
+    while (!scheduledClients.empty())
+    {
+        int scheduledSocket = scheduledClients.front();
+
+        if (clients.find(scheduledSocket) == clients.end())
+        {
+            // The client has already disconnected
+            scheduledClients.pop();
+            continue;
+        }
+
+        if (!tryGetClientBuffer(scheduledSocket))
+        {
+            // if we can`t obtain a buffer, there is no point to continue the iteration
+            return;
+        }
+
+        scheduledClients.pop();
+        receiveData(scheduledSocket);
+        addSocketToEpoll(scheduledSocket);
+    }
+}

@@ -91,7 +91,7 @@ void TCPIP::TCPIPClient::createFileChunkRequest(TCPIP::Buffer &buffer)
 void TCPIP::TCPIPClient::ssend(unsigned char *ptr, size_t bufferSize)
 {
     size_t sentBytes = ::send(socketFD, ptr, bufferSize, 0);
-    Logger::log(std::format("Sent {} from {} bytes requested", sentBytes, bufferSize));
+    //Logger::log(std::format("Sent {} from {} bytes requested", sentBytes, bufferSize));
 }
 
 void TCPIP::TCPIPClient::sendFileInfo()

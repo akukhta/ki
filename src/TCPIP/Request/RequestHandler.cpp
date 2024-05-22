@@ -72,8 +72,6 @@ void TCPIP::RequestHandler::fileInfoReceived(std::shared_ptr<ClientRequest> requ
 void TCPIP::RequestHandler::fileChunkReceived(std::shared_ptr<ClientRequest> request)
 {
     queue->returnBuffer(std::move(*request->buffer));
-    //request->ownerClient->currentRequest = nullptr;
-    Logger::log("File Chunk scheduled");
 }
 
 

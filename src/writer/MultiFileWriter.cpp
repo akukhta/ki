@@ -73,7 +73,7 @@ void MultiFileWriter::write()
 
         filesInfo[id].bytesWritten += buf->getRequestDataSize();
 
-        Logger::log(std::format("File write: {} current/{} total", filesInfo[id].bytesWritten, filesInfo[id].fileSize));
+        //Logger::log(std::format("File write: {} current/{} total", filesInfo[id].bytesWritten, filesInfo[id].fileSize));
 
         if (filesInfo[id].bytesWritten >= filesInfo[id].fileSize)
         {

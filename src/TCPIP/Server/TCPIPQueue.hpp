@@ -38,7 +38,7 @@ namespace TCPIP
                 writeBuffers.emplace_back(std::move(buffer));
             }
 
-            Logger::log(std::format("Buffer returned {} readers/{} writers", readBuffers.size(), writeBuffers.size()));
+            //Logger::log(std::format("Buffer returned {} readers/{} writers", readBuffers.size(), writeBuffers.size()));
         }
     };
 }

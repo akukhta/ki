@@ -44,10 +44,15 @@ namespace TCPIP {
                     {
                         state = RequestState::RECEIVED;
                     }
+                    else
+                    {
+                        break;
+                    }
                 }
 
                 case RequestState::RECEIVED:
                 {
+
                     requestReceived = true;
                     break;
                 }

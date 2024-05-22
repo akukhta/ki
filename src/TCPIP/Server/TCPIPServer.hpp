@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <memory>
 #include <concepts>
+#include <queue>
 #include "IServer.hpp"
 #include "TCPIPQueue.hpp"
 #include "ConnectedClient.hpp"
@@ -43,6 +44,9 @@ namespace TCPIP
         void processReceivedData(int clientSocket);
         void receiveData(int clientSocket);
         void clientDisconnected(int clientSocket);
+        void addSocketToEpoll(int socket);
+        void handleEpollEvents();
+        void handleScheduledClients();
 
         template <typename T>
             requires std::is_trivial_v<T>
@@ -62,5 +66,8 @@ namespace TCPIP
         std::unordered_map<int, std::shared_ptr<TCPIP::ConnectedClient>> clients;
         std::unique_ptr<IRequestHandler> requestHandler;
         std::shared_ptr<FixedBufferQueue> queue;
+
+        std::queue<int> scheduledClients;
+        int eventsTriggered = 0;
     };
 }
