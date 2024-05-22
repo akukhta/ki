@@ -53,37 +53,32 @@ void MultiFileWriter::write()
 
     {
         std::unique_lock lk(mutex);
-
         if (!buf || !checkClientID(buf->owningClientID))
         {
             return;
         }
     }
 
+    auto &id = buf->owningClientID;
+    auto data = buf->getRequestData();
+
     {
         std::unique_lock lk(mutex);
 
-        auto &id = buf->owningClientID;
-        auto data = buf->getRequestData();
-
-        if (data)
-        {
+        if (data) {
             fwrite(data, buf->getRequestDataSize(), 1, filesDescs[id]);
         }
 
         filesInfo[id].bytesWritten += buf->getRequestDataSize();
 
-        //Logger::log(std::format("File write: {} current/{} total", filesInfo[id].bytesWritten, filesInfo[id].fileSize));
-
-        if (filesInfo[id].bytesWritten >= filesInfo[id].fileSize)
-        {
+        if (filesInfo[id].bytesWritten >= filesInfo[id].fileSize) {
             finishWriteOfFile(id);
             Logger::log("Finished writing of the file");
         }
-
-        buf->reset();
-        queue->returnBuffer(std::move(buf.value()));
     }
+
+    buf->reset();
+    queue->returnBuffer(std::move(buf.value()));
 }
 
 bool MultiFileWriter::checkClientID(unsigned int clientID)

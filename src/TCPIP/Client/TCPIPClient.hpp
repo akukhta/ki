@@ -28,8 +28,9 @@ namespace TCPIP
         void runFunction();
 
         void createFileChunkRequest(TCPIP::Buffer &buffer);
-
         void sendFileInfo();
+
+        TCPIP::ServerResponse receiveResponse();
 
         int socketFD;
         sockaddr_in serverAddress;

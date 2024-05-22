@@ -11,6 +11,18 @@
 #include "../../writer/MultiFileWriter.hpp"
 #include "IRequestHandler.hpp"
 
+namespace std
+{
+    template <>
+    struct hash<TCPIP::RequestType>
+    {
+        size_t operator()(TCPIP::RequestType const &type) const
+        {
+            return hash<char>()(to_underlying(type));
+        }
+    };
+}
+
 namespace TCPIP
 {
     class RequestHandler : public IRequestHandler
@@ -20,7 +32,6 @@ namespace TCPIP
         ~RequestHandler();
 
         void addRequest(std::shared_ptr<ClientRequest> request) override;
-
         void startHandling() override;
 
     private:
@@ -37,8 +48,6 @@ namespace TCPIP
         void fileInfoReceived(std::shared_ptr<ClientRequest> request);
         void fileChunkReceived(std::shared_ptr<ClientRequest> request);
 
-
         static std::unordered_map<TCPIP::RequestType, std::function<void(TCPIP::RequestHandler&, std::shared_ptr<ClientRequest>)>> handlerFunctions;
-
     };
 }

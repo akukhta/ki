@@ -21,12 +21,9 @@ namespace TCPIP
     {
     public:
         TCPIPServer(std::shared_ptr<FixedBufferQueue> queue, std::unique_ptr<IRequestHandler> requestHandler);
-        ~TCPIPServer();
 
         virtual void run() override;
         void runFunction();
-        size_t getConnectedClientsAmount();
-
     private:
 
         static size_t constexpr MAX_EVENTS_PER_ITER = 32;
@@ -48,17 +45,8 @@ namespace TCPIP
         void handleEpollEvents();
         void handleScheduledClients();
 
-        template <typename T>
-            requires std::is_trivial_v<T>
-        bool send(int socket, T const &data)
-        {
-            return ::send(socket, reinterpret_cast<char const*>(&data), sizeof(data), MSG_NOSIGNAL) == sizeof(data);
-        }
-
-        bool send(unsigned char *data, size_t bufferSize, int socket)
-        {
-            return ::send(socket, data, bufferSize, MSG_NOSIGNAL) == bufferSize;
-        }
+        bool send(unsigned char *data, size_t bufferSize, int socket);
+        void sendResponse(TCPIP::ServerResponse response, int socket);
 
         bool tryGetClientBuffer(int clientSocket);
 

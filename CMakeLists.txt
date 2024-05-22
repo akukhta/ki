@@ -58,6 +58,8 @@ add_executable(${PROJECT_NAME}
         src/TCPIP/Request/RequestHeader.hpp
         src/TCPIP/Request/ClientRequest.hpp
 		src/TCPIP/Request/IRequestHandler.hpp
+		src/TCPIP/Request/RequestCreator.cpp
+		src/TCPIP/Request/RequestCreator.hpp
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)

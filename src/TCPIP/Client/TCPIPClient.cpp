@@ -58,21 +58,24 @@ void TCPIP::TCPIPClient::run()
 void TCPIP::TCPIPClient::runFunction()
 {
     connectToServer();
-
     sendFileInfo();
-    //std::this_thread::sleep_for(std::chrono::seconds (1));
-    char a;
-    recv(socketFD, &a, 1, MSG_NOSIGNAL);
-    //std::getchar();
+
+    if (receiveResponse() != ServerResponse::REQUEST_RECEIVED)
+    {
+        return;
+    }
 
     while (queue->isReadFinished() == false || queue->isEmpty() == false)
     {
         auto buffer = queue->getFilledBuffer().value();
         createFileChunkRequest(buffer);
         queue->returnBuffer(std::move(buffer));
-        recv(socketFD, &a, 1, MSG_NOSIGNAL);
-        //std::getchar();
-        //std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+        if (receiveResponse() == ServerResponse::CRITICAL_ERROR)
+        {
+            std::cout << "Internal Server Error" << std::endl;
+            break;
+        }
     }
 
     shutdown(socketFD, SHUT_RDWR);
@@ -107,4 +110,18 @@ void TCPIP::TCPIPClient::sendFileInfo()
     Logger::log("TCPIPClient: File info sent");
 
     ssend(buffer.data(), buffer.size());
+}
+
+TCPIP::ServerResponse TCPIP::TCPIPClient::receiveResponse() {
+    TCPIP::ServerResponse response;
+    size_t bytesRead = recv(socketFD, &response, sizeof(response), MSG_NOSIGNAL);
+
+    if (bytesRead == sizeof(response))
+    {
+        return response;
+    }
+    else
+    {
+        throw std::runtime_error("Error occurred while received a response from the server");
+    }
 }

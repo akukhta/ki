@@ -10,6 +10,7 @@
 #include "../../common/Logger.hpp"
 #include "../Request/RequestHandler.hpp"
 #include "../../common/Serializer.hpp"
+#include "../Request/RequestCreator.hpp"
 
 TCPIP::TCPIPServer::TCPIPServer(std::shared_ptr<FixedBufferQueue> queue, std::unique_ptr<IRequestHandler> requestHandler)
     : queue(std::move(queue)), requestHandler(std::move(requestHandler))
@@ -54,11 +55,6 @@ void TCPIP::TCPIPServer::runFunction()
     }
 }
 
-size_t TCPIP::TCPIPServer::getConnectedClientsAmount()
-{
-    return clients.size();
-}
-
 void TCPIP::TCPIPServer::connectClient()
 {
     sockaddr_in clientAddress;
@@ -95,7 +91,7 @@ void TCPIP::TCPIPServer::processReceivedData(int clientSocket)
     {
         requestHandler->addRequest(client->currentRequest);
         client->currentRequest = nullptr;
-        send(client->socket, char{0x01});
+        sendResponse(TCPIP::ServerResponse::REQUEST_RECEIVED, clientSocket);
     }
 }
 
@@ -173,12 +169,6 @@ bool TCPIP::TCPIPServer::tryGetClientBuffer(int clientSocket)
     return false;
 }
 
-TCPIP::TCPIPServer::~TCPIPServer()
-{
-    auto v = rand();
-    v += rand();
-}
-
 void TCPIP::TCPIPServer::clientDisconnected(int clientSocket)
 {
     if (clients.find(clientSocket) != clients.end())
@@ -250,4 +240,14 @@ void TCPIP::TCPIPServer::handleScheduledClients()
         receiveData(scheduledSocket);
         addSocketToEpoll(scheduledSocket);
     }
+}
+
+bool TCPIP::TCPIPServer::send(unsigned char *data, size_t bufferSize, int socket)
+{
+    return ::send(socket, data, bufferSize, MSG_NOSIGNAL) == bufferSize;
+}
+
+void TCPIP::TCPIPServer::sendResponse(TCPIP::ServerResponse response, int socket)
+{
+    ::send(socket, &response, sizeof(response), MSG_NOSIGNAL);
 }
