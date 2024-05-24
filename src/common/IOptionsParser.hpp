@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 #include "ToolTypeEnum.hpp"
 
 /// Command Line Options parser interface
@@ -21,7 +22,11 @@ public:
     /// Only usable for IPC tool (--type=IPC), any other tool ignores the option
     virtual std::string getSharedObjName() const = 0;
 
+    /// Returns bool if tcpip tool instance should serve as server
+    /// Otherwise false
     virtual bool getIsServer() const = 0;
+
+    virtual std::vector<std::string> getFilesToSend() const = 0;
 
     virtual ~IOptionsParser() = default;
 };

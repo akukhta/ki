@@ -24,12 +24,16 @@ public:
                             typename Tag::QueueType queue) :
         fileName(std::move(fileName)), queue(std::move(queue))
     {
-        fileSize = std::filesystem::file_size(this->fileName);
     }
+
+    explicit BufferedReader(typename Tag::QueueType queue)
+        : queue(std::move(queue))
+    {}
 
     /// Opens the requested file for reading
     void open() override
     {
+        fileSize = std::filesystem::file_size(this->fileName);
         fileDesc = std::fopen(fileName.c_str(), "rb");
 
         if (fileDesc == nullptr)

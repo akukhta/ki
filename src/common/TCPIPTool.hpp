@@ -1,8 +1,10 @@
 #pragma once
+#include <vector>
+#include <future>
 #include "ICopyTool.hpp"
 #include "StopWatch.h"
 #include "../writer/MultiFileWriter.hpp"
-#include "../reader/BufferedFileReader.hpp"
+#include "../reader/TCPIPBufferedFileReader.h"
 #include "../queue/BufferedQueue.hpp"
 #include "../TCPIP/Server/IServer.hpp"
 #include "../TCPIP/Client/IClient.hpp"
@@ -11,22 +13,34 @@
 class TCPIPTool : public ICopyTool
 {
 public:
-    explicit TCPIPTool(std::unique_ptr<BufferedReader<TCPIPTag>> fileReader,
-        std::shared_ptr<MultiFileWriter> fileWriter,
-        std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue,
-        std::unique_ptr<TCPIP::IServer> server, std::unique_ptr<TCPIP::IClient> client)
-        : fileReader(std::move(fileReader)),
-          fileWriter(std::move(fileWriter)), queue(std::move(queue)), server(std::move(server)),
-          client(std::move(client)), sw(StopWatch::createAutoStartWatch("tcpip copy tool benchmark"))
-          {}
+    explicit TCPIPTool(std::shared_ptr<MultiFileWriter> fileWriter, std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue,
+        std::unique_ptr<TCPIP::IServer> server)
+            :  fileWriter(std::move(fileWriter)), queue(std::move(queue)),
+               server(std::move(server)), sw(StopWatch::createAutoStartWatch("tcpip copy tool benchmark"))
+    {
+    }
+
+    explicit TCPIPTool(std::unique_ptr<TCPIP::BufferedReader> fileReader,
+        std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue, std::unique_ptr<TCPIP::IClient> client, std::vector<std::string> filesToSend)
+            :    fileReader(std::move(fileReader)), queue(std::move(queue)),
+                 client(std::move(client)), filesToSend(std::move(filesToSend)),
+                 sw(StopWatch::createAutoStartWatch("tcpip copy tool benchmark"))
+    {
+    }
 
     void copy() override
     {
-
         if (client)
         {
-            client->run();
-            readingFunction();
+            client->connectToServer();
+
+            for (auto const & file: filesToSend)
+            {
+                queue->open();
+                auto readingTask = std::async(std::launch::async, &TCPIPTool::read, this, file);
+                client->sendFile(file);
+                readingTask.get();
+            }
         }
         else if (server)
         {
@@ -39,18 +53,17 @@ private:
 
     StopWatch sw;
     std::shared_ptr<MultiFileWriter> fileWriter;
-    std::unique_ptr<BufferedReader<TCPIPTag>> fileReader;
+    std::unique_ptr<TCPIP::BufferedReader> fileReader;
     std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue;
     std::unique_ptr<TCPIP::IServer> server;
     std::unique_ptr<TCPIP::IClient> client;
+    std::vector<std::string> filesToSend;
 
     std::jthread fileioThread;
 
-    void readingFunction()
+    void read(std::string const &file)
     {
-        queue->open();
-
-        fileReader->open();
+        fileReader->startReading(file);
 
         while (!fileReader->isReadFinished())
         {

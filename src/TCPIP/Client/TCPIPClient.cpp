@@ -1,4 +1,4 @@
-#include "TCPIPClient.hpp"
+#include"TCPIPClient.hpp"
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <utility>
@@ -7,9 +7,10 @@
 #include "../../common/Serializer.hpp"
 #include "../../common/Logger.hpp"
 #include "../Common/FileInfo.hpp"
+#include "../Request/RequestCreator.hpp"
 
-TCPIP::TCPIPClient::TCPIPClient(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue, std::string const &fileName)
-    : queue(std::move(queue)), fileName(fileName)
+TCPIP::TCPIPClient::TCPIPClient(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue)
+    : queue(std::move(queue))
 {
     socketFD = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     serverAddress.sin_family = AF_INET;
@@ -31,14 +32,6 @@ void TCPIP::TCPIPClient::connectToServer()
 #endif
 }
 
-void TCPIP::TCPIPClient::send(const std::vector<unsigned char> &data)
-{
-    size_t sizeOfBuffer = data.size();
-
-    ::send(socketFD, reinterpret_cast<char*>(&sizeOfBuffer), sizeof(size_t), 0);
-    ::send(socketFD, data.data(), data.size(), 0);
-}
-
 std::vector<unsigned char> TCPIP::TCPIPClient::receive()
 {
     std::vector<unsigned char> buffer{sizeof(size_t)};
@@ -50,66 +43,34 @@ std::vector<unsigned char> TCPIP::TCPIPClient::receive()
     return buffer;
 }
 
-void TCPIP::TCPIPClient::run()
-{
-    clientThread = std::jthread(&TCPIP::TCPIPClient::runFunction, this);
-}
-
-void TCPIP::TCPIPClient::runFunction()
-{
-    connectToServer();
-    sendFileInfo();
-
-    if (receiveResponse() != ServerResponse::REQUEST_RECEIVED)
-    {
-        return;
-    }
-
-    while (queue->isReadFinished() == false || queue->isEmpty() == false)
-    {
-        auto buffer = queue->getFilledBuffer().value();
-        createFileChunkRequest(buffer);
-        queue->returnBuffer(std::move(buffer));
-
-        if (receiveResponse() == ServerResponse::CRITICAL_ERROR)
-        {
-            std::cout << "Internal Server Error" << std::endl;
-            break;
-        }
-    }
-
-    shutdown(socketFD, SHUT_RDWR);
-    close(socketFD);
-}
-
-void TCPIP::TCPIPClient::createFileChunkRequest(TCPIP::Buffer &buffer)
+void TCPIP::TCPIPClient::sendFileChunk(TCPIP::Buffer &buffer)
 {
     auto ptr = buffer.getData();
     Serializer<SerializerType::NoBuffer>::overwrite(ptr, 0, std::to_underlying(TCPIP::RequestType::FILE_CHUNK_RECEIVED));
     Serializer<SerializerType::NoBuffer>::overwrite(ptr, sizeof(RequestHeader::type), static_cast<short>(buffer.bytesUsed));
 
-    ssend(ptr, buffer.bytesUsed + RequestHeader::noAligmentSize());
+    sendToServer(ptr, buffer.bytesUsed + RequestHeader::noAligmentSize());
+
+    if (receiveResponse() == ServerResponse::CRITICAL_ERROR)
+    {
+        throw std::runtime_error("Internal Server Error");
+    }
 }
 
-void TCPIP::TCPIPClient::ssend(unsigned char *ptr, size_t bufferSize)
+void TCPIP::TCPIPClient::sendToServer(unsigned char *ptr, size_t bufferSize)
 {
     size_t sentBytes = ::send(socketFD, ptr, bufferSize, 0);
-    //Logger::log(std::format("Sent {} from {} bytes requested", sentBytes, bufferSize));
 }
 
-void TCPIP::TCPIPClient::sendFileInfo()
+void TCPIP::TCPIPClient::sendFileInfo(std::string const& fileName)
 {
-    Serializer<SerializerType::InternalBuffer> serializer;
-    serializer.serialize(std::to_underlying(RequestType::FILE_INFO_RECEIVED));
-    serializer.serialize(short{0});
-    serializer.serialize(std::filesystem::file_size(fileName));
-    serializer.serialize(std::filesystem::path(fileName).filename().string());
-    serializer.overwrite(sizeof(RequestType), static_cast<short>(serializer.getBuffer().size() - sizeof(RequestType) - sizeof(short)));
-    auto &buffer = serializer.getBuffer();
+    auto buffer = TCPIP::RequestCreator::createFileInfoRequest(fileName);
+    sendToServer(buffer.data(), buffer.size());
 
-    Logger::log("TCPIPClient: File info sent");
-
-    ssend(buffer.data(), buffer.size());
+    if (receiveResponse() != ServerResponse::REQUEST_RECEIVED)
+    {
+        throw std::runtime_error("Internal Server Error");
+    }
 }
 
 TCPIP::ServerResponse TCPIP::TCPIPClient::receiveResponse() {
@@ -124,4 +85,22 @@ TCPIP::ServerResponse TCPIP::TCPIPClient::receiveResponse() {
     {
         throw std::runtime_error("Error occurred while received a response from the server");
     }
+}
+
+void TCPIP::TCPIPClient::sendFile(const std::string &fileName)
+{
+    sendFileInfo(fileName);
+
+    while (queue->isReadFinished() == false || queue->isEmpty() == false)
+    {
+        auto buffer = queue->getFilledBuffer().value();
+        sendFileChunk(buffer);
+        queue->returnBuffer(std::move(buffer));
+    }
+}
+
+void TCPIP::TCPIPClient::disconnect()
+{
+    shutdown(socketFD, SHUT_RDWR);
+    close(socketFD);
 }

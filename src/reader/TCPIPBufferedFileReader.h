@@ -6,10 +6,15 @@ namespace TCPIP
     class BufferedReader : public ::BufferedReader<TCPIPTag>
     {
     public:
-        explicit BufferedReader(std::string fileName,
-                                typename TCPIPTag::QueueType queue) :
-                ::BufferedReader<TCPIPTag>(std::move(fileName), std::move(queue))
+        explicit BufferedReader(typename TCPIPTag::QueueType queue) :
+                ::BufferedReader<TCPIPTag>(std::move(queue))
         { ; }
+
+        void startReading(std::string const&fileName)
+        {
+            this->fileName = fileName;
+            open();
+        }
 
         void read() override
         {
