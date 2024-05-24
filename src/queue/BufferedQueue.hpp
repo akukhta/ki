@@ -196,6 +196,12 @@ public:
         isReadFinished_ = true;
     }
 
+    void startReading()
+    {
+        typename Tag::RAIILockType lm(queueMutex);
+        isReadFinished_ = false;
+    }
+
 protected:
     /// Inner queue store buffers could be used for reading or writing
     Tag::DequeType readBuffers, writeBuffers;

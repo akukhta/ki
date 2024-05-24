@@ -89,14 +89,18 @@ TCPIP::ServerResponse TCPIP::TCPIPClient::receiveResponse() {
 
 void TCPIP::TCPIPClient::sendFile(const std::string &fileName)
 {
+    size_t sent = 0;
     sendFileInfo(fileName);
 
     while (queue->isReadFinished() == false || queue->isEmpty() == false)
     {
         auto buffer = queue->getFilledBuffer().value();
         sendFileChunk(buffer);
+        sent += buffer.bytesUsed;
         queue->returnBuffer(std::move(buffer));
     }
+
+    Logger::log(std::format("{}: sent {} bytes", fileName, sent));
 }
 
 void TCPIP::TCPIPClient::disconnect()

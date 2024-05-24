@@ -37,6 +37,7 @@ public:
             for (auto const & file: filesToSend)
             {
                 queue->open();
+                queue->startReading();
                 auto readingTask = std::async(std::launch::async, &TCPIPTool::read, this, file);
                 client->sendFile(file);
                 readingTask.get();

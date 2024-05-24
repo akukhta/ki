@@ -35,6 +35,8 @@ public:
     {
         fileSize = std::filesystem::file_size(this->fileName);
         fileDesc = std::fopen(fileName.c_str(), "rb");
+        currentOffset = 0;
+        readFinished.store(false);
 
         if (fileDesc == nullptr)
         {

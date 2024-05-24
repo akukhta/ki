@@ -49,7 +49,7 @@ namespace TCPIP
             else
             {
                 readFinished.store(true);
-                queue->finishRead();
+                //queue->finishRead();
             }
 
             queue->returnBuffer(std::move(buf));
