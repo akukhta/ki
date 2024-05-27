@@ -30,10 +30,8 @@ private:
     void setFileWriteFinished(std::function<void(int)> cb);
     std::function<void(int)> fileWriteFinished;
 
-    std::string constexpr static rootDir = "TCPIP Storage";
-
     std::mutex mutex;
-
+    std::string rootDir;
     friend class ToolFactory;
 };
 

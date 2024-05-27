@@ -7,6 +7,7 @@
 #include "../../common/Serializer.hpp"
 #include "../../common/Logger.hpp"
 #include "../Common/FileInfo.hpp"
+#include "../Common/TCPIPToolSettingsParser.hpp"
 #include "../Request/RequestCreator.hpp"
 
 TCPIP::TCPIPClient::TCPIPClient(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue)
@@ -18,8 +19,10 @@ TCPIP::TCPIPClient::TCPIPClient(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queu
 
 void TCPIP::TCPIPClient::connectToServer()
 {
-    serverAddress.sin_addr.s_addr = inet_addr("192.168.0.87");
-    serverAddress.sin_port = htons(5505);
+    auto settings = TCPIPToolSettingsParser::getInstance();
+
+    serverAddress.sin_addr.s_addr = inet_addr(settings->getServerIP().c_str());
+    serverAddress.sin_port = htons(settings->getServerPort());
     isConnected = connect(socketFD, reinterpret_cast<sockaddr*>(&serverAddress), sizeof(serverAddress)) == 0;
 
 #ifdef DEBUG

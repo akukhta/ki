@@ -1,7 +1,6 @@
 #include "MultiFileWriter.hpp"
 #include <filesystem>
-#include "../common/Logger.hpp"
-#include "../TCPIP/Request/RequestHeader.hpp"
+#include "../TCPIP/Common/TCPIPToolSettingsParser.hpp"
 
 void MultiFileWriter::registerNewFile(unsigned int ID, TCPIP::FileInfo fileInfo)
 {
@@ -42,6 +41,8 @@ void MultiFileWriter::finishWriteOfFile(unsigned int ID)
 
 MultiFileWriter::MultiFileWriter(MultiFileWriter::queueType queue) : queue(std::move(queue))
 {
+    rootDir = TCPIPToolSettingsParser::getInstance()->getStorageDirectory();
+
     if (!std::filesystem::exists(rootDir))
     {
         std::filesystem::create_directory(rootDir);

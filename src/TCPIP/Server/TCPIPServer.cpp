@@ -11,6 +11,7 @@
 #include "../Request/RequestHandler.hpp"
 #include "../../common/Serializer.hpp"
 #include "../Request/RequestCreator.hpp"
+#include "../Common/TCPIPToolSettingsParser.hpp"
 
 TCPIP::TCPIPServer::TCPIPServer(std::shared_ptr<FixedBufferQueue> queue, std::unique_ptr<IRequestHandler> requestHandler)
     : queue(std::move(queue)), requestHandler(std::move(requestHandler))
@@ -18,8 +19,11 @@ TCPIP::TCPIPServer::TCPIPServer(std::shared_ptr<FixedBufferQueue> queue, std::un
     masterSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
     socketAddress.sin_family = AF_INET;
-    socketAddress.sin_port = htons(5505);
-    socketAddress.sin_addr.s_addr = inet_addr("192.168.0.87");
+
+    auto settings = TCPIPToolSettingsParser::getInstance();
+
+    socketAddress.sin_port = htons(settings->getServerPort());
+    socketAddress.sin_addr.s_addr = inet_addr(settings->getServerIP().c_str());
 
     bind(masterSocket, reinterpret_cast<sockaddr*>(&socketAddress), sizeof(socketAddress));
     TCPIP::Utiles::setSocketNonBlock(masterSocket);
