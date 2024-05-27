@@ -100,7 +100,10 @@ void TCPIP::TCPIPClient::sendFile(const std::string &fileName)
         queue->returnBuffer(std::move(buffer));
     }
 
-    Logger::log(std::format("{}: sent {} bytes", fileName, sent));
+    if (receiveResponse() == ServerResponse::FILE_RECEIVED)
+    {
+        Logger::log(std::format("The file {} successfully sent", fileName));
+    }
 }
 
 void TCPIP::TCPIPClient::disconnect()

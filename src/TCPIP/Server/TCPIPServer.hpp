@@ -21,11 +21,11 @@ namespace TCPIP
     {
     public:
         TCPIPServer(std::shared_ptr<FixedBufferQueue> queue, std::unique_ptr<IRequestHandler> requestHandler);
-
         virtual void run() override;
         void runFunction();
-    private:
+        void fileWriteFinished(int clientSocket);
 
+    private:
         static size_t constexpr MAX_EVENTS_PER_ITER = 32;
         epoll_event events[MAX_EVENTS_PER_ITER];
 
@@ -44,7 +44,6 @@ namespace TCPIP
         void addSocketToEpoll(int socket);
         void handleEpollEvents();
         void handleScheduledClients();
-
         bool send(unsigned char *data, size_t bufferSize, int socket);
         void sendResponse(TCPIP::ServerResponse response, int socket);
 

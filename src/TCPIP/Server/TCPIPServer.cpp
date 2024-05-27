@@ -118,17 +118,6 @@ void TCPIP::TCPIPServer::receiveData(int clientSocket)
         }
     }
 
-    // Load balancing idea:
-    // If client can`t obtain a buffer, remove it from the epoll
-    // and add it to the pending clients queue
-    // in epoll call
-    // check if the pending queue is not empty
-    // then do epoll call with 1s wait
-    // and start handling with pending clients first
-    // then handle clients return with epoll
-    // if penging queue is empty
-    // do blocking epoll_wait
-
     auto buffer = clients[clientSocket]->currentRequest->buffer;
 
     size_t bytesRead = 0;
@@ -250,4 +239,9 @@ bool TCPIP::TCPIPServer::send(unsigned char *data, size_t bufferSize, int socket
 void TCPIP::TCPIPServer::sendResponse(TCPIP::ServerResponse response, int socket)
 {
     ::send(socket, &response, sizeof(response), MSG_NOSIGNAL);
+}
+
+void TCPIP::TCPIPServer::fileWriteFinished(int clientSocket)
+{
+    sendResponse(ServerResponse::FILE_RECEIVED, clientSocket);
 }

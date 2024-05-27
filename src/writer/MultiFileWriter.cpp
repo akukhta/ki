@@ -37,6 +37,7 @@ void MultiFileWriter::finishWriteOfFile(unsigned int ID)
 
     filesDescs.erase(ID);
     filesInfo.erase(ID);
+    fileWriteFinished(ID);
 }
 
 MultiFileWriter::MultiFileWriter(MultiFileWriter::queueType queue) : queue(std::move(queue))
@@ -84,4 +85,9 @@ void MultiFileWriter::write()
 bool MultiFileWriter::checkClientID(unsigned int clientID)
 {
     return filesDescs.find(clientID) != filesDescs.end() && filesInfo.find(clientID) != filesInfo.end();
+}
+
+void MultiFileWriter::setFileWriteFinished(std::function<void(int)> cb)
+{
+    fileWriteFinished = std::move(cb);
 }

@@ -17,6 +17,7 @@
 #include <memory>
 #include <iostream>
 #include <vector>
+#include <utility>
 #include <boost/interprocess/interprocess_fwd.hpp>
 #include "../reader/TCPIPBufferedFileReader.h"
 #include "../TCPIP/Request/RequestHandler.hpp"
@@ -117,7 +118,7 @@ public:
             case ToolType::TCPIPTOOL: {
                 std::shared_ptr<MultiFileWriter> writer = nullptr;
 
-                std::unique_ptr<TCPIP::IServer> server = nullptr;
+                std::unique_ptr<TCPIP::TCPIPServer> server = nullptr;
                 std::unique_ptr<TCPIP::IClient> client = nullptr;
 
                 if (parser.getIsServer())
@@ -127,6 +128,7 @@ public:
                     auto requestHandler = std::make_unique<TCPIP::RequestHandler>(queue, writer);
                     server = std::make_unique<TCPIP::TCPIPServer>(queue, std::move(requestHandler));
                     tool = std::make_unique<TCPIPTool>(writer, queue, std::move(server));
+                    writer->setFileWriteFinished(std::bind(&TCPIP::TCPIPServer::fileWriteFinished, server.get(), std::placeholders::_1));
                 }
                 else
                 {

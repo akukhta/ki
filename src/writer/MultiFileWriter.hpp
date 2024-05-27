@@ -6,6 +6,7 @@
 #include "../TCPIP/Common/FileInfo.hpp"
 #include <fstream>
 #include <thread>
+#include <functional>
 
 class MultiFileWriter
 {
@@ -17,7 +18,6 @@ public:
 
     void registerNewFile(unsigned int ID, TCPIP::FileInfo fileInfo);
     void finishWriteOfFile(unsigned int ID);
-
     void write();
 
 private:
@@ -27,8 +27,13 @@ private:
     std::unordered_map<unsigned int, TCPIP::FileInfo> filesInfo;
     std::unordered_map<unsigned int, std::FILE*> filesDescs;
 
+    void setFileWriteFinished(std::function<void(int)> cb);
+    std::function<void(int)> fileWriteFinished;
+
     std::string constexpr static rootDir = "TCPIP Storage";
 
     std::mutex mutex;
+
+    friend class ToolFactory;
 };
 
