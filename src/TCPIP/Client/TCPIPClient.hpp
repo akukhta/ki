@@ -14,6 +14,7 @@ namespace TCPIP
     {
     public:
         TCPIPClient(std::shared_ptr<::FixedBufferQueue<TCPIPTag>> queue);
+        ~TCPIPClient();
 
         virtual void connectToServer() override;
         virtual void disconnect() override;

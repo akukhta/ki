@@ -249,3 +249,17 @@ void TCPIP::TCPIPServer::fileWriteFinished(int clientSocket)
 {
     sendResponse(ServerResponse::FILE_RECEIVED, clientSocket);
 }
+
+TCPIP::TCPIPServer::~TCPIPServer()
+{
+    for (auto &client : clients)
+    {
+        epoll_ctl(epollFD, EPOLL_CTL_DEL, client.first, nullptr);
+        close(client.first);
+    }
+
+    clients.clear();
+    close(masterSocket);
+
+    Logger::log("Server shutdown");
+}

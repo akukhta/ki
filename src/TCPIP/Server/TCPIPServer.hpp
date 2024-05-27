@@ -21,6 +21,8 @@ namespace TCPIP
     {
     public:
         TCPIPServer(std::shared_ptr<FixedBufferQueue> queue, std::unique_ptr<IRequestHandler> requestHandler);
+        ~TCPIPServer();
+
         virtual void run() override;
         void runFunction();
         void fileWriteFinished(int clientSocket);

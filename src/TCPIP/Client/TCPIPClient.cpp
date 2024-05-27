@@ -111,6 +111,15 @@ void TCPIP::TCPIPClient::sendFile(const std::string &fileName)
 
 void TCPIP::TCPIPClient::disconnect()
 {
-    shutdown(socketFD, SHUT_RDWR);
-    close(socketFD);
+    if (socketFD)
+    {
+        shutdown(socketFD, SHUT_RDWR);
+        close(socketFD);
+        socketFD = -1;
+    }
+}
+
+TCPIP::TCPIPClient::~TCPIPClient()
+{
+    disconnect();
 }
