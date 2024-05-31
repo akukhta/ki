@@ -21,9 +21,10 @@ public:
     std::string getServerIP() const;
     int getServerPort() const;
     std::string getStorageDirectory() const;
+    void setSettingsPath(std::string settingsPath);
 
 private:
     TCPIPToolSettingsParser();
     boost::property_tree::ptree tree;
-    std::string const settingsPath = "settings.json";
+    std::string settingsPath = "settings.json";
 };

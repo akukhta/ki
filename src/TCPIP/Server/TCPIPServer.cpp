@@ -1,15 +1,12 @@
 #include "TCPIPServer.hpp"
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <cstdio>
 #include <sys/epoll.h>
 #include <iostream>
 #include <format>
 #include <memory>
 #include "../Common/TCPUtiles.hpp"
-#include "../../common/Logger.hpp"
 #include "../Request/RequestHandler.hpp"
-#include "../../common/Serializer.hpp"
 #include "../Request/RequestCreator.hpp"
 #include "../Common/TCPIPToolSettingsParser.hpp"
 

@@ -34,8 +34,10 @@ void MultiFileWriter::finishWriteOfFile(unsigned int ID)
         std::fclose(filesDescs[ID]);
     }
 
+    applyFileAttributes(ID);
     filesDescs.erase(ID);
     filesInfo.erase(ID);
+
     fileWriteFinished(ID);
 }
 
@@ -91,4 +93,10 @@ bool MultiFileWriter::checkClientID(unsigned int clientID)
 void MultiFileWriter::setFileWriteFinished(std::function<void(int)> cb)
 {
     fileWriteFinished = std::move(cb);
+}
+
+void MultiFileWriter::applyFileAttributes(unsigned int ID)
+{
+    chmod((rootDir + filesInfo[ID].senderIP + filesInfo[ID].fileName).c_str(),
+          filesInfo[ID].filePermissions);
 }

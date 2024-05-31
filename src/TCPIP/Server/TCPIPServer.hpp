@@ -15,6 +15,8 @@
 #include "../Request/RequestHeader.hpp"
 #include "../Request/IRequestHandler.hpp"
 
+class ToolFactory;
+
 namespace TCPIP
 {
     class TCPIPServer :public IServer
@@ -25,9 +27,10 @@ namespace TCPIP
 
         virtual void run() override;
         void runFunction();
-        void fileWriteFinished(int clientSocket);
 
     private:
+        friend class ::ToolFactory;
+        void fileWriteFinished(int clientSocket);
         static size_t constexpr MAX_EVENTS_PER_ITER = 32;
         epoll_event events[MAX_EVENTS_PER_ITER];
 

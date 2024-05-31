@@ -21,6 +21,7 @@
 #include <boost/interprocess/interprocess_fwd.hpp>
 #include "../reader/TCPIPBufferedFileReader.h"
 #include "../TCPIP/Request/RequestHandler.hpp"
+#include "../TCPIP/Common/TCPIPToolSettingsParser.hpp"
 
 /// Factory that creates proper copy tool based on passed arguments
 class ToolFactory
@@ -120,6 +121,8 @@ public:
 
                 std::unique_ptr<TCPIP::TCPIPServer> server = nullptr;
                 std::unique_ptr<TCPIP::IClient> client = nullptr;
+
+                TCPIPToolSettingsParser::getInstance()->setSettingsPath(std::move(parser.getSettingsPath()));
 
                 if (parser.getIsServer())
                 {

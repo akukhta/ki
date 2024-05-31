@@ -59,15 +59,20 @@ public:
     }
 
     template <typename T>
-        requires std::is_fundamental_v<T>
-    static void deserialize(unsigned char const *externalBuffer, T &data)
+        requires (std::is_fundamental_v<T> || std::is_standard_layout_v<T> && std::is_trivial_v<T>)
+    static void deserialize(unsigned char const *externalBuffer, T &data, size_t *externalOffset = nullptr)
     {
         data = *reinterpret_cast<T const*>(externalBuffer);
+
+        if (externalOffset)
+        {
+            *externalOffset += sizeof(data);
+        }
     }
 
     template <typename T>
         requires (std::ranges::contiguous_range<T> && std::is_fundamental_v<typename T::value_type>)
-    static void deserialize(unsigned char const *externalBuffer, T& container)
+    static void deserialize(unsigned char const *externalBuffer, T& container, size_t *externalOffset = nullptr)
     {
         size_t offset = 0;
 
@@ -83,6 +88,11 @@ public:
             deserialize(externalBuffer + offset, element);
             offset += sizeof(element);
             container.push_back(element);
+        }
+
+        if (externalOffset)
+        {
+            *externalOffset += offset;
         }
     }
 
@@ -152,9 +162,19 @@ public:
         }
     }
 
+    template <typename T>
+        requires (!std::is_fundamental_v<T>)
+    void serialize(unsigned char const* data, size_t size)
+    {
+        for (size_t i = 0; i < size; i++)
+        {
+            buffer.push_back(data[i]);
+        }
+    }
+
     std::vector<unsigned char>& getBuffer()
     {
-        buffer.shrink_to_fit();
+        //buffer.shrink_to_fit();
         return buffer;
     }
 

@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <sys/stat.h>
+#include <filesystem>
 #include "../../common/Serializer.hpp"
 
 namespace TCPIP {
@@ -7,51 +9,45 @@ namespace TCPIP {
     public:
         FileInfo() = default;
 
-        explicit FileInfo(size_t fileSize, std::string fileName)
-                : fileSize(fileSize), fileName(std::move(fileName)) {}
-
-        static FileInfo deserialize(std::vector<unsigned char> &buffer)
+        explicit FileInfo(std::string fileName, size_t fileSize)
+                : fileName(std::filesystem::path(fileName).filename()), fileSize(fileSize)
         {
-            Serializer<SerializerType::ExternalBuffer> serializer(buffer);
-            FileInfo info;
+            struct stat fileAttributes;
+            stat(this->fileName.c_str(), &fileAttributes);
+            filePermissions = fileAttributes.st_mode;
+        }
 
-            serializer.deserialize(info.fileSize);
-            serializer.deserialize(info.fileName);
-
-            return info;
+        explicit FileInfo(std::string fileName)
+            : FileInfo(fileName, std::filesystem::file_size(fileName))
+        {
         }
 
         static FileInfo deserialize(unsigned char const* externalBuffer)
         {
             FileInfo info;
+            size_t offset = 0;
 
-            Serializer<SerializerType::NoBuffer>::deserialize(externalBuffer, info.fileSize);
-            Serializer<SerializerType::NoBuffer>::deserialize(externalBuffer + sizeof(size_t), info.fileName);
+            Serializer<SerializerType::NoBuffer>::deserialize(externalBuffer, info.fileSize, &offset);
+            Serializer<SerializerType::NoBuffer>::deserialize(externalBuffer + offset, info.fileName, &offset);
+            Serializer<SerializerType::NoBuffer>::deserialize(externalBuffer + offset, info.filePermissions);
 
             return info;
         }
 
-        std::vector<unsigned char> serialize() const
+        void serialize(std::vector<unsigned char> &buffer) const
         {
-            std::vector<unsigned char> buffer;
-            buffer.reserve(259);
-
             Serializer<SerializerType::ExternalBuffer> serializer{buffer};
 
             serializer.serialize(fileSize);
             serializer.serialize(fileName);
-
-            buffer.shrink_to_fit();
-
-            return buffer;
+            serializer.serialize(filePermissions);
         }
 
         size_t fileSize = 0;
         size_t port = 0;
         std::string senderIP;
         std::string fileName;
-
+        mode_t filePermissions;
         size_t bytesWritten = 0;
-        // attributes
     };
 }

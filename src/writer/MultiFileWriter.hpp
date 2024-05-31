@@ -22,6 +22,7 @@ public:
 
 private:
     bool checkClientID(unsigned int clientID);
+    void applyFileAttributes(unsigned int ID);
 
     queueType queue;
     std::unordered_map<unsigned int, TCPIP::FileInfo> filesInfo;

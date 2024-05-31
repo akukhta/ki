@@ -3,7 +3,7 @@
 
 TCPIPToolSettingsParser::TCPIPToolSettingsParser()
 {
-    boost::property_tree::read_json(settingsPath, tree);
+    ;
 }
 
 std::shared_ptr<TCPIPToolSettingsParser> TCPIPToolSettingsParser::getInstance()
@@ -25,4 +25,10 @@ int TCPIPToolSettingsParser::getServerPort() const
 std::string TCPIPToolSettingsParser::getStorageDirectory() const
 {
     return tree.get<std::string>("settings.storageDirectory");
+}
+
+void TCPIPToolSettingsParser::setSettingsPath(std::string settingsPath)
+{
+    this->settingsPath = std::move(settingsPath);
+    boost::property_tree::read_json(this->settingsPath, tree);
 }

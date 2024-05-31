@@ -20,7 +20,8 @@ public:
             ("type", value(&type)->default_value("vbuf"), "Type of tool")
             ("shobj", value(&sharedObjName)->default_value(""), "Name of shared object")
             ("server", bool_switch(&isServer), "True if server, otherwise client")
-            ("files", value<std::vector<std::string>>(&files)->multitoken(), "list of files to be sent");
+            ("files", value<std::vector<std::string>>(&files)->multitoken(), "list of files to be sent")
+            ("settings", value(&settings), "path to settings.json");
 
         variables_map vm;
 
@@ -85,6 +86,12 @@ public:
         return files;
     }
 
+    virtual std::string getSettingsPath() const override
+    {
+        return settings;
+    }
+
+
     ~OptionsParser() override = default;
 private:
     options_description desc{"Kopieren Instrument"}; /// Objects that stores and parses options that could be passed to the process
@@ -95,4 +102,5 @@ private:
     std::string sharedObjName; /// name of shared object, applicable for IPC tool only
     bool isServer = false;
     std::vector<std::string> files;
+    std::string settings;
 };

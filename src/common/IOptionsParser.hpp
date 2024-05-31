@@ -28,5 +28,7 @@ public:
 
     virtual std::vector<std::string> getFilesToSend() const = 0;
 
+    virtual std::string getSettingsPath() const = 0;
+
     virtual ~IOptionsParser() = default;
 };
