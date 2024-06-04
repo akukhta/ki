@@ -6,6 +6,7 @@
 #include <netinet/in.h>
 
 namespace TCPIP {
+    /// Implementation Of TCPIP communication protocol
     class TCPClientCommunication : public IClientCommunication
     {
     public:

@@ -232,11 +232,6 @@ void TCPIP::TCPIPServer::handleScheduledClients()
     }
 }
 
-bool TCPIP::TCPIPServer::send(unsigned char *data, size_t bufferSize, int socket)
-{
-    return ::send(socket, data, bufferSize, MSG_NOSIGNAL) == bufferSize;
-}
-
 void TCPIP::TCPIPServer::sendResponse(TCPIP::ServerResponse response, int socket)
 {
     ::send(socket, &response, sizeof(response), MSG_NOSIGNAL);
