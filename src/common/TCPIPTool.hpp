@@ -32,8 +32,6 @@ public:
     {
         if (client)
         {
-            client->connectToServer();
-
             for (auto const & file: filesToSend)
             {
                 queue->open();

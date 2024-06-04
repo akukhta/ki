@@ -1,6 +1,4 @@
 #include"TCPIPClient.hpp"
-#include <netinet/in.h>
-#include <arpa/inet.h>
 #include <utility>
 #include <filesystem>
 #include <format>
@@ -9,31 +7,13 @@
 #include "../Request/RequestCreator.hpp"
 #include "../Common/Utiles.hpp"
 
-TCPIP::TCPIPClient::TCPIPClient(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue)
-    : queue(std::move(queue))
+TCPIP::TCPIPClient::TCPIPClient(std::unique_ptr<IClientCommunication> clientCommunication,std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue)
+    : clientCommunication(std::move(clientCommunication)), queue(std::move(queue))
 {
-    socketFD = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    serverAddress.sin_family = AF_INET;
-}
-
-void TCPIP::TCPIPClient::connectToServer()
-{
-    auto settings = JsonSettingsParser::getInstance();
-
-    serverAddress.sin_addr.s_addr = inet_addr(settings->getServerIP().c_str());
-    serverAddress.sin_port = htons(settings->getServerPort());
-    isConnected = connect(socketFD, reinterpret_cast<sockaddr*>(&serverAddress), sizeof(serverAddress)) == 0;
-}
-
-std::vector<unsigned char> TCPIP::TCPIPClient::receive()
-{
-    std::vector<unsigned char> buffer{sizeof(size_t)};
-    recv(socketFD, buffer.data(), buffer.size(), 0);
-
-    size_t sizeOfBuffer = *reinterpret_cast<size_t*>(buffer.data());
-    buffer.resize(sizeOfBuffer);
-    recv(socketFD, buffer.data(), buffer.size(), 0);
-    return buffer;
+    if (!this->clientCommunication->connect())
+    {
+        throw std::runtime_error("Can`t connect to the server");
+    }
 }
 
 void TCPIP::TCPIPClient::sendFileChunk(TCPIP::Buffer &buffer)
@@ -42,7 +22,7 @@ void TCPIP::TCPIPClient::sendFileChunk(TCPIP::Buffer &buffer)
     Serializer<SerializerType::NoBuffer>::overwrite(ptr, 0, std::to_underlying(TCPIP::RequestType::FILE_CHUNK_RECEIVED));
     Serializer<SerializerType::NoBuffer>::overwrite(ptr, sizeof(RequestHeader::type), static_cast<short>(buffer.bytesUsed));
 
-    auto bytesSent = sendToServer(ptr, buffer.bytesUsed + RequestHeader::noAligmentSize());
+    auto bytesSent = clientCommunication->send(ptr, buffer.bytesUsed + RequestHeader::noAligmentSize());
 
     progressBar->addToValue(bytesSent);
 
@@ -52,15 +32,10 @@ void TCPIP::TCPIPClient::sendFileChunk(TCPIP::Buffer &buffer)
     }
 }
 
-size_t TCPIP::TCPIPClient::sendToServer(unsigned char *ptr, size_t bufferSize)
-{
-    return send(socketFD, ptr, bufferSize, 0);
-}
-
 void TCPIP::TCPIPClient::sendFileInfo(std::string const& fileName)
 {
     auto buffer = TCPIP::RequestCreator::createFileInfoRequest(fileName);
-    sendToServer(buffer.data(), buffer.size());
+    clientCommunication->send(buffer.data(), buffer.size());
 
     if (receiveResponse() != ServerResponse::REQUEST_RECEIVED)
     {
@@ -69,12 +44,11 @@ void TCPIP::TCPIPClient::sendFileInfo(std::string const& fileName)
 }
 
 TCPIP::ServerResponse TCPIP::TCPIPClient::receiveResponse() {
-    TCPIP::ServerResponse response;
-    size_t bytesRead = recv(socketFD, &response, sizeof(response), MSG_NOSIGNAL);
+    auto buffer = clientCommunication->receive(sizeof(ServerResponse));
 
-    if (bytesRead == sizeof(response))
+    if (buffer.size() == sizeof(ServerResponse))
     {
-        return response;
+        return *reinterpret_cast<ServerResponse *>(buffer.data());
     }
     else
     {
@@ -104,17 +78,7 @@ void TCPIP::TCPIPClient::sendFile(const std::string &fileName)
     }
 }
 
-void TCPIP::TCPIPClient::disconnect()
-{
-    if (socketFD)
-    {
-        shutdown(socketFD, SHUT_RDWR);
-        close(socketFD);
-        socketFD = -1;
-    }
-}
-
 TCPIP::TCPIPClient::~TCPIPClient()
 {
-    disconnect();
+    clientCommunication->disconnect();
 }

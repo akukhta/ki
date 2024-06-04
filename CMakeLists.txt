@@ -65,6 +65,9 @@ add_executable(${PROJECT_NAME}
 		src/TCPIP/Common/JsonSettingsParser.cpp
 		src/TCPIP/Common/JsonSettingsParser.hpp
 		src/common/CLIProgressBar.hpp
+		src/TCPIP/Client/IClientCommunication.hpp
+		src/TCPIP/Client/TCPClientCommunication.cpp
+		src/TCPIP/Client/TCPClientCommunication.hpp
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)

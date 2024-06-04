@@ -92,7 +92,7 @@ void TCPIP::MultiFileWriter::write()
 
         if (bytesWritten(pendingFileInfo[id]) >= fileInfo(pendingFileInfo[id]).fileSize) {
             finishWriteOfFile(id);
-            Logger::log("Finished writing of the file");
+            Logger::log(std::format("Writing of {} finished", fileInfo(pendingFileInfo[id]).fileName));
         }
     }
 

@@ -8,32 +8,29 @@
 #include "IClient.hpp"
 #include "../../queue/BufferedQueue.hpp"
 #include "../../common/CLIProgressBar.hpp"
+#include "IClientCommunication.hpp"
 
 namespace TCPIP
 {
     class TCPIPClient : public IClient
     {
     public:
-        TCPIPClient(std::shared_ptr<::FixedBufferQueue<TCPIPTag>> queue);
+        TCPIPClient(std::unique_ptr<IClientCommunication> clientCommunication, std::shared_ptr<::FixedBufferQueue<TCPIPTag>> queue);
         ~TCPIPClient();
 
-        virtual void connectToServer() override;
-        virtual void disconnect() override;
         virtual void sendFile(std::string const &fileName) override;
 
     private:
 
-        size_t sendToServer(unsigned char *ptr, size_t bufferSize);
-        virtual std::vector<unsigned char> receive() override;
         void sendFileChunk(TCPIP::Buffer &buffer);
         void sendFileInfo(std::string const& fileName);
-
         TCPIP::ServerResponse receiveResponse();
 
+        /// underlying implementation of communication protocol
+        std::unique_ptr<IClientCommunication> clientCommunication;
         std::shared_ptr<::FixedBufferQueue<TCPIPTag>> queue;
         std::unique_ptr<UI::CLIProgressBar> progressBar;
-        int socketFD;
-        sockaddr_in serverAddress;
+
         bool isConnected = false;
     };
 }

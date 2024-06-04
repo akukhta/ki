@@ -22,6 +22,7 @@
 #include "../TCPIP/Client/BufferedFileReader.h"
 #include "../TCPIP/Request/RequestHandler.hpp"
 #include "../TCPIP/Common/JsonSettingsParser.hpp"
+#include "../TCPIP/Client/TCPClientCommunication.hpp"
 
 /// Factory that creates proper copy tool based on passed arguments
 class ToolFactory
@@ -122,7 +123,8 @@ public:
                 std::unique_ptr<TCPIP::TCPIPServer> server = nullptr;
                 std::unique_ptr<TCPIP::IClient> client = nullptr;
 
-                TCPIP::JsonSettingsParser::getInstance()->setSettingsPath(std::move(parser.getSettingsPath()));
+                auto settingsParser = TCPIP::JsonSettingsParser::getInstance();
+                settingsParser->setSettingsPath(std::move(parser.getSettingsPath()));
 
                 if (parser.getIsServer())
                 {
@@ -135,10 +137,11 @@ public:
                 }
                 else
                 {
+                    auto tcpCommunication = std::make_unique<TCPIP::TCPClientCommunication>(std::move(settingsParser->getServerIP()), settingsParser->getServerPort());
                     auto files = parser.getFilesToSend();
                     auto queue = std::make_shared<FixedBufferQueue<TCPIPTag>>();
                     auto reader = std::make_unique<TCPIP::BufferedReader>(queue);
-                    client = std::make_unique<TCPIP::TCPIPClient>(queue);
+                    client = std::make_unique<TCPIP::TCPIPClient>(std::move(tcpCommunication), queue);
                     tool = std::make_unique<TCPIPTool>(std::move(reader), queue, std::move(client), std::move(files));
                 }
 
