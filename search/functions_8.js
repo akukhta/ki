@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['main_308',['main',['../main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main.cpp']]],
-  ['mmapfilereader_309',['MMapFileReader',['../classMMapFileReader.html#a35ea6311ec064e3e672ee9894737fb28',1,'MMapFileReader']]],
-  ['mmapfilewriter_310',['MMapFileWriter',['../classMMapFileWriter.html#ade32c05aafa715b308bbd5db688f6793',1,'MMapFileWriter']]],
-  ['multifilewriter_311',['MultiFileWriter',['../classMultiFileWriter.html#a882424de3a142039e64c32098007f731',1,'MultiFileWriter']]]
+  ['read_249',['read',['../classBufferedReader.html#a1d6a3f6da435439325aaa63bfef2f618',1,'BufferedReader::read()'],['../classIFileReader.html#a0ddf9977b656d7e3caf0ec2327d4a5cf',1,'IFileReader::read()'],['../classMMapFileReader.html#acb2e9c2eadc48c71e36e807e1467b2c0',1,'MMapFileReader::read()']]],
+  ['returnbuffer_250',['returnBuffer',['../classFixedBufferQueue.html#aecb6c0b1332cf60656e19700a0e49f67',1,'FixedBufferQueue']]]
 ];

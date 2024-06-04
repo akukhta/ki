@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ki: BufferedReader&lt; Tag &gt; Class Template Reference</title>
+<title>ki: BufferedReader&lt; MutexType, ConditionType, RAIILockType, DequeType &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -67,47 +67,47 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classBufferedReader-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">BufferedReader&lt; Tag &gt; Class Template Reference</div>  </div>
+<div class="title">BufferedReader&lt; MutexType, ConditionType, RAIILockType, DequeType &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="BufferedFileReader_8hpp_source.html">BufferedFileReader.hpp</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for BufferedReader&lt; Tag &gt;:</div>
+Inheritance diagram for BufferedReader&lt; MutexType, ConditionType, RAIILockType, DequeType &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classBufferedReader__inherit__graph.png" border="0" usemap="#aBufferedReader_3_01Tag_01_4_inherit__map" alt="Inheritance graph"/></div>
+<div class="center"><img src="classBufferedReader__inherit__graph.png" border="0" usemap="#aBufferedReader_3_01MutexType_00_01ConditionType_00_01RAIILockType_00_01DequeType_01_4_inherit__map" alt="Inheritance graph"/></div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
-Collaboration diagram for BufferedReader&lt; Tag &gt;:</div>
+Collaboration diagram for BufferedReader&lt; MutexType, ConditionType, RAIILockType, DequeType &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classBufferedReader__coll__graph.png" border="0" usemap="#aBufferedReader_3_01Tag_01_4_coll__map" alt="Collaboration graph"/></div>
+<div class="center"><img src="classBufferedReader__coll__graph.png" border="0" usemap="#aBufferedReader_3_01MutexType_00_01ConditionType_00_01RAIILockType_00_01DequeType_01_4_coll__map" alt="Collaboration graph"/></div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1e5e1ad3e877af75d7cf475bc0a5cdce"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedReader.html#a1e5e1ad3e877af75d7cf475bc0a5cdce">BufferedReader</a> (std::string fileName, typename Tag::QueueType queue)</td></tr>
-<tr class="separator:a1e5e1ad3e877af75d7cf475bc0a5cdce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a518a48c25e3676f16c09267b2c96c165"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedReader.html#a518a48c25e3676f16c09267b2c96c165">open</a> () override</td></tr>
-<tr class="memdesc:a518a48c25e3676f16c09267b2c96c165"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens the requested file for reading.  <a href="classBufferedReader.html#a518a48c25e3676f16c09267b2c96c165">More...</a><br /></td></tr>
-<tr class="separator:a518a48c25e3676f16c09267b2c96c165"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6966d2525458df6522f8199c0301fe3c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedReader.html#a6966d2525458df6522f8199c0301fe3c">read</a> () override</td></tr>
-<tr class="memdesc:a6966d2525458df6522f8199c0301fe3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads one chunk/buffer from a file and stores it into the queue.  <a href="classBufferedReader.html#a6966d2525458df6522f8199c0301fe3c">More...</a><br /></td></tr>
-<tr class="separator:a6966d2525458df6522f8199c0301fe3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b0a10e664b8e60ae1bc2d44eb28a54e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedReader.html#a5b0a10e664b8e60ae1bc2d44eb28a54e">isReadFinished</a> () const override</td></tr>
-<tr class="separator:a5b0a10e664b8e60ae1bc2d44eb28a54e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e083c97ddeb58ac03fb0272fed7a6d6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedReader.html#a4e083c97ddeb58ac03fb0272fed7a6d6">finishRead</a> () override</td></tr>
-<tr class="separator:a4e083c97ddeb58ac03fb0272fed7a6d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6d29e000485d6b96e942d33475a0d11"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedReader.html#ab6d29e000485d6b96e942d33475a0d11">getFileSize</a> () const</td></tr>
-<tr class="separator:ab6d29e000485d6b96e942d33475a0d11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0deaa33b0a87d13f6035aeb39b208dd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedReader.html#aa0deaa33b0a87d13f6035aeb39b208dd">~BufferedReader</a> () override</td></tr>
-<tr class="separator:aa0deaa33b0a87d13f6035aeb39b208dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ad52fc20ff1797c09a2f2c55a990df1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedReader.html#a8ad52fc20ff1797c09a2f2c55a990df1">BufferedReader</a> (std::string fileName, std::conditional_t&lt; std::is_same_v&lt; MutexType, std::mutex &gt;, std::shared_ptr&lt; <a class="el" href="classFixedBufferQueue.html">QueueType</a> &gt;, <a class="el" href="classFixedBufferQueue.html">QueueType</a> * &gt; queue)</td></tr>
+<tr class="separator:a8ad52fc20ff1797c09a2f2c55a990df1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f97621cf75db5ad37b491fa64dd68c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedReader.html#a8f97621cf75db5ad37b491fa64dd68c5">open</a> () override</td></tr>
+<tr class="memdesc:a8f97621cf75db5ad37b491fa64dd68c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens the requested file for reading.  <a href="classBufferedReader.html#a8f97621cf75db5ad37b491fa64dd68c5">More...</a><br /></td></tr>
+<tr class="separator:a8f97621cf75db5ad37b491fa64dd68c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d6a3f6da435439325aaa63bfef2f618"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedReader.html#a1d6a3f6da435439325aaa63bfef2f618">read</a> () override</td></tr>
+<tr class="memdesc:a1d6a3f6da435439325aaa63bfef2f618"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads one chunk/buffer from a file and stores it into the queue.  <a href="classBufferedReader.html#a1d6a3f6da435439325aaa63bfef2f618">More...</a><br /></td></tr>
+<tr class="separator:a1d6a3f6da435439325aaa63bfef2f618"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf552c85cb2b735b95a69fa8f8aad22a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedReader.html#acf552c85cb2b735b95a69fa8f8aad22a">isReadFinished</a> () const override</td></tr>
+<tr class="separator:acf552c85cb2b735b95a69fa8f8aad22a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02bc4db0ede6aabf50f956ea0d90219f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedReader.html#a02bc4db0ede6aabf50f956ea0d90219f">finishRead</a> () override</td></tr>
+<tr class="separator:a02bc4db0ede6aabf50f956ea0d90219f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae077acff394f747b5d43dad94039a991"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedReader.html#ae077acff394f747b5d43dad94039a991">getFileSize</a> () const</td></tr>
+<tr class="separator:ae077acff394f747b5d43dad94039a991"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b54c54045556aadac491edf3a2ec3e0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedReader.html#a8b54c54045556aadac491edf3a2ec3e0">~BufferedReader</a> () override</td></tr>
+<tr class="separator:a8b54c54045556aadac491edf3a2ec3e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classIFileReader"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classIFileReader')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classIFileReader.html">IFileReader&lt; void &gt;</a></td></tr>
 <tr class="memitem:a9a1912b0d88112b25c8616811f887a8b inherit pub_methods_classIFileReader"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIFileReader.html#a9a1912b0d88112b25c8616811f887a8b">~IFileReader</a> ()=default</td></tr>
 <tr class="separator:a9a1912b0d88112b25c8616811f887a8b inherit pub_methods_classIFileReader"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;class Tag&gt;<br />
-class BufferedReader&lt; Tag &gt;</h3>
+<div class="textblock"><h3>template&lt;class MutexType, class ConditionType, template&lt; class &gt; class RAIILockType, template&lt; class &gt; class DequeType&gt;<br />
+class BufferedReader&lt; MutexType, ConditionType, RAIILockType, DequeType &gt;</h3>
 
 <p>Class that performs reading from file<br  />
 Reading is done in buffered(chunked) mode:<br  />
@@ -123,19 +123,19 @@ Reading is done with direct accessing of the io buffer (for more info check "Lin
   </dd>
 </dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a1e5e1ad3e877af75d7cf475bc0a5cdce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e5e1ad3e877af75d7cf475bc0a5cdce">&#9670;&nbsp;</a></span>BufferedReader()</h2>
+<a id="a8ad52fc20ff1797c09a2f2c55a990df1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ad52fc20ff1797c09a2f2c55a990df1">&#9670;&nbsp;</a></span>BufferedReader()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class Tag &gt; </div>
+template&lt;class MutexType , class ConditionType , template&lt; class &gt; class RAIILockType, template&lt; class &gt; class DequeType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classBufferedReader.html">BufferedReader</a>&lt; Tag &gt;::<a class="el" href="classBufferedReader.html">BufferedReader</a> </td>
+          <td class="memname"><a class="el" href="classBufferedReader.html">BufferedReader</a>&lt; MutexType, ConditionType, RAIILockType, DequeType &gt;::<a class="el" href="classBufferedReader.html">BufferedReader</a> </td>
           <td>(</td>
           <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>fileName</em>, </td>
@@ -143,7 +143,7 @@ template&lt;class Tag &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">typename Tag::QueueType&#160;</td>
+          <td class="paramtype">std::conditional_t&lt; std::is_same_v&lt; MutexType, std::mutex &gt;, std::shared_ptr&lt; <a class="el" href="classFixedBufferQueue.html">QueueType</a> &gt;, <a class="el" href="classFixedBufferQueue.html">QueueType</a> * &gt;&#160;</td>
           <td class="paramname"><em>queue</em>&#160;</td>
         </tr>
         <tr>
@@ -161,19 +161,19 @@ template&lt;class Tag &gt; </div>
 
 </div>
 </div>
-<a id="aa0deaa33b0a87d13f6035aeb39b208dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0deaa33b0a87d13f6035aeb39b208dd">&#9670;&nbsp;</a></span>~BufferedReader()</h2>
+<a id="a8b54c54045556aadac491edf3a2ec3e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b54c54045556aadac491edf3a2ec3e0">&#9670;&nbsp;</a></span>~BufferedReader()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class Tag &gt; </div>
+template&lt;class MutexType , class ConditionType , template&lt; class &gt; class RAIILockType, template&lt; class &gt; class DequeType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classBufferedReader.html">BufferedReader</a>&lt; Tag &gt;::~<a class="el" href="classBufferedReader.html">BufferedReader</a> </td>
+          <td class="memname"><a class="el" href="classBufferedReader.html">BufferedReader</a>&lt; MutexType, ConditionType, RAIILockType, DequeType &gt;::~<a class="el" href="classBufferedReader.html">BufferedReader</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -189,19 +189,19 @@ template&lt;class Tag &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4e083c97ddeb58ac03fb0272fed7a6d6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e083c97ddeb58ac03fb0272fed7a6d6">&#9670;&nbsp;</a></span>finishRead()</h2>
+<a id="a02bc4db0ede6aabf50f956ea0d90219f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02bc4db0ede6aabf50f956ea0d90219f">&#9670;&nbsp;</a></span>finishRead()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class Tag &gt; </div>
+template&lt;class MutexType , class ConditionType , template&lt; class &gt; class RAIILockType, template&lt; class &gt; class DequeType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classBufferedReader.html">BufferedReader</a>&lt; Tag &gt;::finishRead </td>
+          <td class="memname">void <a class="el" href="classBufferedReader.html">BufferedReader</a>&lt; MutexType, ConditionType, RAIILockType, DequeType &gt;::finishRead </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -218,19 +218,19 @@ template&lt;class Tag &gt; </div>
 
 </div>
 </div>
-<a id="ab6d29e000485d6b96e942d33475a0d11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab6d29e000485d6b96e942d33475a0d11">&#9670;&nbsp;</a></span>getFileSize()</h2>
+<a id="ae077acff394f747b5d43dad94039a991"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae077acff394f747b5d43dad94039a991">&#9670;&nbsp;</a></span>getFileSize()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class Tag &gt; </div>
+template&lt;class MutexType , class ConditionType , template&lt; class &gt; class RAIILockType, template&lt; class &gt; class DequeType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="classBufferedReader.html">BufferedReader</a>&lt; Tag &gt;::getFileSize </td>
+          <td class="memname">size_t <a class="el" href="classBufferedReader.html">BufferedReader</a>&lt; MutexType, ConditionType, RAIILockType, DequeType &gt;::getFileSize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -245,19 +245,19 @@ template&lt;class Tag &gt; </div>
 
 </div>
 </div>
-<a id="a5b0a10e664b8e60ae1bc2d44eb28a54e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b0a10e664b8e60ae1bc2d44eb28a54e">&#9670;&nbsp;</a></span>isReadFinished()</h2>
+<a id="acf552c85cb2b735b95a69fa8f8aad22a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf552c85cb2b735b95a69fa8f8aad22a">&#9670;&nbsp;</a></span>isReadFinished()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class Tag &gt; </div>
+template&lt;class MutexType , class ConditionType , template&lt; class &gt; class RAIILockType, template&lt; class &gt; class DequeType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classBufferedReader.html">BufferedReader</a>&lt; Tag &gt;::isReadFinished </td>
+          <td class="memname">bool <a class="el" href="classBufferedReader.html">BufferedReader</a>&lt; MutexType, ConditionType, RAIILockType, DequeType &gt;::isReadFinished </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -274,19 +274,19 @@ template&lt;class Tag &gt; </div>
 
 </div>
 </div>
-<a id="a518a48c25e3676f16c09267b2c96c165"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a518a48c25e3676f16c09267b2c96c165">&#9670;&nbsp;</a></span>open()</h2>
+<a id="a8f97621cf75db5ad37b491fa64dd68c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f97621cf75db5ad37b491fa64dd68c5">&#9670;&nbsp;</a></span>open()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class Tag &gt; </div>
+template&lt;class MutexType , class ConditionType , template&lt; class &gt; class RAIILockType, template&lt; class &gt; class DequeType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classBufferedReader.html">BufferedReader</a>&lt; Tag &gt;::open </td>
+          <td class="memname">void <a class="el" href="classBufferedReader.html">BufferedReader</a>&lt; MutexType, ConditionType, RAIILockType, DequeType &gt;::open </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -305,19 +305,19 @@ template&lt;class Tag &gt; </div>
 
 </div>
 </div>
-<a id="a6966d2525458df6522f8199c0301fe3c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6966d2525458df6522f8199c0301fe3c">&#9670;&nbsp;</a></span>read()</h2>
+<a id="a1d6a3f6da435439325aaa63bfef2f618"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d6a3f6da435439325aaa63bfef2f618">&#9670;&nbsp;</a></span>read()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class Tag &gt; </div>
+template&lt;class MutexType , class ConditionType , template&lt; class &gt; class RAIILockType, template&lt; class &gt; class DequeType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classBufferedReader.html">BufferedReader</a>&lt; Tag &gt;::read </td>
+          <td class="memname">void <a class="el" href="classBufferedReader.html">BufferedReader</a>&lt; MutexType, ConditionType, RAIILockType, DequeType &gt;::read </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>

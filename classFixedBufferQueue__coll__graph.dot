@@ -1,9 +1,10 @@
-digraph "FixedBufferQueue&lt; Tag &gt;"
+digraph "FixedBufferQueue&lt; MutexType, ConditionType, RAIILockType, DequeType &gt;"
 {
  // LATEX_PDF_SIZE
   edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
   node [fontname="Helvetica",fontsize="10",shape=record];
-  Node1 [label="FixedBufferQueue\< Tag \>",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  rankdir="LR";
+  Node1 [label="FixedBufferQueue\< MutexType,\l ConditionType, RAIILockType,\l DequeType \>",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
   Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node2 [label="Tag",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node2 [label="std::conditional_t\l\< std::is_same_v\< MutexType,\l std::mutex \>, NonIPCBase,\l IPCBase \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
 }

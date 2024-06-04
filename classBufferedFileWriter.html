@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ki: BufferedFileWriter&lt; Tag &gt; Class Template Reference</title>
+<title>ki: BufferedFileWriter&lt; MutexType, ConditionType, RAIILockType, DequeType &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -67,43 +67,43 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classBufferedFileWriter-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">BufferedFileWriter&lt; Tag &gt; Class Template Reference</div>  </div>
+<div class="title">BufferedFileWriter&lt; MutexType, ConditionType, RAIILockType, DequeType &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="BufferedFileWriter_8hpp_source.html">BufferedFileWriter.hpp</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for BufferedFileWriter&lt; Tag &gt;:</div>
+Inheritance diagram for BufferedFileWriter&lt; MutexType, ConditionType, RAIILockType, DequeType &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classBufferedFileWriter__inherit__graph.png" border="0" usemap="#aBufferedFileWriter_3_01Tag_01_4_inherit__map" alt="Inheritance graph"/></div>
+<div class="center"><img src="classBufferedFileWriter__inherit__graph.png" border="0" usemap="#aBufferedFileWriter_3_01MutexType_00_01ConditionType_00_01RAIILockType_00_01DequeType_01_4_inherit__map" alt="Inheritance graph"/></div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
-Collaboration diagram for BufferedFileWriter&lt; Tag &gt;:</div>
+Collaboration diagram for BufferedFileWriter&lt; MutexType, ConditionType, RAIILockType, DequeType &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classBufferedFileWriter__coll__graph.png" border="0" usemap="#aBufferedFileWriter_3_01Tag_01_4_coll__map" alt="Collaboration graph"/></div>
+<div class="center"><img src="classBufferedFileWriter__coll__graph.png" border="0" usemap="#aBufferedFileWriter_3_01MutexType_00_01ConditionType_00_01RAIILockType_00_01DequeType_01_4_coll__map" alt="Collaboration graph"/></div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a814a2026911b2d72fa6820b5fcfd5fa0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedFileWriter.html#a814a2026911b2d72fa6820b5fcfd5fa0">BufferedFileWriter</a> (std::string fileName, std::conditional_t&lt; std::is_same_v&lt; Tag, <a class="el" href="structNonIPCTag.html">NonIPCTag</a> &gt;, std::shared_ptr&lt; <a class="el" href="classFixedBufferQueue.html">QueueType</a> &gt;, <a class="el" href="classFixedBufferQueue.html">QueueType</a> * &gt; queue)</td></tr>
-<tr class="separator:a814a2026911b2d72fa6820b5fcfd5fa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a263c13eb2282cd3bdf1e372ad3fac4a3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedFileWriter.html#a263c13eb2282cd3bdf1e372ad3fac4a3">write</a> () override</td></tr>
-<tr class="memdesc:a263c13eb2282cd3bdf1e372ad3fac4a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a filled buffer from the queue to the file.  <a href="classBufferedFileWriter.html#a263c13eb2282cd3bdf1e372ad3fac4a3">More...</a><br /></td></tr>
-<tr class="separator:a263c13eb2282cd3bdf1e372ad3fac4a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c44ae24bc6771c502adc7dde54a88a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedFileWriter.html#a5c44ae24bc6771c502adc7dde54a88a7">create</a> () override</td></tr>
-<tr class="memdesc:a5c44ae24bc6771c502adc7dde54a88a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates and open output file.  <a href="classBufferedFileWriter.html#a5c44ae24bc6771c502adc7dde54a88a7">More...</a><br /></td></tr>
-<tr class="separator:a5c44ae24bc6771c502adc7dde54a88a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c1cf8b5e110a207a640747a7db13bd4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedFileWriter.html#a9c1cf8b5e110a207a640747a7db13bd4">finishWrite</a> () override</td></tr>
-<tr class="memdesc:a9c1cf8b5e110a207a640747a7db13bd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes file handle and syncs the file disk's content.  <a href="classBufferedFileWriter.html#a9c1cf8b5e110a207a640747a7db13bd4">More...</a><br /></td></tr>
-<tr class="separator:a9c1cf8b5e110a207a640747a7db13bd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13bcd7aa2be38ba466c8995c0dff79ab"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedFileWriter.html#a13bcd7aa2be38ba466c8995c0dff79ab">isWriteFinished</a> () override</td></tr>
-<tr class="separator:a13bcd7aa2be38ba466c8995c0dff79ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37618328f86c3cd2295d790e5f2c46f9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedFileWriter.html#a37618328f86c3cd2295d790e5f2c46f9">~BufferedFileWriter</a> () override</td></tr>
-<tr class="separator:a37618328f86c3cd2295d790e5f2c46f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2aac9f7508cffa673cc4c0295d463c61"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedFileWriter.html#a2aac9f7508cffa673cc4c0295d463c61">BufferedFileWriter</a> (std::string fileName, std::conditional_t&lt; std::is_same_v&lt; MutexType, std::mutex &gt;, std::shared_ptr&lt; <a class="el" href="classFixedBufferQueue.html">QueueType</a> &gt;, <a class="el" href="classFixedBufferQueue.html">QueueType</a> * &gt; queue)</td></tr>
+<tr class="separator:a2aac9f7508cffa673cc4c0295d463c61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4b4d03a3880d632d86351b796876e2c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedFileWriter.html#ad4b4d03a3880d632d86351b796876e2c">write</a> () override</td></tr>
+<tr class="memdesc:ad4b4d03a3880d632d86351b796876e2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a filled buffer from the queue to the file.  <a href="classBufferedFileWriter.html#ad4b4d03a3880d632d86351b796876e2c">More...</a><br /></td></tr>
+<tr class="separator:ad4b4d03a3880d632d86351b796876e2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fc2712525a519332240673a675735ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedFileWriter.html#a6fc2712525a519332240673a675735ff">create</a> () override</td></tr>
+<tr class="memdesc:a6fc2712525a519332240673a675735ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates and open output file.  <a href="classBufferedFileWriter.html#a6fc2712525a519332240673a675735ff">More...</a><br /></td></tr>
+<tr class="separator:a6fc2712525a519332240673a675735ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cc3cc909fc11621ec3e65f077c25b16"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedFileWriter.html#a3cc3cc909fc11621ec3e65f077c25b16">finishWrite</a> () override</td></tr>
+<tr class="memdesc:a3cc3cc909fc11621ec3e65f077c25b16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes file handle and syncs the file disk's content.  <a href="classBufferedFileWriter.html#a3cc3cc909fc11621ec3e65f077c25b16">More...</a><br /></td></tr>
+<tr class="separator:a3cc3cc909fc11621ec3e65f077c25b16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69a3b05f69c0b3854a39dbe0f10b500a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedFileWriter.html#a69a3b05f69c0b3854a39dbe0f10b500a">isWriteFinished</a> () override</td></tr>
+<tr class="separator:a69a3b05f69c0b3854a39dbe0f10b500a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0e4360d9f67b5b7362fde7f7f392895"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBufferedFileWriter.html#ac0e4360d9f67b5b7362fde7f7f392895">~BufferedFileWriter</a> () override</td></tr>
+<tr class="separator:ac0e4360d9f67b5b7362fde7f7f392895"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;class Tag&gt;<br />
-class BufferedFileWriter&lt; Tag &gt;</h3>
+<div class="textblock"><h3>template&lt;class MutexType, class ConditionType, template&lt; class &gt; class RAIILockType, template&lt; class &gt; class DequeType&gt;<br />
+class BufferedFileWriter&lt; MutexType, ConditionType, RAIILockType, DequeType &gt;</h3>
 
 <p>Class that performs writing to file<br  />
 Writing is done in buffered(chunked) mode:<br  />
@@ -118,19 +118,19 @@ Takes a buffer from the queue and write it to the output file<br  />
   </dd>
 </dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a814a2026911b2d72fa6820b5fcfd5fa0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a814a2026911b2d72fa6820b5fcfd5fa0">&#9670;&nbsp;</a></span>BufferedFileWriter()</h2>
+<a id="a2aac9f7508cffa673cc4c0295d463c61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2aac9f7508cffa673cc4c0295d463c61">&#9670;&nbsp;</a></span>BufferedFileWriter()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class Tag &gt; </div>
+template&lt;class MutexType , class ConditionType , template&lt; class &gt; class RAIILockType, template&lt; class &gt; class DequeType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classBufferedFileWriter.html">BufferedFileWriter</a>&lt; Tag &gt;::<a class="el" href="classBufferedFileWriter.html">BufferedFileWriter</a> </td>
+          <td class="memname"><a class="el" href="classBufferedFileWriter.html">BufferedFileWriter</a>&lt; MutexType, ConditionType, RAIILockType, DequeType &gt;::<a class="el" href="classBufferedFileWriter.html">BufferedFileWriter</a> </td>
           <td>(</td>
           <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>fileName</em>, </td>
@@ -138,7 +138,7 @@ template&lt;class Tag &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::conditional_t&lt; std::is_same_v&lt; Tag, <a class="el" href="structNonIPCTag.html">NonIPCTag</a> &gt;, std::shared_ptr&lt; <a class="el" href="classFixedBufferQueue.html">QueueType</a> &gt;, <a class="el" href="classFixedBufferQueue.html">QueueType</a> * &gt;&#160;</td>
+          <td class="paramtype">std::conditional_t&lt; std::is_same_v&lt; MutexType, std::mutex &gt;, std::shared_ptr&lt; <a class="el" href="classFixedBufferQueue.html">QueueType</a> &gt;, <a class="el" href="classFixedBufferQueue.html">QueueType</a> * &gt;&#160;</td>
           <td class="paramname"><em>queue</em>&#160;</td>
         </tr>
         <tr>
@@ -156,19 +156,19 @@ template&lt;class Tag &gt; </div>
 
 </div>
 </div>
-<a id="a37618328f86c3cd2295d790e5f2c46f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37618328f86c3cd2295d790e5f2c46f9">&#9670;&nbsp;</a></span>~BufferedFileWriter()</h2>
+<a id="ac0e4360d9f67b5b7362fde7f7f392895"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0e4360d9f67b5b7362fde7f7f392895">&#9670;&nbsp;</a></span>~BufferedFileWriter()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class Tag &gt; </div>
+template&lt;class MutexType , class ConditionType , template&lt; class &gt; class RAIILockType, template&lt; class &gt; class DequeType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classBufferedFileWriter.html">BufferedFileWriter</a>&lt; Tag &gt;::~<a class="el" href="classBufferedFileWriter.html">BufferedFileWriter</a> </td>
+          <td class="memname"><a class="el" href="classBufferedFileWriter.html">BufferedFileWriter</a>&lt; MutexType, ConditionType, RAIILockType, DequeType &gt;::~<a class="el" href="classBufferedFileWriter.html">BufferedFileWriter</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -184,19 +184,19 @@ template&lt;class Tag &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a5c44ae24bc6771c502adc7dde54a88a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c44ae24bc6771c502adc7dde54a88a7">&#9670;&nbsp;</a></span>create()</h2>
+<a id="a6fc2712525a519332240673a675735ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fc2712525a519332240673a675735ff">&#9670;&nbsp;</a></span>create()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class Tag &gt; </div>
+template&lt;class MutexType , class ConditionType , template&lt; class &gt; class RAIILockType, template&lt; class &gt; class DequeType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classBufferedFileWriter.html">BufferedFileWriter</a>&lt; Tag &gt;::create </td>
+          <td class="memname">void <a class="el" href="classBufferedFileWriter.html">BufferedFileWriter</a>&lt; MutexType, ConditionType, RAIILockType, DequeType &gt;::create </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -215,19 +215,19 @@ template&lt;class Tag &gt; </div>
 
 </div>
 </div>
-<a id="a9c1cf8b5e110a207a640747a7db13bd4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c1cf8b5e110a207a640747a7db13bd4">&#9670;&nbsp;</a></span>finishWrite()</h2>
+<a id="a3cc3cc909fc11621ec3e65f077c25b16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cc3cc909fc11621ec3e65f077c25b16">&#9670;&nbsp;</a></span>finishWrite()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class Tag &gt; </div>
+template&lt;class MutexType , class ConditionType , template&lt; class &gt; class RAIILockType, template&lt; class &gt; class DequeType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classBufferedFileWriter.html">BufferedFileWriter</a>&lt; Tag &gt;::finishWrite </td>
+          <td class="memname">void <a class="el" href="classBufferedFileWriter.html">BufferedFileWriter</a>&lt; MutexType, ConditionType, RAIILockType, DequeType &gt;::finishWrite </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -246,19 +246,19 @@ template&lt;class Tag &gt; </div>
 
 </div>
 </div>
-<a id="a13bcd7aa2be38ba466c8995c0dff79ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13bcd7aa2be38ba466c8995c0dff79ab">&#9670;&nbsp;</a></span>isWriteFinished()</h2>
+<a id="a69a3b05f69c0b3854a39dbe0f10b500a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69a3b05f69c0b3854a39dbe0f10b500a">&#9670;&nbsp;</a></span>isWriteFinished()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class Tag &gt; </div>
+template&lt;class MutexType , class ConditionType , template&lt; class &gt; class RAIILockType, template&lt; class &gt; class DequeType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classBufferedFileWriter.html">BufferedFileWriter</a>&lt; Tag &gt;::isWriteFinished </td>
+          <td class="memname">bool <a class="el" href="classBufferedFileWriter.html">BufferedFileWriter</a>&lt; MutexType, ConditionType, RAIILockType, DequeType &gt;::isWriteFinished </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -276,19 +276,19 @@ template&lt;class Tag &gt; </div>
 
 </div>
 </div>
-<a id="a263c13eb2282cd3bdf1e372ad3fac4a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a263c13eb2282cd3bdf1e372ad3fac4a3">&#9670;&nbsp;</a></span>write()</h2>
+<a id="ad4b4d03a3880d632d86351b796876e2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4b4d03a3880d632d86351b796876e2c">&#9670;&nbsp;</a></span>write()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class Tag &gt; </div>
+template&lt;class MutexType , class ConditionType , template&lt; class &gt; class RAIILockType, template&lt; class &gt; class DequeType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classBufferedFileWriter.html">BufferedFileWriter</a>&lt; Tag &gt;::write </td>
+          <td class="memname">void <a class="el" href="classBufferedFileWriter.html">BufferedFileWriter</a>&lt; MutexType, ConditionType, RAIILockType, DequeType &gt;::write </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>

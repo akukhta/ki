@@ -1,13 +1,20 @@
 var searchData=
 [
-  ['serialize_325',['serialize',['../classSerializer_3_01SerializerType_1_1NoBuffer_01_4.html#ae411da1714ab9817bc89ecad2eab5e11',1,'Serializer&lt; SerializerType::NoBuffer &gt;::serialize()'],['../classSerializer_3_01SerializerType_1_1ExternalBuffer_01_4.html#aea2fe8687462d83a0d945bc7903443db',1,'Serializer&lt; SerializerType::ExternalBuffer &gt;::serialize()'],['../classSerializer_3_01SerializerType_1_1NoBuffer_01_4.html#a8425a5532619bb735ccf89a145e55918',1,'Serializer&lt; SerializerType::NoBuffer &gt;::serialize(unsigned char *externalBuffer, T const &amp;data)']]],
-  ['serializer_326',['Serializer',['../classSerializer_3_01SerializerType_1_1NoBuffer_01_4.html#abfa35f285df0e134e830bbc299e32b2b',1,'Serializer&lt; SerializerType::NoBuffer &gt;::Serializer()'],['../classSerializer_3_01SerializerType_1_1ExternalBuffer_01_4.html#a49b909618975e181c43e3e76bd2ece2d',1,'Serializer&lt; SerializerType::ExternalBuffer &gt;::Serializer()'],['../classSerializer_3_01SerializerType_1_1InternalBuffer_01_4.html#afb6514d9af0ca3a78d807a258118b205',1,'Serializer&lt; SerializerType::InternalBuffer &gt;::Serializer()']]],
-  ['setownerid_327',['setOwnerID',['../classTCPIP_1_1Buffer.html#a28489adb12598bcb2920aa7958804b7f',1,'TCPIP::Buffer']]],
-  ['settype_328',['setType',['../classBuffer.html#a64cb5554a7fcf92f3c5cd664a0e03550',1,'Buffer::setType()'],['../classTCPIP_1_1Buffer.html#a285c7c62f47fc0ca975ea1f72ea741f4',1,'TCPIP::Buffer::setType()']]],
-  ['sharedmemorymanager_329',['SharedMemoryManager',['../classSharedMemoryManager.html#ae95d73c79b3bf9a3c7e672ae579fc579',1,'SharedMemoryManager']]],
-  ['siblingprocessobserver_330',['SiblingProcessObserver',['../classSiblingProcessObserver.html#acbd3d551ff693491fae7bfc7de39ace7',1,'SiblingProcessObserver::SiblingProcessObserver(ProcInfo *processInfo, ProcessType processesToObserve, std::function&lt; void()&gt; stopwatchCallback)'],['../classSiblingProcessObserver.html#a560823b1d7b2ca3223ebe01e7c371d08',1,'SiblingProcessObserver::SiblingProcessObserver(SiblingProcessObserver const &amp;)=delete'],['../classSiblingProcessObserver.html#a34fc62b6d094f5e1481fa1efc324e3a5',1,'SiblingProcessObserver::SiblingProcessObserver(SiblingProcessObserver &amp;&amp;other)=delete']]],
-  ['start_331',['start',['../classStopWatch.html#a09a3c8f9ab03d7b28e4f8b90a833974e',1,'StopWatch']]],
-  ['startobserver_332',['startObserver',['../classSiblingProcessObserver.html#a5359dcc8d954ce8f833c2b605c58132e',1,'SiblingProcessObserver']]],
-  ['stop_333',['stop',['../classStopWatch.html#a6e80b598d9304e37d8768b716e713e0e',1,'StopWatch']]],
-  ['synchronizedqueue_334',['SynchronizedQueue',['../classSynchronizedQueue.html#ae1201d8fee0088df7b3b27f8d43c4470',1,'SynchronizedQueue::SynchronizedQueue()=default'],['../classSynchronizedQueue.html#aa95abefdaf434a17353a4e6942a7e52e',1,'SynchronizedQueue::SynchronizedQueue(SynchronizedQueue const &amp;)=delete'],['../classSynchronizedQueue.html#a30b1a0f3f75889f911f9b7aa1f764184',1,'SynchronizedQueue::SynchronizedQueue(SynchronizedQueue &amp;&amp;)=delete']]]
+  ['_7ebpcopytool_261',['~BPCopyTool',['../classBPCopyTool.html#a8da25c30a7b719aa029059bb0ca2c0c2',1,'BPCopyTool']]],
+  ['_7ebufferedfilewriter_262',['~BufferedFileWriter',['../classBufferedFileWriter.html#ac0e4360d9f67b5b7362fde7f7f392895',1,'BufferedFileWriter']]],
+  ['_7ebufferedreader_263',['~BufferedReader',['../classBufferedReader.html#a8b54c54045556aadac491edf3a2ec3e0',1,'BufferedReader']]],
+  ['_7efixedbufferqueue_264',['~FixedBufferQueue',['../classFixedBufferQueue.html#af36f4ac933e219990dac67c92b6d451a',1,'FixedBufferQueue']]],
+  ['_7eicopytool_265',['~ICopyTool',['../classICopyTool.html#aeee82267115943ce47808bc3738eb2d1',1,'ICopyTool']]],
+  ['_7eifilereader_266',['~IFileReader',['../classIFileReader.html#a9a1912b0d88112b25c8616811f887a8b',1,'IFileReader']]],
+  ['_7eifilewriter_267',['~IFileWriter',['../classIFileWriter.html#a4e41dffa0b0b9f4bb5c622b5bacd8709',1,'IFileWriter::~IFileWriter()'],['../classIFileWriter_3_01void_01_4.html#a5851d51987ac70510ec4f1087475c178',1,'IFileWriter&lt; void &gt;::~IFileWriter()']]],
+  ['_7eioptionsparser_268',['~IOptionsParser',['../classIOptionsParser.html#a6302d02d3a863b98277f151e1c7d4965',1,'IOptionsParser']]],
+  ['_7eipctool_269',['~IPCTool',['../classIPCTool.html#a2debb1a7b54af5ae395b7cbcdf1183b9',1,'IPCTool']]],
+  ['_7eiqueue_270',['~IQueue',['../classIQueue.html#ab54a4646c949111e0087fb8d3a355d7a',1,'IQueue']]],
+  ['_7emmapfilereader_271',['~MMapFileReader',['../classMMapFileReader.html#a0f4767bc1041074b8e5c87597c82f811',1,'MMapFileReader']]],
+  ['_7emmapfilewriter_272',['~MMapFileWriter',['../classMMapFileWriter.html#a793f39b9c6b9022a7ef9ba1afa52208d',1,'MMapFileWriter']]],
+  ['_7eoptionsparser_273',['~OptionsParser',['../classOptionsParser.html#a2fc8adf10e5a2d412a249e5e4c13fb72',1,'OptionsParser']]],
+  ['_7eparallelcopytool_274',['~ParallelCopyTool',['../classParallelCopyTool.html#a6066c1e4928095f2a4720b5709ed697f',1,'ParallelCopyTool']]],
+  ['_7esharedmemorymanager_275',['~SharedMemoryManager',['../classSharedMemoryManager.html#ad393917379fb03dddfd4508a72ee99a7',1,'SharedMemoryManager']]],
+  ['_7esiblingprocessobserver_276',['~SiblingProcessObserver',['../classSiblingProcessObserver.html#a31dea841cf1fce97c459e6afac6982c9',1,'SiblingProcessObserver']]],
+  ['_7estopwatch_277',['~StopWatch',['../classStopWatch.html#a223ec0da71dd0bc4f2b14d1af44bf20a',1,'StopWatch']]]
 ];

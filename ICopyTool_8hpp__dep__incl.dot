@@ -16,7 +16,4 @@ digraph "/home/runner/work/ki/ki/src/common/ICopyTool.hpp"
   Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node6 [label="/home/runner/work/ki\l/ki/src/common/ParallelCopy\lTool.hpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$ParallelCopyTool_8hpp.html",tooltip=" "];
   Node6 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node7 [label="/home/runner/work/ki\l/ki/src/common/TCPIPTool.hpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$TCPIPTool_8hpp.html",tooltip=" "];
-  Node7 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
 }

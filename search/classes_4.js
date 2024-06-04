@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['logger_208',['Logger',['../classLogger.html',1,'']]]
+  ['nonipcbase_167',['NonIPCBase',['../structNonIPCBase.html',1,'']]]
 ];

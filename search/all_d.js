@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['queue_120',['Queue',['../SharedMemoryManager_8hpp.html#a9e6f389db40422cb8e6885e8eafa5aee',1,'SharedMemoryManager.hpp']]],
-  ['queuemutex_121',['queueMutex',['../classFixedBufferQueue.html#aa147d4d6bcb01496e0126ddb07b1de73',1,'FixedBufferQueue']]],
-  ['queuetype_122',['QueueType',['../structNonIPCTag.html#a556218c16c972a5651955dc68f24872c',1,'NonIPCTag::QueueType()'],['../structIPCTag.html#aebc65da28641695e84b5c47e2856a8f9',1,'IPCTag::QueueType()'],['../structTCPIPTag.html#aef3057132161b07dc4f67d0a330f5289',1,'TCPIPTag::QueueType()']]]
+  ['toolfactory_123',['ToolFactory',['../classToolFactory.html',1,'ToolFactory'],['../classToolFactory.html#aebfac6a3565566f66ca83653ca879a98',1,'ToolFactory::ToolFactory()']]],
+  ['tooltype_124',['ToolType',['../ToolTypeEnum_8hpp.html#acbb91b3762d5b1de61e4312a6087d8a6',1,'ToolTypeEnum.hpp']]],
+  ['tooltypeenum_2ehpp_125',['ToolTypeEnum.hpp',['../ToolTypeEnum_8hpp.html',1,'']]],
+  ['tryremoveactivesharedmemoryobject_126',['tryRemoveActiveSharedMemoryObject',['../classSharedMemoryManager.html#a92975a2e6170bdba9fe98ebe39dc7ac1',1,'SharedMemoryManager']]]
 ];

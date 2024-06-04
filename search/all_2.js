@@ -1,14 +1,6 @@
 var searchData=
 [
-  ['charallocator_17',['CharAllocator',['../IPCProcInfo_8hpp.html#a2881ff6bd51b75c8909332ecac41e1f7',1,'IPCProcInfo.hpp']]],
-  ['close_18',['close',['../classIQueue.html#a1e87c3b6641115bfe981dd4ebe1cc549',1,'IQueue::close()'],['../classSynchronizedQueue.html#a829b3a6235ce46b58da71cc5dc2795bb',1,'SynchronizedQueue::close()'],['../classFixedBufferQueue.html#abc34529daed277a80971baa764cb9a06',1,'FixedBufferQueue::close()']]],
-  ['conditiontype_19',['ConditionType',['../structNonIPCTag.html#a15d1db6c8030ff9c003923203dc6fe60',1,'NonIPCTag::ConditionType()'],['../structTCPIPTag.html#a0941e8fd84c7d7784273bd258ac18d5a',1,'TCPIPTag::ConditionType()'],['../structIPCTag.html#a22d5c3c44c20dd772a71efb5acce1f6d',1,'IPCTag::ConditionType()']]],
-  ['container_20',['container',['../classSerializer_3_01SerializerType_1_1NoBuffer_01_4.html#ad4a5952b4e5c3eaae8ff8b21bfdc3abc',1,'Serializer&lt; SerializerType::NoBuffer &gt;::container()'],['../classSerializer_3_01SerializerType_1_1NoBuffer_01_4.html#af5a569a8d8fca029398dc56dd8dcfd93',1,'Serializer&lt; SerializerType::NoBuffer &gt;::container()']]],
-  ['copy_21',['copy',['../classBPCopyTool.html#a29f47aa907ca6cc52836f71098334074',1,'BPCopyTool::copy()'],['../classICopyTool.html#ae1f69085c997e192337781f0e34a6ea5',1,'ICopyTool::copy()'],['../classIPCTool.html#a30b2c19f12c6735ee7d092a9d1deab7e',1,'IPCTool::copy()'],['../classParallelCopyTool.html#a432e25a830e902e10a883ba06cc75e9b',1,'ParallelCopyTool::copy()'],['../classTCPIPTool.html#a73fbb123d04a1371e94d8132a40f3f49',1,'TCPIPTool::copy()']]],
-  ['create_22',['create',['../classBufferedFileWriter.html#a5c44ae24bc6771c502adc7dde54a88a7',1,'BufferedFileWriter::create()'],['../classIFileWriter.html#ace426a9c2a203e2f237b30cbc4efd134',1,'IFileWriter::create()'],['../classIFileWriter_3_01void_01_4.html#ab2fd9fc1a7bf13817586b48630eb7277',1,'IFileWriter&lt; void &gt;::create()'],['../classMMapFileWriter.html#a390be3999043f24741c8a334563e3e40',1,'MMapFileWriter::create()']]],
-  ['createautostartwatch_23',['createAutoStartWatch',['../classStopWatch.html#a3ccc5f242fa008568de3e44339b5a31e',1,'StopWatch']]],
-  ['createmanualwatch_24',['createManualWatch',['../classStopWatch.html#a93eeb195642e4beec689ef47e1f9abac',1,'StopWatch']]],
-  ['createscopedlock_25',['createScopedLock',['../structProcInfo.html#a02aadf5eca623eb55383fd44d919b77a',1,'ProcInfo']]],
-  ['createtool_26',['createTool',['../classToolFactory.html#a04804e493d973cd4656e414b96642932',1,'ToolFactory']]],
-  ['cv_27',['cv',['../classFixedBufferQueue.html#a91b0b10bf6619772a124f6a3db8c2cd4',1,'FixedBufferQueue']]]
+  ['data_24',['data',['../classBuffer.html#a6b94aa2105620b97b89f87a7c748ced6',1,'Buffer']]],
+  ['defaultbuffersize_25',['defaultBufferSize',['../classMMapFileReader.html#a852ff044fb181ab5dcee01943caeb30b',1,'MMapFileReader']]],
+  ['dst_26',['dst',['../structProcInfo.html#a13f086ce323f65dc699c7f66de9ee833',1,'ProcInfo']]]
 ];

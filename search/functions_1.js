@@ -1,7 +1,10 @@
 var searchData=
 [
-  ['bpcopytool_267',['BPCopyTool',['../classBPCopyTool.html#a319e8c0d700c626bb107a3827e1b5230',1,'BPCopyTool']]],
-  ['buffer_268',['Buffer',['../classBuffer.html#ace03737eff97a8543e07e3c88066c952',1,'Buffer::Buffer(DataType data, BufferType type=BufferType::READ)'],['../classBuffer.html#a3dedf17a2ba31ddaa1bd21094c3a2626',1,'Buffer::Buffer(Buffer &amp;&amp;other) noexcept'],['../classBuffer.html#ad37216ed3d2e2b5e8368bcbfb297cf87',1,'Buffer::Buffer(Buffer const &amp;)=delete'],['../classTCPIP_1_1Buffer.html#aeba584484ee01958b79b4e072c9da47d',1,'TCPIP::Buffer::Buffer(unsigned char *data, BufferType type=BufferType::READ)'],['../classTCPIP_1_1Buffer.html#af808726ddc2afef0cd0c05ce9147407c',1,'TCPIP::Buffer::Buffer(Buffer &amp;&amp;other) noexcept'],['../classTCPIP_1_1Buffer.html#a7e3869773205a8fc8a034c11fff63c6a',1,'TCPIP::Buffer::Buffer(Buffer const &amp;)=delete']]],
-  ['bufferedfilewriter_269',['BufferedFileWriter',['../classBufferedFileWriter.html#a814a2026911b2d72fa6820b5fcfd5fa0',1,'BufferedFileWriter']]],
-  ['bufferedreader_270',['BufferedReader',['../classBufferedReader.html#a1e5e1ad3e877af75d7cf475bc0a5cdce',1,'BufferedReader']]]
+  ['close_209',['close',['../classFixedBufferQueue.html#a444da33299b08c53ddcba143957a2e4c',1,'FixedBufferQueue::close()'],['../classIQueue.html#a1e87c3b6641115bfe981dd4ebe1cc549',1,'IQueue::close()'],['../classSynchronizedQueue.html#a829b3a6235ce46b58da71cc5dc2795bb',1,'SynchronizedQueue::close()']]],
+  ['copy_210',['copy',['../classBPCopyTool.html#a29f47aa907ca6cc52836f71098334074',1,'BPCopyTool::copy()'],['../classICopyTool.html#ae1f69085c997e192337781f0e34a6ea5',1,'ICopyTool::copy()'],['../classIPCTool.html#a30b2c19f12c6735ee7d092a9d1deab7e',1,'IPCTool::copy()'],['../classParallelCopyTool.html#a432e25a830e902e10a883ba06cc75e9b',1,'ParallelCopyTool::copy()']]],
+  ['create_211',['create',['../classBufferedFileWriter.html#a6fc2712525a519332240673a675735ff',1,'BufferedFileWriter::create()'],['../classIFileWriter.html#ace426a9c2a203e2f237b30cbc4efd134',1,'IFileWriter::create()'],['../classIFileWriter_3_01void_01_4.html#ab2fd9fc1a7bf13817586b48630eb7277',1,'IFileWriter&lt; void &gt;::create()'],['../classMMapFileWriter.html#a390be3999043f24741c8a334563e3e40',1,'MMapFileWriter::create()']]],
+  ['createautostartwatch_212',['createAutoStartWatch',['../classStopWatch.html#a3ccc5f242fa008568de3e44339b5a31e',1,'StopWatch']]],
+  ['createmanualwatch_213',['createManualWatch',['../classStopWatch.html#a93eeb195642e4beec689ef47e1f9abac',1,'StopWatch']]],
+  ['createscopedlock_214',['createScopedLock',['../structProcInfo.html#a02aadf5eca623eb55383fd44d919b77a',1,'ProcInfo']]],
+  ['createtool_215',['createTool',['../classToolFactory.html#a04804e493d973cd4656e414b96642932',1,'ToolFactory']]]
 ];

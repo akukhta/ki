@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['offset_370',['offset',['../classSerializer_3_01SerializerType_1_1NoBuffer_01_4.html#a3cf0ec42e86f59bbc7cfbaf1059eb7e1',1,'Serializer&lt; SerializerType::NoBuffer &gt;']]],
-  ['owningclientid_371',['owningClientID',['../classTCPIP_1_1Buffer.html#a9f818149e70a05a1a4e3740960062af5',1,'TCPIP::Buffer']]]
+  ['readbuffers_293',['readBuffers',['../classFixedBufferQueue.html#a5985712bb402fb9ecf751f67686f20f9',1,'FixedBufferQueue']]],
+  ['readerprocesscount_294',['readerProcessCount',['../structProcInfo.html#a057ebfe11e15b8d286b87e0e5962cfe5',1,'ProcInfo']]]
 ];
