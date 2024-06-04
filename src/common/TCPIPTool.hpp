@@ -3,8 +3,8 @@
 #include <future>
 #include "ICopyTool.hpp"
 #include "StopWatch.h"
-#include "../writer/MultiFileWriter.hpp"
-#include "../reader/TCPIPBufferedFileReader.h"
+#include "../TCPIP/Server/MultiFileWriter.hpp"
+#include "../TCPIP/Client/BufferedFileReader.h"
 #include "../queue/BufferedQueue.hpp"
 #include "../TCPIP/Server/IServer.hpp"
 #include "../TCPIP/Client/IClient.hpp"

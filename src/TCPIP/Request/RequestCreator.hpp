@@ -2,7 +2,7 @@
 #include "RequestTypes.h"
 #include <vector>
 #include <string>
-#include "../../queue/TCPIPBuffer.hpp"
+#include "../Common/Buffer.hpp"
 
 namespace TCPIP {
     class RequestCreator

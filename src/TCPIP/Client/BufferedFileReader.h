@@ -1,5 +1,5 @@
 #pragma once
-#include "BufferedFileReader.hpp"
+#include "../../reader/BufferedFileReader.hpp"
 
 namespace TCPIP
 {
@@ -49,7 +49,6 @@ namespace TCPIP
             else
             {
                 readFinished.store(true);
-                //queue->finishRead();
             }
 
             queue->returnBuffer(std::move(buf));

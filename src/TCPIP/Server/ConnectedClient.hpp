@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include <optional>
-#include "../../queue/TCPIPBuffer.hpp"
+#include "../Common/Buffer.hpp"
 #include "../Request/ClientRequest.hpp"
 
 namespace TCPIP

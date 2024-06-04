@@ -1,6 +1,7 @@
 #pragma once
 #include <unistd.h>
 #include <fcntl.h>
+#include <filesystem>
 
 namespace TCPIP
 {
@@ -17,6 +18,11 @@ namespace TCPIP
             }
 
             fcntl(socketFD, F_SETFL, flags | O_NONBLOCK);
+        }
+
+        static std::string getFileNameOnly(std::string const& path)
+        {
+            return std::filesystem::path(path).filename();
         }
     };
 }

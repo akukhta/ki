@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 
 find_package(Boost 1.82.0 REQUIRED)
+find_package(fmt REQUIRED)
 
 add_executable(${PROJECT_NAME}
 		src/main.cpp
@@ -32,23 +33,23 @@ add_executable(${PROJECT_NAME}
 		src/IPC/IPCToolType.hpp
 		src/IPC/SiblingProcessObserver.hpp
 		src/IPC/SiblingProcessObserver.cpp
-		src/writer/MultiFileWriter.cpp
-		src/writer/MultiFileWriter.hpp
+		src/TCPIP/Server/MultiFileWriter.cpp
+		src/TCPIP/Server/MultiFileWriter.hpp
 		src/TCPIP/Common/FileInfo.hpp
 		src/queue/Buffer/BufferType.hpp
 		src/common/TCPIPTool.hpp
-		src/TCPIP/Common/TCPUtiles.hpp
+		src/TCPIP/Common/Utiles.hpp
 		src/TCPIP/Client/TCPIPClient.cpp
 		src/TCPIP/Client/TCPIPClient.hpp
 		src/TCPIP/Server/TCPIPServer.cpp
 		src/TCPIP/Server/TCPIPServer.hpp
-		src/queue/TCPIPBuffer.hpp
+		src/TCPIP/Common/Buffer.hpp
 		src/TCPIP/Server/IServer.hpp
 		src/common/Serializer.hpp
 		src/TCPIP/Client/IClient.hpp
 		src/common/Logger.cpp
 		src/common/Logger.hpp
-		src/reader/TCPIPBufferedFileReader.h
+		src/TCPIP/Client/BufferedFileReader.h
 		src/TCPIP/Request/RequestTypes.h
         src/TCPIP/Server/ConnectedClient.cpp
 		src/TCPIP/Server/ConnectedClient.hpp
@@ -57,11 +58,13 @@ add_executable(${PROJECT_NAME}
 		src/TCPIP/Request/RequestHandler.hpp
         src/TCPIP/Request/RequestHeader.hpp
         src/TCPIP/Request/ClientRequest.hpp
+        src/TCPIP/Request/ClientRequest.cpp
 		src/TCPIP/Request/IRequestHandler.hpp
 		src/TCPIP/Request/RequestCreator.cpp
 		src/TCPIP/Request/RequestCreator.hpp
-		src/TCPIP/Common/TCPIPToolSettingsParser.cpp
-		src/TCPIP/Common/TCPIPToolSettingsParser.hpp
+		src/TCPIP/Common/JsonSettingsParser.cpp
+		src/TCPIP/Common/JsonSettingsParser.hpp
+		src/common/CLIProgressBar.hpp
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
@@ -70,4 +73,4 @@ elseif(CMAKE_BUILD_TYPE MATCHES Release)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC DEBUG=0)
 endif()
 
-target_link_libraries(${PROJECT_NAME} Boost::program_options stdc++fs)
+target_link_libraries(${PROJECT_NAME} Boost::program_options stdc++fs fmt::fmt)

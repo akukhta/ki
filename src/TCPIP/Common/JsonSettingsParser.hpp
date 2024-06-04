@@ -13,10 +13,10 @@
 //}
 
 
-class TCPIPToolSettingsParser
+class JsonSettingsParser
 {
 public:
-    static std::shared_ptr<TCPIPToolSettingsParser> getInstance();
+    static std::shared_ptr<JsonSettingsParser> getInstance();
 
     std::string getServerIP() const;
     int getServerPort() const;
@@ -24,7 +24,7 @@ public:
     void setSettingsPath(std::string settingsPath);
 
 private:
-    TCPIPToolSettingsParser();
+    JsonSettingsParser();
     boost::property_tree::ptree tree;
     std::string settingsPath = "settings.json";
 };

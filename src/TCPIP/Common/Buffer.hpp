@@ -1,6 +1,6 @@
 #pragma once
-#include "Buffer/BufferType.hpp"
-#include "../TCPIP/Request/RequestHeader.hpp"
+#include "../../queue/Buffer/BufferType.hpp"
+#include "../Request/RequestHeader.hpp"
 #include <cstdlib>
 
 namespace TCPIP

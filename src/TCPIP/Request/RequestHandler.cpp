@@ -67,6 +67,8 @@ void TCPIP::RequestHandler::fileInfoReceived(std::shared_ptr<ClientRequest> requ
 
     request->buffer->reset();
     queue->releaseBuffer(std::move(*request->buffer));
+
+    Logger::log(std::format("Receiving {} from {}", fileInfo.fileName, fileInfo.senderIP));
 }
 
 void TCPIP::RequestHandler::fileChunkReceived(std::shared_ptr<ClientRequest> request)

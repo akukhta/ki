@@ -5,10 +5,10 @@
 #include <iostream>
 #include <format>
 #include <memory>
-#include "../Common/TCPUtiles.hpp"
+#include "../Common/Utiles.hpp"
 #include "../Request/RequestHandler.hpp"
 #include "../Request/RequestCreator.hpp"
-#include "../Common/TCPIPToolSettingsParser.hpp"
+#include "../Common/JsonSettingsParser.hpp"
 
 TCPIP::TCPIPServer::TCPIPServer(std::shared_ptr<FixedBufferQueue> queue, std::unique_ptr<IRequestHandler> requestHandler)
     : queue(std::move(queue)), requestHandler(std::move(requestHandler))
@@ -17,7 +17,7 @@ TCPIP::TCPIPServer::TCPIPServer(std::shared_ptr<FixedBufferQueue> queue, std::un
 
     socketAddress.sin_family = AF_INET;
 
-    auto settings = TCPIPToolSettingsParser::getInstance();
+    auto settings = JsonSettingsParser::getInstance();
 
     socketAddress.sin_port = htons(settings->getServerPort());
     socketAddress.sin_addr.s_addr = inet_addr(settings->getServerIP().c_str());

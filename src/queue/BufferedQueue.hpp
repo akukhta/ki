@@ -11,7 +11,7 @@
 #include "Buffer.hpp"
 #include "../IPC/SharedMemoryManager.hpp"
 #include "Buffer/BufferConfiguration.hpp"
-#include "TCPIPBuffer.hpp"
+#include "../TCPIP/Common/Buffer.hpp"
 #include "../common/Logger.hpp"
 #include <format>
 

@@ -1,6 +1,6 @@
 #include "MultiFileWriter.hpp"
 #include <filesystem>
-#include "../TCPIP/Common/TCPIPToolSettingsParser.hpp"
+#include "../Common/JsonSettingsParser.hpp"
 
 void MultiFileWriter::registerNewFile(unsigned int ID, TCPIP::FileInfo fileInfo)
 {
@@ -35,6 +35,9 @@ void MultiFileWriter::finishWriteOfFile(unsigned int ID)
     }
 
     applyFileAttributes(ID);
+
+    Logger::log(std::format("Recevied {} from {}", filesInfo[ID].fileName, filesInfo[ID].senderIP));
+
     filesDescs.erase(ID);
     filesInfo.erase(ID);
 
@@ -43,7 +46,7 @@ void MultiFileWriter::finishWriteOfFile(unsigned int ID)
 
 MultiFileWriter::MultiFileWriter(MultiFileWriter::queueType queue) : queue(std::move(queue))
 {
-    rootDir = TCPIPToolSettingsParser::getInstance()->getStorageDirectory();
+    rootDir = JsonSettingsParser::getInstance()->getStorageDirectory();
 
     if (!std::filesystem::exists(rootDir))
     {

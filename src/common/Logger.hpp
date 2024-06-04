@@ -6,18 +6,12 @@
 class Logger
 {
 public:
-    static std::shared_ptr<Logger> getInstance()
-    {
-        static std::shared_ptr<Logger> instance(new Logger{});
-        return instance;
-    }
-
     static void log(std::string const &message)
     {
-        getInstance()->logImplementation(message);
+        static std::shared_ptr<Logger> instance(new Logger{});
+        instance->logImplementation(message);
     }
 private:
-
     void logImplementation(std::string const &message)
     {
         std::scoped_lock lk{mutex};

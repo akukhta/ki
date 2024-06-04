@@ -5,8 +5,9 @@
 #include <filesystem>
 #include <format>
 #include "../../common/Serializer.hpp"
-#include "../Common/TCPIPToolSettingsParser.hpp"
+#include "../Common/JsonSettingsParser.hpp"
 #include "../Request/RequestCreator.hpp"
+#include "../Common/Utiles.hpp"
 
 TCPIP::TCPIPClient::TCPIPClient(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue)
     : queue(std::move(queue))
@@ -17,20 +18,11 @@ TCPIP::TCPIPClient::TCPIPClient(std::shared_ptr<FixedBufferQueue<TCPIPTag>> queu
 
 void TCPIP::TCPIPClient::connectToServer()
 {
-    auto settings = TCPIPToolSettingsParser::getInstance();
+    auto settings = JsonSettingsParser::getInstance();
 
     serverAddress.sin_addr.s_addr = inet_addr(settings->getServerIP().c_str());
     serverAddress.sin_port = htons(settings->getServerPort());
     isConnected = connect(socketFD, reinterpret_cast<sockaddr*>(&serverAddress), sizeof(serverAddress)) == 0;
-
-#ifdef DEBUG
-    {
-        struct sockaddr_in sin;
-        socklen_t len = sizeof(sin);
-        if (getsockname(socketFD, (struct sockaddr *) &sin, &len) != -1)
-            std::cout << "Client socket uses " << ntohs(sin.sin_port) << " port";
-    }
-#endif
 }
 
 std::vector<unsigned char> TCPIP::TCPIPClient::receive()
@@ -50,7 +42,9 @@ void TCPIP::TCPIPClient::sendFileChunk(TCPIP::Buffer &buffer)
     Serializer<SerializerType::NoBuffer>::overwrite(ptr, 0, std::to_underlying(TCPIP::RequestType::FILE_CHUNK_RECEIVED));
     Serializer<SerializerType::NoBuffer>::overwrite(ptr, sizeof(RequestHeader::type), static_cast<short>(buffer.bytesUsed));
 
-    sendToServer(ptr, buffer.bytesUsed + RequestHeader::noAligmentSize());
+    auto bytesSent = sendToServer(ptr, buffer.bytesUsed + RequestHeader::noAligmentSize());
+
+    progressBar->addToValue(bytesSent);
 
     if (receiveResponse() == ServerResponse::CRITICAL_ERROR)
     {
@@ -58,9 +52,9 @@ void TCPIP::TCPIPClient::sendFileChunk(TCPIP::Buffer &buffer)
     }
 }
 
-void TCPIP::TCPIPClient::sendToServer(unsigned char *ptr, size_t bufferSize)
+size_t TCPIP::TCPIPClient::sendToServer(unsigned char *ptr, size_t bufferSize)
 {
-    size_t sentBytes = ::send(socketFD, ptr, bufferSize, 0);
+    return send(socketFD, ptr, bufferSize, 0);
 }
 
 void TCPIP::TCPIPClient::sendFileInfo(std::string const& fileName)
@@ -90,6 +84,8 @@ TCPIP::ServerResponse TCPIP::TCPIPClient::receiveResponse() {
 
 void TCPIP::TCPIPClient::sendFile(const std::string &fileName)
 {
+    progressBar = std::make_unique<UI::CLIProgressBar>(TCPIP::Utiles::getFileNameOnly(fileName), std::filesystem::file_size(fileName), 0);
+
     size_t sent = 0;
     sendFileInfo(fileName);
 
@@ -99,11 +95,12 @@ void TCPIP::TCPIPClient::sendFile(const std::string &fileName)
         sendFileChunk(buffer);
         sent += buffer.bytesUsed;
         queue->returnBuffer(std::move(buffer));
+        progressBar->draw();
     }
 
-    if (receiveResponse() == ServerResponse::FILE_RECEIVED)
+    if (receiveResponse() != ServerResponse::FILE_RECEIVED)
     {
-        Logger::log(std::format("The file {} successfully sent", fileName));
+        Logger::log("An error occurred during sending of a file");
     }
 }
 

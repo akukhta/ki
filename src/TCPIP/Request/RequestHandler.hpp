@@ -8,7 +8,7 @@
 #include <functional>
 #include "ClientRequest.hpp"
 #include "../Server/TCPIPQueue.hpp"
-#include "../../writer/MultiFileWriter.hpp"
+#include "../Server/MultiFileWriter.hpp"
 #include "IRequestHandler.hpp"
 
 namespace std

@@ -3,7 +3,7 @@
 #include "../reader/BufferedFileReader.hpp"
 #include "../writer/MMapFileWriter.hpp"
 #include "../writer/BufferedFileWriter.hpp"
-#include "../writer/MultiFileWriter.hpp"
+#include "../TCPIP/Server/MultiFileWriter.hpp"
 #include "../queue/SynchronizedQueue.hpp"
 #include "../queue/BufferedQueue.hpp"
 #include "../TCPIP/Server/TCPIPServer.hpp"
@@ -19,9 +19,9 @@
 #include <vector>
 #include <utility>
 #include <boost/interprocess/interprocess_fwd.hpp>
-#include "../reader/TCPIPBufferedFileReader.h"
+#include "../TCPIP/Client/BufferedFileReader.h"
 #include "../TCPIP/Request/RequestHandler.hpp"
-#include "../TCPIP/Common/TCPIPToolSettingsParser.hpp"
+#include "../TCPIP/Common/JsonSettingsParser.hpp"
 
 /// Factory that creates proper copy tool based on passed arguments
 class ToolFactory
@@ -122,7 +122,7 @@ public:
                 std::unique_ptr<TCPIP::TCPIPServer> server = nullptr;
                 std::unique_ptr<TCPIP::IClient> client = nullptr;
 
-                TCPIPToolSettingsParser::getInstance()->setSettingsPath(std::move(parser.getSettingsPath()));
+                JsonSettingsParser::getInstance()->setSettingsPath(std::move(parser.getSettingsPath()));
 
                 if (parser.getIsServer())
                 {

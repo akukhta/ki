@@ -7,6 +7,7 @@
 #include <memory>
 #include "IClient.hpp"
 #include "../../queue/BufferedQueue.hpp"
+#include "../../common/CLIProgressBar.hpp"
 
 namespace TCPIP
 {
@@ -21,7 +22,7 @@ namespace TCPIP
         virtual void sendFile(std::string const &fileName) override;
 
     private:
-        void sendToServer(unsigned char *ptr, size_t bufferSize);
+        size_t sendToServer(unsigned char *ptr, size_t bufferSize);
         virtual std::vector<unsigned char> receive() override;
         void sendFileChunk(TCPIP::Buffer &buffer);
         void sendFileInfo(std::string const& fileName);
@@ -32,5 +33,6 @@ namespace TCPIP
         sockaddr_in serverAddress;
         bool isConnected = false;
         std::shared_ptr<::FixedBufferQueue<TCPIPTag>> queue;
+        std::unique_ptr<UI::CLIProgressBar> progressBar;
     };
 }

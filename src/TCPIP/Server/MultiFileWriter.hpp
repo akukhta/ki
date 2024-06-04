@@ -1,9 +1,9 @@
 #pragma once
 #include <unordered_map>
 #include <memory>
-#include "IFileWriter.hpp"
-#include "../queue/BufferedQueue.hpp"
-#include "../TCPIP/Common/FileInfo.hpp"
+#include "../../writer/IFileWriter.hpp"
+#include "../../queue/BufferedQueue.hpp"
+#include "../Common/FileInfo.hpp"
 #include <fstream>
 #include <thread>
 #include <functional>
