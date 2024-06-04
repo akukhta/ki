@@ -24,8 +24,8 @@ jobs:
 
     - name: gcc/g++
       run: |
-        sudo apt-get install gcc
-        sudo apt-get install g++
+        sudo apt update
+        sudo apt-get install gcc-13 g++-13
 
     - name: Install Conan
       id: conan
@@ -47,10 +47,9 @@ jobs:
 
      - name: gcc/g++
        run: |
-         sudo apt-get install gcc-13
-         sudo apt-get install g++-13
-         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 130 --slave /usr/bin/g++ g++ /usr/bin/g++-13  
-
+         sudo apt update
+         sudo apt-get install gcc-13 g++-13
+        
      - name: install gcovr
        run: |
          pip install --user -U gcovr
