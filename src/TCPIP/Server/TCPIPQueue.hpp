@@ -4,9 +4,14 @@
 
 namespace TCPIP
 {
+    /// Memory pool designed to work with TCPIP tool (specifically with the TCPIP buffer that also stores request header)
     class FixedBufferQueue : public ::FixedBufferQueue<TCPIPTag>
     {
     public:
+        /// Try to gather a buffer in non-blocking manner
+        /// It's used to obtain a buffer for a client
+        /// If it's not possible, the processing of the client is postponed
+        /// Untill there is a memory buffer can be allocated to it
         std::optional<TCPIP::Buffer> getFreeBufferNonBlock()
         {
             RAIILockType lm(queueMutex);
@@ -25,6 +30,7 @@ namespace TCPIP
             }
         }
 
+        /// Release TCPIP buffer and return it back to the memory pool
         void releaseBuffer(TCPIP::Buffer buffer)
         {
             RAIILockType lm(queueMutex);

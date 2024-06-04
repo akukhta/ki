@@ -117,17 +117,17 @@ public:
             }
 
             case ToolType::TCPIPTOOL: {
-                std::shared_ptr<MultiFileWriter> writer = nullptr;
+                std::shared_ptr<TCPIP::MultiFileWriter> writer = nullptr;
 
                 std::unique_ptr<TCPIP::TCPIPServer> server = nullptr;
                 std::unique_ptr<TCPIP::IClient> client = nullptr;
 
-                JsonSettingsParser::getInstance()->setSettingsPath(std::move(parser.getSettingsPath()));
+                TCPIP::JsonSettingsParser::getInstance()->setSettingsPath(std::move(parser.getSettingsPath()));
 
                 if (parser.getIsServer())
                 {
                     auto queue = std::make_shared<TCPIP::FixedBufferQueue>();
-                    writer = std::make_shared<MultiFileWriter>(queue);
+                    writer = std::make_shared<TCPIP::MultiFileWriter>(queue);
                     auto requestHandler = std::make_unique<TCPIP::RequestHandler>(queue, writer);
                     server = std::make_unique<TCPIP::TCPIPServer>(queue, std::move(requestHandler));
                     tool = std::make_unique<TCPIPTool>(writer, queue, std::move(server));

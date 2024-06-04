@@ -3,6 +3,8 @@
 
 namespace TCPIP
 {
+    /// An interface of request handler server should use to process data from clients
+    /// Designed to have its own thread in order to process requests
     class IRequestHandler
     {
     public:

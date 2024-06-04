@@ -60,15 +60,12 @@ void TCPIP::RequestHandler::fileInfoReceived(std::shared_ptr<ClientRequest> requ
     auto &buffer = request->buffer;
     FileInfo fileInfo = FileInfo::deserialize(buffer->getRequestData());
 
-    fileInfo.senderIP = request->ownerClient->clientIP;
-    fileInfo.port = request->ownerClient->clientPort;
-
-    writer->registerNewFile(request->ownerClient->socket, fileInfo);
+    writer->registerNewFile(request->ownerClient->socket, fileInfo, request->ownerClient->clientIP);
 
     request->buffer->reset();
     queue->releaseBuffer(std::move(*request->buffer));
 
-    Logger::log(std::format("Receiving {} from {}", fileInfo.fileName, fileInfo.senderIP));
+    Logger::log(std::format("Receiving {} from {}", fileInfo.fileName, request->ownerClient->clientIP));
 }
 
 void TCPIP::RequestHandler::fileChunkReceived(std::shared_ptr<ClientRequest> request)

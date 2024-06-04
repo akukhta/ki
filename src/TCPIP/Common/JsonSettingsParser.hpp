@@ -12,19 +12,24 @@
 //  }
 //}
 
+namespace TCPIP {
+    /// Json Settings parser
+    class JsonSettingsParser {
+    public:
+        static std::shared_ptr<JsonSettingsParser> getInstance();
 
-class JsonSettingsParser
-{
-public:
-    static std::shared_ptr<JsonSettingsParser> getInstance();
+        std::string getServerIP() const;
 
-    std::string getServerIP() const;
-    int getServerPort() const;
-    std::string getStorageDirectory() const;
-    void setSettingsPath(std::string settingsPath);
+        int getServerPort() const;
 
-private:
-    JsonSettingsParser();
-    boost::property_tree::ptree tree;
-    std::string settingsPath = "settings.json";
-};
+        std::string getStorageDirectory() const;
+
+        void setSettingsPath(std::string settingsPath);
+
+    private:
+        JsonSettingsParser();
+
+        boost::property_tree::ptree tree;
+        std::string settingsPath = "settings.json";
+    };
+}

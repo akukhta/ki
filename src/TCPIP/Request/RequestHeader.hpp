@@ -3,19 +3,23 @@
 
 namespace TCPIP
 {
+    /// Client's request header
     struct RequestHeader
     {
+        /// Size of the request's payload data
+        short requestDataSize;
+
+        /// Type of the request
         union
         {
             RequestType type;
             char typeAsByte;
         };
 
-        short messageLength;
-
+        /// Get size of the header without padding
         static size_t noAligmentSize()
         {
-            return sizeof(type) + sizeof(messageLength);
+            return sizeof(type) + sizeof(requestDataSize);
         }
     };
 }

@@ -3,6 +3,8 @@
 
 namespace TCPIP
 {
+    /// Class that handles reading of a file in chunks
+    /// to send them to the server
     class BufferedReader : public ::BufferedReader<TCPIPTag>
     {
     public:
@@ -10,12 +12,21 @@ namespace TCPIP
                 ::BufferedReader<TCPIPTag>(std::move(queue))
         { ; }
 
+        /// Helder function to start reading of a concrete file
+        /// Since ::BufferedReader (parent) can read only one file in its lifetime
+        /// This function should be used before reading the file
+        /// In order to open descriptors and set needed flags
+        /// \param fileName Name of file the reading is going to process
         void startReading(std::string const&fileName)
         {
             this->fileName = fileName;
             open();
         }
 
+        /// Read a chunk of file
+        /// It's override because the parent's implementation is not aware
+        /// of the header that is placed at the begging of the chunk
+        /// that is not the actual file's data and should not increase read offset
         void read() override
         {
             // Get the buffer to read into

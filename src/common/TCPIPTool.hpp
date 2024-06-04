@@ -13,7 +13,7 @@
 class TCPIPTool : public ICopyTool
 {
 public:
-    explicit TCPIPTool(std::shared_ptr<MultiFileWriter> fileWriter, std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue,
+    explicit TCPIPTool(std::shared_ptr<TCPIP::MultiFileWriter> fileWriter, std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue,
         std::unique_ptr<TCPIP::IServer> server)
             :  fileWriter(std::move(fileWriter)), queue(std::move(queue)),
                server(std::move(server)), sw(StopWatch::createAutoStartWatch("tcpip copy tool benchmark"))
@@ -53,7 +53,7 @@ public:
 private:
 
     StopWatch sw;
-    std::shared_ptr<MultiFileWriter> fileWriter;
+    std::shared_ptr<TCPIP::MultiFileWriter> fileWriter;
     std::unique_ptr<TCPIP::BufferedReader> fileReader;
     std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue;
     std::unique_ptr<TCPIP::IServer> server;

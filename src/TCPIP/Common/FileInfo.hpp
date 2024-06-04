@@ -3,14 +3,17 @@
 #include <sys/stat.h>
 #include <filesystem>
 #include "../../common/Serializer.hpp"
+#include "../Common/Utiles.hpp"
 
 namespace TCPIP {
+
+    /// Class contains the information about a file a client sends to the server
     class FileInfo {
     public:
         FileInfo() = default;
 
         explicit FileInfo(std::string fileName, size_t fileSize)
-                : fileName(std::filesystem::path(fileName).filename()), fileSize(fileSize)
+                : fileName(Utiles::getFileNameOnly(fileName)), fileSize(fileSize)
         {
             struct stat fileAttributes;
             stat(this->fileName.c_str(), &fileAttributes);
@@ -44,10 +47,7 @@ namespace TCPIP {
         }
 
         size_t fileSize = 0;
-        size_t port = 0;
-        std::string senderIP;
         std::string fileName;
         mode_t filePermissions;
-        size_t bytesWritten = 0;
     };
 }

@@ -166,7 +166,7 @@ void TCPIP::TCPIPServer::clientDisconnected(int clientSocket)
         epoll_ctl(epollFD, EPOLL_CTL_DEL, clientSocket, nullptr);
         shutdown(clientSocket, SHUT_RDWR);
         close(clientSocket);
-        Logger::log(std::format("Client {}:{} has disconnected", clients[clientSocket]->clientIP, clients[clientSocket]->clientPort));
+        Logger::log(std::format("Client {} has disconnected", clients[clientSocket]->clientIP));
         clients.erase(clientSocket);
     }
 }

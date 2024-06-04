@@ -1,11 +1,11 @@
 #include "ConnectedClient.hpp"
 
 TCPIP::ConnectedClient::ConnectedClient(int socket, std::string clientIP, int clientPort)
-    : socket(socket), clientIP(std::move(clientIP)), clientPort(clientPort)
+    : socket(socket), clientIP(std::move(clientIP))
     {}
 
 TCPIP::ConnectedClient::ConnectedClient()
-    : socket(-1), clientPort(-1)
+    : socket(-1)
     {}
 
 bool TCPIP::ConnectedClient::isBufferAvailable() const noexcept

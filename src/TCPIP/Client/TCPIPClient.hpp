@@ -22,6 +22,7 @@ namespace TCPIP
         virtual void sendFile(std::string const &fileName) override;
 
     private:
+
         size_t sendToServer(unsigned char *ptr, size_t bufferSize);
         virtual std::vector<unsigned char> receive() override;
         void sendFileChunk(TCPIP::Buffer &buffer);
@@ -29,10 +30,10 @@ namespace TCPIP
 
         TCPIP::ServerResponse receiveResponse();
 
+        std::shared_ptr<::FixedBufferQueue<TCPIPTag>> queue;
+        std::unique_ptr<UI::CLIProgressBar> progressBar;
         int socketFD;
         sockaddr_in serverAddress;
         bool isConnected = false;
-        std::shared_ptr<::FixedBufferQueue<TCPIPTag>> queue;
-        std::unique_ptr<UI::CLIProgressBar> progressBar;
     };
 }
