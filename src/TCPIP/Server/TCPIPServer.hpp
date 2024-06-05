@@ -14,6 +14,7 @@
 #include "ConnectedClient.hpp"
 #include "../Request/RequestHeader.hpp"
 #include "../Request/IRequestHandler.hpp"
+#include "../../common/FileLogger.hpp"
 
 class ToolFactory;
 
@@ -23,7 +24,7 @@ namespace TCPIP
     class TCPIPServer :public IServer
     {
     public:
-        TCPIPServer(std::shared_ptr<FixedBufferQueue> queue, std::unique_ptr<IRequestHandler> requestHandler);
+        TCPIPServer(std::shared_ptr<FixedBufferQueue> queue, std::unique_ptr<IRequestHandler> requestHandler, std::shared_ptr<FileLogger> logger = nullptr);
         ~TCPIPServer();
 
         /// Starts the server in its own thread
@@ -67,6 +68,7 @@ namespace TCPIP
         std::unordered_map<int, std::shared_ptr<TCPIP::ConnectedClient>> clients;
         std::unique_ptr<IRequestHandler> requestHandler;
         std::shared_ptr<FixedBufferQueue> queue;
+        std::shared_ptr<FileLogger> logger;
 
         std::queue<int> scheduledClients;
         int eventsTriggered = 0;

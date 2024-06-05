@@ -5,6 +5,7 @@
 #include "../../queue/BufferedQueue.hpp"
 #include "../Common/FileInfo.hpp"
 #include "TCPIPQueue.hpp"
+#include "../../common/FileLogger.hpp"
 #include <fstream>
 #include <thread>
 #include <functional>
@@ -18,7 +19,7 @@ namespace TCPIP {
         using queueType = std::shared_ptr<TCPIP::FixedBufferQueue>;
 
     public:
-        explicit MultiFileWriter(queueType queue);
+        explicit MultiFileWriter(queueType queue, std::shared_ptr<FileLogger> logger = nullptr);
 
         /// Add a new file to the list of processed files
         void registerNewFile(unsigned int ID, TCPIP::FileInfo fileInfo, std::string senderIP);
@@ -56,6 +57,8 @@ namespace TCPIP {
 
         /// Root directory where files are going to be store
         std::string rootDir;
+
+        std::shared_ptr<FileLogger> logger;
 
         friend class ::ToolFactory;
 

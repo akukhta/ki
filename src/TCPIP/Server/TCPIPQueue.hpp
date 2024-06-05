@@ -44,5 +44,11 @@ namespace TCPIP
                 writeBuffers.emplace_back(std::move(buffer));
             }
         }
+
+        int getFreeBuffersAmount() const
+        {
+            RAIILockType lm(queueMutex);
+            return readBuffers.size();
+        }
     };
 }

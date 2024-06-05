@@ -128,10 +128,11 @@ public:
 
                 if (parser.getIsServer())
                 {
+                    auto fileLogger = std::make_shared<FileLogger>();
                     auto queue = std::make_shared<TCPIP::FixedBufferQueue>();
-                    writer = std::make_shared<TCPIP::MultiFileWriter>(queue);
-                    auto requestHandler = std::make_unique<TCPIP::RequestHandler>(queue, writer);
-                    server = std::make_unique<TCPIP::TCPIPServer>(queue, std::move(requestHandler));
+                    writer = std::make_shared<TCPIP::MultiFileWriter>(queue, fileLogger);
+                    auto requestHandler = std::make_unique<TCPIP::RequestHandler>(queue, writer, fileLogger);
+                    server = std::make_unique<TCPIP::TCPIPServer>(queue, std::move(requestHandler), fileLogger);
                     tool = std::make_unique<TCPIPTool>(writer, queue, std::move(server));
                     writer->setFileWriteFinished(std::bind(&TCPIP::TCPIPServer::fileWriteFinished, server.get(), std::placeholders::_1));
                 }

@@ -47,8 +47,10 @@ void TCPIP::MultiFileWriter::finishWriteOfFile(unsigned int ID)
 
     applyFileAttributes(ID);
 
-    Logger::log(std::format("Recevied {} from {}", fileInfo(pendingFileInfo[ID]).fileName,
-                            senderIp(pendingFileInfo[ID])));
+    if (logger)
+    {
+        logger->log("Recevied {} from {}", fileInfo(pendingFileInfo[ID]).fileName, senderIp(pendingFileInfo[ID]));
+    }
 
     filesDescs.erase(ID);
     pendingFileInfo.erase(ID);
@@ -56,7 +58,8 @@ void TCPIP::MultiFileWriter::finishWriteOfFile(unsigned int ID)
     fileWriteFinished(ID);
 }
 
-TCPIP::MultiFileWriter::MultiFileWriter(MultiFileWriter::queueType queue) : queue(std::move(queue))
+TCPIP::MultiFileWriter::MultiFileWriter(MultiFileWriter::queueType queue, std::shared_ptr<FileLogger> logger)
+    : queue(std::move(queue)), logger(std::move(logger))
 {
     rootDir = JsonSettingsParser::getInstance()->getStorageDirectory();
 
@@ -92,7 +95,11 @@ void TCPIP::MultiFileWriter::write()
 
         if (bytesWritten(pendingFileInfo[id]) >= fileInfo(pendingFileInfo[id]).fileSize) {
             finishWriteOfFile(id);
-            Logger::log(std::format("Writing of {} finished", fileInfo(pendingFileInfo[id]).fileName));
+
+            if (logger)
+            {
+                logger->log("Writing of {} finished", fileInfo(pendingFileInfo[id]).fileName);
+            }
         }
     }
 

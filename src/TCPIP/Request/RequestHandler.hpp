@@ -10,6 +10,7 @@
 #include "../Server/TCPIPQueue.hpp"
 #include "../Server/MultiFileWriter.hpp"
 #include "IRequestHandler.hpp"
+#include "../../common/FileLogger.hpp"
 
 /// std::hash specialization for RequestType in order to store handler for each request in unordered map
 namespace std
@@ -29,7 +30,7 @@ namespace TCPIP
     class RequestHandler : public IRequestHandler
     {
     public:
-        RequestHandler(std::shared_ptr<TCPIP::FixedBufferQueue> queue, std::shared_ptr<MultiFileWriter> writer);
+        RequestHandler(std::shared_ptr<TCPIP::FixedBufferQueue> queue, std::shared_ptr<MultiFileWriter> writer, std::shared_ptr<FileLogger> logger = nullptr);
         ~RequestHandler();
 
         /// Add a request to the processing queue
@@ -55,6 +56,8 @@ namespace TCPIP
         std::shared_ptr<MultiFileWriter> writer;
 
         std::jthread handlingThread;
+
+        std::shared_ptr<FileLogger> logger;
 
         // Request handlers
         void fileInfoReceived(std::shared_ptr<ClientRequest> request);

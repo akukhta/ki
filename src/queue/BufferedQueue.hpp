@@ -47,7 +47,7 @@ struct TCPIPTag
     using DequeType = std::deque<BufferType>;
     using QueueType = std::shared_ptr<FixedBufferQueue<TCPIPTag>>;
 
-    std::vector<std::vector<unsigned char>> buffers = std::vector<std::vector<unsigned char>>{BUFFERS_IN_QUEUE * 4, std::vector<unsigned char>(BUFFER_SIZE)};
+    std::vector<std::vector<unsigned char>> buffers = std::vector<std::vector<unsigned char>>{TCP_BUFFERS_IN_QUEUE, std::vector<unsigned char>(BUFFER_SIZE)};
 };
 /// Queue that holds buffers\n
 /// Provides following functionality:\n

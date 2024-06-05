@@ -3,15 +3,15 @@
 #include <arpa/inet.h>
 #include <sys/epoll.h>
 #include <iostream>
-#include <format>
 #include <memory>
 #include "../Common/Utiles.hpp"
 #include "../Request/RequestHandler.hpp"
 #include "../Request/RequestCreator.hpp"
 #include "../Common/JsonSettingsParser.hpp"
 
-TCPIP::TCPIPServer::TCPIPServer(std::shared_ptr<FixedBufferQueue> queue, std::unique_ptr<IRequestHandler> requestHandler)
-    : queue(std::move(queue)), requestHandler(std::move(requestHandler))
+TCPIP::TCPIPServer::TCPIPServer(std::shared_ptr<FixedBufferQueue> queue, std::unique_ptr<IRequestHandler> requestHandler,
+    std::shared_ptr<FileLogger> logger)
+    : queue(std::move(queue)), requestHandler(std::move(requestHandler)), logger(std::move(logger))
 {
     masterSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
@@ -67,7 +67,12 @@ void TCPIP::TCPIPServer::connectClient()
 
     auto clientIP = inet_ntoa(*reinterpret_cast<in_addr*>(&clientAddress.sin_addr));
     clients.emplace(clientSocket, std::make_shared<TCPIP::ConnectedClient>(clientSocket, clientIP, htons(clientAddress.sin_port))).first->second;
-    Logger::log(std::format("New Client {}:{} connected", clientIP, htons(clientAddress.sin_port)));
+
+    if (logger)
+    {
+        logger->log("New Client {}:{} connected", clientIP, htons(clientAddress.sin_port));
+
+    }
 }
 
 void TCPIP::TCPIPServer::processReceivedData(int clientSocket)
@@ -78,7 +83,6 @@ void TCPIP::TCPIPServer::processReceivedData(int clientSocket)
     // Check if the processing current request is valid
     if (!client->currentRequest)
     {
-        //Logger::log("Processed request is nullptr");
         throw std::runtime_error("Processed request is nullptr");
     }
 
@@ -114,7 +118,12 @@ void TCPIP::TCPIPServer::receiveData(int clientSocket)
         {
             epoll_ctl(epollFD, EPOLL_CTL_DEL, clientSocket, nullptr);
             scheduledClients.push(clientSocket);
-            Logger::log("Can`t obtain a buffer for the client right now, the request receiving postponed");
+
+            if (logger)
+            {
+                logger->log("Can`t obtain a buffer for the client right now, the request receiving postponed");
+            }
+
             return;
         }
     }
@@ -147,7 +156,10 @@ bool TCPIP::TCPIPServer::tryGetClientBuffer(int clientSocket)
 
     if (client->currentRequest->buffer)
     {
-        Logger::log("Client already owns a buffer or has active request");
+        if (logger)
+        {
+            logger->log("Client already owns a buffer or has active request");
+        }
     }
     else if (auto rv = queue->getFreeBufferNonBlock(); rv.has_value())
     {
@@ -166,7 +178,17 @@ void TCPIP::TCPIPServer::clientDisconnected(int clientSocket)
         epoll_ctl(epollFD, EPOLL_CTL_DEL, clientSocket, nullptr);
         shutdown(clientSocket, SHUT_RDWR);
         close(clientSocket);
-        Logger::log(std::format("Client {} has disconnected", clients[clientSocket]->clientIP));
+
+        if (logger)
+        {
+            logger->log("Client {} has disconnected", clients[clientSocket]->clientIP);
+        }
+
+        if (clients[clientSocket]->currentRequest && clients[clientSocket]->currentRequest->buffer)
+        {
+            queue->releaseBuffer(std::move(*clients[clientSocket]->currentRequest->buffer));
+        }
+
         clients.erase(clientSocket);
     }
 }
@@ -207,8 +229,6 @@ void TCPIP::TCPIPServer::handleEpollEvents()
 
 void TCPIP::TCPIPServer::handleScheduledClients()
 {
-    Logger::log("handling scheduled events");
-
     while (!scheduledClients.empty())
     {
         int scheduledSocket = scheduledClients.front();
@@ -253,5 +273,8 @@ TCPIP::TCPIPServer::~TCPIPServer()
     clients.clear();
     close(masterSocket);
 
-    Logger::log("Server shutdown");
+    if (logger)
+    {
+        logger->log("Server shutdown");
+    }
 }

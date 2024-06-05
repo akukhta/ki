@@ -68,6 +68,8 @@ add_executable(${PROJECT_NAME}
 		src/TCPIP/Client/IClientCommunication.hpp
 		src/TCPIP/Client/TCPClientCommunication.cpp
 		src/TCPIP/Client/TCPClientCommunication.hpp
+		src/common/FileLogger.hpp
+		src/common/CLILoadIndicator.hpp
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)

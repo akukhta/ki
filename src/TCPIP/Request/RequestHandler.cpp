@@ -11,8 +11,8 @@ std::unordered_map<TCPIP::RequestType, std::function<void(TCPIP::RequestHandler&
 
 
 TCPIP::RequestHandler::RequestHandler(std::shared_ptr<TCPIP::FixedBufferQueue> queue,
-    std::shared_ptr<MultiFileWriter> writer)
-        : queue(std::move(queue)), writer(std::move(writer))
+    std::shared_ptr<MultiFileWriter> writer, std::shared_ptr<FileLogger> logger)
+        : queue(std::move(queue)), writer(std::move(writer)), logger(std::move(logger))
 {
 }
 
@@ -45,7 +45,10 @@ void TCPIP::RequestHandler::handle(std::stop_token token)
         }
         else
         {
-            std::cout << "Incorrect handler\n";
+            if(logger)
+            {
+                logger->log("Incorrect handler");
+            }
         }
     }
 }
@@ -65,7 +68,10 @@ void TCPIP::RequestHandler::fileInfoReceived(std::shared_ptr<ClientRequest> requ
     request->buffer->reset();
     queue->releaseBuffer(std::move(*request->buffer));
 
-    Logger::log(std::format("Receiving {} from {}", fileInfo.fileName, request->ownerClient->clientIP));
+    if (logger)
+    {
+        logger->log("Receiving {} from {}", fileInfo.fileName, request->ownerClient->clientIP);
+    }
 }
 
 void TCPIP::RequestHandler::fileChunkReceived(std::shared_ptr<ClientRequest> request)
