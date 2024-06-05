@@ -8,7 +8,9 @@
 //"settings": {
 //  "serverIP": "127.0.0.1",
 //  "serverPort": 0000,
-//  "storageDirectory": "~/storage"
+//  "storageDirectory": "~/storage",
+//  "showIndicator" : true,
+//  "loadIndicatorRefreshInMs" : 50
 //  }
 //}
 
@@ -26,6 +28,9 @@ namespace TCPIP {
 
         void setSettingsPath(std::string settingsPath);
 
+        int loadInidicatorRefreshRate() const;
+
+        bool loadIndicatorEnabled() const;
     private:
         JsonSettingsParser();
 

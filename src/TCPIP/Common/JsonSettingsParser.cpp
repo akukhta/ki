@@ -32,3 +32,13 @@ void TCPIP::JsonSettingsParser::setSettingsPath(std::string settingsPath)
     this->settingsPath = std::move(settingsPath);
     boost::property_tree::read_json(this->settingsPath, tree);
 }
+
+int TCPIP::JsonSettingsParser::loadInidicatorRefreshRate() const
+{
+    return tree.get<int>("settings.loadIndicatorRefreshInMs");
+}
+
+bool TCPIP::JsonSettingsParser::loadIndicatorEnabled() const
+{
+    return tree.get<bool>("settings.showIndicator");
+}

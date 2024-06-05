@@ -15,10 +15,10 @@ class TCPIPTool : public ICopyTool
 {
 public:
     explicit TCPIPTool(std::shared_ptr<TCPIP::MultiFileWriter> fileWriter, std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue,
-        std::unique_ptr<TCPIP::IServer> server, bool showMemoryPoolUsage = true)
+        std::unique_ptr<TCPIP::IServer> server, bool showMemoryPoolUsage = true, int indicatorRefreshRate = 0)
             :  fileWriter(std::move(fileWriter)), queue(std::move(queue)),
                server(std::move(server)), sw(StopWatch::createAutoStartWatch("tcpip copy tool benchmark")),
-               showMemoryPoolUsage(showMemoryPoolUsage)
+               showMemoryPoolUsage(showMemoryPoolUsage), indicatorRefreshRate(indicatorRefreshRate)
     {
     }
 
@@ -86,6 +86,7 @@ private:
     std::stop_source guiStopToken;
 
     bool showMemoryPoolUsage = false;
+    int indicatorRefreshRate = 0;
 
     void read(std::string const &file)
     {
@@ -120,7 +121,7 @@ private:
         {
             memoryPoolUsageBar->setValue(serverQeuee->getFreeBuffersAmount());
             memoryPoolUsageBar->draw();
-            std::this_thread::sleep_for(std::chrono::milliseconds(75));
+            std::this_thread::sleep_for(std::chrono::milliseconds(indicatorRefreshRate));
         }
     }
 };

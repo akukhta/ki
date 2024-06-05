@@ -133,7 +133,7 @@ public:
                     writer = std::make_shared<TCPIP::MultiFileWriter>(queue, fileLogger);
                     auto requestHandler = std::make_unique<TCPIP::RequestHandler>(queue, writer, fileLogger);
                     server = std::make_unique<TCPIP::TCPIPServer>(queue, std::move(requestHandler), fileLogger);
-                    tool = std::make_unique<TCPIPTool>(writer, queue, std::move(server));
+                    tool = std::make_unique<TCPIPTool>(writer, queue, std::move(server), settingsParser->loadIndicatorEnabled(), settingsParser->loadInidicatorRefreshRate());
                     writer->setFileWriteFinished(std::bind(&TCPIP::TCPIPServer::fileWriteFinished, server.get(), std::placeholders::_1));
                 }
                 else
