@@ -5,9 +5,9 @@
 #include <netinet/in.h>
 #include <thread>
 #include <memory>
+#include <functional>
 #include "IClient.hpp"
 #include "../../queue/BufferedQueue.hpp"
-#include "../../common/CLIProgressBar.hpp"
 #include "IClientCommunication.hpp"
 
 namespace TCPIP
@@ -19,6 +19,7 @@ namespace TCPIP
         ~TCPIPClient();
 
         virtual void sendFile(std::string const &fileName) override;
+        void setSendFinishedCallback(std::function<void(size_t)> callback);
 
     private:
 
@@ -29,8 +30,7 @@ namespace TCPIP
         /// underlying implementation of communication protocol
         std::unique_ptr<IClientCommunication> clientCommunication;
         std::shared_ptr<::FixedBufferQueue<TCPIPTag>> queue;
-        std::unique_ptr<UI::CLIProgressBar> progressBar;
-
+        std::function<void(size_t)> sendFinishedCallback;
         bool isConnected = false;
     };
 }

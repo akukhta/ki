@@ -24,5 +24,10 @@ namespace TCPIP
         {
             return std::filesystem::path(path).filename();
         }
+
+        static size_t getFileSize(std::string const& fileName)
+        {
+            return std::filesystem::file_size(fileName);
+        }
     };
 }

@@ -10,6 +10,7 @@
 #include "../TCPIP/Client/IClient.hpp"
 #include "../TCPIP/Server/TCPIPServer.hpp"
 #include "CLILoadIndicator.hpp"
+#include "CLIProgressBar.hpp"
 
 class TCPIPTool : public ICopyTool
 {
@@ -44,6 +45,15 @@ public:
         {
             for (auto const & file: filesToSend)
             {
+
+                if (auto tcpClient = dynamic_cast<TCPIP::TCPIPClient*>(client.get()))
+                {
+                    progressBar = std::make_unique<UI::CLIProgressBar>(TCPIP::Utiles::getFileNameOnly(file),
+                        TCPIP::Utiles::getFileSize(file));
+
+                    tcpClient->setSendFinishedCallback(std::bind(&TCPIPTool::updateProgressBar, this, std::placeholders::_1));
+                }
+
                 queue->open();
                 queue->startReading();
                 auto readingTask = std::async(std::launch::async, &TCPIPTool::read, this, file);
@@ -58,7 +68,7 @@ public:
             if (showMemoryPoolUsage)
             {
                 memoryPoolUsageBar = std::make_unique<UI::CLILoadIndicator>("Buffers available:", TCP_BUFFERS_IN_QUEUE, TCP_BUFFERS_IN_QUEUE);
-                guiTask = std::async(std::launch::async, &TCPIPTool::updateProgressBar, this);
+                guiTask = std::async(std::launch::async, &TCPIPTool::updateLoadIndicator, this);
             }
 
             server->run();
@@ -81,6 +91,7 @@ private:
     std::unique_ptr<TCPIP::IServer> server;
     std::unique_ptr<TCPIP::IClient> client;
     std::unique_ptr<UI::CLILoadIndicator> memoryPoolUsageBar;
+    std::unique_ptr<UI::CLIProgressBar> progressBar;
     std::vector<std::string> filesToSend;
     std::jthread fileioThread;
     std::stop_source guiStopToken;
@@ -112,7 +123,7 @@ private:
         }
     }
 
-    void updateProgressBar()
+    void updateLoadIndicator()
     {
         // Since queue is not polymorphic, no dynamic_cast/dynamic_pointer_cast allowed
         auto serverQeuee = static_cast<TCPIP::FixedBufferQueue*>(queue.get());
@@ -123,5 +134,11 @@ private:
             memoryPoolUsageBar->draw();
             std::this_thread::sleep_for(std::chrono::milliseconds(indicatorRefreshRate));
         }
+    }
+
+    void updateProgressBar(size_t value)
+    {
+        progressBar->addToValue(value);
+        progressBar->draw();
     }
 };

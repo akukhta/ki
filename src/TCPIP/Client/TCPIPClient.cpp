@@ -5,7 +5,6 @@
 #include "../../common/Serializer.hpp"
 #include "../Common/JsonSettingsParser.hpp"
 #include "../Request/RequestCreator.hpp"
-#include "../Common/Utiles.hpp"
 
 TCPIP::TCPIPClient::TCPIPClient(std::unique_ptr<IClientCommunication> clientCommunication,std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue)
     : clientCommunication(std::move(clientCommunication)), queue(std::move(queue))
@@ -24,7 +23,7 @@ void TCPIP::TCPIPClient::sendFileChunk(TCPIP::Buffer &buffer)
 
     auto bytesSent = clientCommunication->send(ptr, buffer.bytesUsed + RequestHeader::noAligmentSize());
 
-    progressBar->addToValue(bytesSent);
+    sendFinishedCallback(bytesSent);
 
     if (receiveResponse() == ServerResponse::CRITICAL_ERROR)
     {
@@ -58,8 +57,6 @@ TCPIP::ServerResponse TCPIP::TCPIPClient::receiveResponse() {
 
 void TCPIP::TCPIPClient::sendFile(const std::string &fileName)
 {
-    progressBar = std::make_unique<UI::CLIProgressBar>(TCPIP::Utiles::getFileNameOnly(fileName), std::filesystem::file_size(fileName), 0);
-
     size_t sent = 0;
     sendFileInfo(fileName);
 
@@ -69,7 +66,6 @@ void TCPIP::TCPIPClient::sendFile(const std::string &fileName)
         sendFileChunk(buffer);
         sent += buffer.bytesUsed;
         queue->returnBuffer(std::move(buffer));
-        progressBar->draw();
     }
 
     if (receiveResponse() != ServerResponse::FILE_RECEIVED)
@@ -81,4 +77,9 @@ void TCPIP::TCPIPClient::sendFile(const std::string &fileName)
 TCPIP::TCPIPClient::~TCPIPClient()
 {
     clientCommunication->disconnect();
+}
+
+void TCPIP::TCPIPClient::setSendFinishedCallback(std::function<void(size_t)> callback)
+{
+    sendFinishedCallback = callback;
 }
