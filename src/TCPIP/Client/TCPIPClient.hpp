@@ -16,9 +16,9 @@ namespace TCPIP
     {
     public:
         TCPIPClient(std::unique_ptr<IClientCommunication> clientCommunication, std::shared_ptr<::FixedBufferQueue<TCPIPTag>> queue);
-        ~TCPIPClient();
+        ~TCPIPClient() override;
 
-        virtual void sendFile(std::string const &fileName) override;
+        void sendFile(std::string const &fileName) override;
         void setSendFinishedCallback(std::function<void(size_t)> callback);
 
     private:
@@ -31,6 +31,5 @@ namespace TCPIP
         std::unique_ptr<IClientCommunication> clientCommunication;
         std::shared_ptr<::FixedBufferQueue<TCPIPTag>> queue;
         std::function<void(size_t)> sendFinishedCallback;
-        bool isConnected = false;
     };
 }

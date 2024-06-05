@@ -2,6 +2,7 @@
 #include <string>
 #include <sys/stat.h>
 #include <filesystem>
+#include <cstring>
 #include "../../common/Serializer.hpp"
 #include "../Common/Utiles.hpp"
 
@@ -12,15 +13,17 @@ namespace TCPIP {
     public:
         FileInfo() = default;
 
-        explicit FileInfo(std::string fileName, size_t fileSize)
+        explicit FileInfo(std::string const &fileName, size_t fileSize)
                 : fileName(Utiles::getFileNameOnly(fileName)), fileSize(fileSize)
         {
             struct stat fileAttributes;
+            std::memset(&fileAttributes, 0, sizeof(fileAttributes));
+
             stat(this->fileName.c_str(), &fileAttributes);
             filePermissions = fileAttributes.st_mode;
         }
 
-        explicit FileInfo(std::string fileName)
+        explicit FileInfo(std::string const &fileName)
             : FileInfo(fileName, std::filesystem::file_size(fileName))
         {
         }
@@ -48,6 +51,6 @@ namespace TCPIP {
 
         size_t fileSize = 0;
         std::string fileName;
-        mode_t filePermissions;
+        mode_t filePermissions = 0;
     };
 }

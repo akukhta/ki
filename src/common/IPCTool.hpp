@@ -68,7 +68,7 @@ public:
 
                 timer = std::make_unique<SiblingProcessObserver>(procInfo,
                     ipcToolType == ProcessType::ReaderProcess ? ProcessType::WriterProcess : ProcessType::ReaderProcess,
-                    std::bind(&IPCTool::timeout, this));
+                    [this](){ timeout();});
             }
 
             ~IPCTool() override

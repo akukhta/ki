@@ -8,13 +8,13 @@
 #include "../../common/Serializer.hpp"
 
 namespace TCPIP {
-    enum class RequestState : char {NEW, RECEIVING, RECEIVED, PROCESSING, FINISHED};
+    enum class RequestState : char {NEW, RECEIVING, RECEIVED, PROCESSING};
 
     /// Class represents request from a client
     class ClientRequest
     {
     public:
-        ClientRequest(std::shared_ptr<class ConnectedClient> ownerClient);
+        explicit ClientRequest(std::shared_ptr<class ConnectedClient> ownerClient);
 
         /// Parse request header
         void parseHeader();

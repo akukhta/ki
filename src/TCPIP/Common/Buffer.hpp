@@ -42,14 +42,14 @@ namespace TCPIP
         }
 
         /// Get pointer to the buffer
-        unsigned char* getData()
+        unsigned char* getData() const
         {
             return data;
         }
 
         /// Get pointer to the request's data
         /// skipping the request's header
-        unsigned char* getRequestData()
+        unsigned char* getRequestData() const
         {
             return data + TCPIP::RequestHeader::noAligmentSize();
         }

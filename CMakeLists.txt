@@ -47,8 +47,7 @@ add_executable(${PROJECT_NAME}
 		src/TCPIP/Server/IServer.hpp
 		src/common/Serializer.hpp
 		src/TCPIP/Client/IClient.hpp
-		src/common/Logger.cpp
-		src/common/Logger.hpp
+        src/common/Logger.hpp
 		src/TCPIP/Client/BufferedFileReader.h
 		src/TCPIP/Request/RequestTypes.h
         src/TCPIP/Server/ConnectedClient.cpp

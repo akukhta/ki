@@ -45,7 +45,7 @@ namespace TCPIP
             }
         }
 
-        int getFreeBuffersAmount() const
+        size_t getFreeBuffersAmount() const
         {
             RAIILockType lm(queueMutex);
             return readBuffers.size();

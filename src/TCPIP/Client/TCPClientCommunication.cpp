@@ -12,7 +12,7 @@ bool TCPIP::TCPClientCommunication::connect()
 }
 
 TCPIP::TCPClientCommunication::TCPClientCommunication(std::string serverIp, short serverPort)
-    :   serverIp(std::move(serverIp)), serverPort(serverPort)
+    :   serverIp(std::move(serverIp)), serverPort(serverPort), socket(0)
 {}
 
 size_t TCPIP::TCPClientCommunication::send(unsigned char *data, size_t size)

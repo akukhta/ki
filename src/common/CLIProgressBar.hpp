@@ -6,9 +6,8 @@
 namespace UI {
     class CLIProgressBar {
     public:
-        CLIProgressBar(std::string const &label, size_t maxValue = 100, size_t currentValue = 0, size_t barWidth = 20)
-                : maxValue(maxValue), currentValue(currentValue), barWidth(barWidth),
-                    label(label)
+        explicit CLIProgressBar(std::string label, size_t maxValue = 100, size_t currentValue = 0, size_t barWidth = 20)
+                : maxValue(maxValue), currentValue(currentValue), barWidth(barWidth), label(std::move(label))
         {
             step = 100 / barWidth;
         }
@@ -18,7 +17,8 @@ namespace UI {
             std::cout.flush();
         }
 
-        void setValue(int value) {
+        void setValue(int value)
+        {
             currentValue = value;
         }
 
@@ -29,7 +29,7 @@ namespace UI {
 
         void draw() {
             std::cout << "\r" << label << "\t[";
-            int percent = std::min(static_cast<int>(((static_cast<float>(currentValue) / maxValue) * 100)), 100);
+            int percent = std::min(static_cast<int>(((static_cast<float>(currentValue) / static_cast<float>(maxValue)) * 100)), 100);
             size_t filled = percent / step;
 
             for (size_t i = 0; i < filled; i++) {

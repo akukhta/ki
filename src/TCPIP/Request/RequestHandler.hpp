@@ -60,12 +60,12 @@ namespace TCPIP
         std::shared_ptr<FileLogger> logger;
 
         // Request handlers
-        void fileInfoReceived(std::shared_ptr<ClientRequest> request);
-        void fileChunkReceived(std::shared_ptr<ClientRequest> request);
+        void fileInfoReceived(std::shared_ptr<ClientRequest>& request);
+        void fileChunkReceived(std::shared_ptr<ClientRequest>& request);
 
         /// Request handler map
         /// I've not used the class COR intentionally
         /// Since it requires iteration through the chain of handlers ( == O(n) complexity vs O(1) complexity)
-        static std::unordered_map<TCPIP::RequestType, std::function<void(TCPIP::RequestHandler&, std::shared_ptr<ClientRequest>)>> handlerFunctions;
+        static std::unordered_map<TCPIP::RequestType, std::function<void(TCPIP::RequestHandler&, std::shared_ptr<ClientRequest>&)>> handlerFunctions;
     };
 }

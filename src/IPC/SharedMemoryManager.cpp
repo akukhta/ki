@@ -3,7 +3,7 @@
 #include <iostream>
 #include <format>
 
-SharedMemoryManager::SharedMemoryManager(const std::string &shObjName) : shObjName(shObjName)
+SharedMemoryManager::SharedMemoryManager(std::string shObjName) : shObjName(std::move(shObjName))
     {
         try
         {

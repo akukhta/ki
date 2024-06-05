@@ -22,7 +22,11 @@ TCPIP::TCPIPServer::TCPIPServer(std::shared_ptr<FixedBufferQueue> queue, std::un
     socketAddress.sin_port = htons(settings->getServerPort());
     socketAddress.sin_addr.s_addr = inet_addr(settings->getServerIP().c_str());
 
-    bind(masterSocket, reinterpret_cast<sockaddr*>(&socketAddress), sizeof(socketAddress));
+    if (bind(masterSocket, reinterpret_cast<sockaddr*>(&socketAddress), sizeof(socketAddress)) != 0)
+    {
+        throw std::runtime_error("Can't bind server socket to its address");
+    }
+
     TCPIP::Utiles::setSocketNonBlock(masterSocket);
     listen(masterSocket, SOMAXCONN);
     epollFD = epoll_create1(0);
@@ -38,9 +42,9 @@ void TCPIP::TCPIPServer::run()
     requestHandler->startHandling();
 }
 
-void TCPIP::TCPIPServer::runFunction()
+void TCPIP::TCPIPServer::runFunction(std::stop_token stopToken)
 {
-    while(true)
+    while(stopToken.stop_requested() == false)
     {
         if (scheduledClients.empty())
         {
@@ -66,7 +70,7 @@ void TCPIP::TCPIPServer::connectClient()
     addSocketToEpoll(clientSocket);
 
     auto clientIP = inet_ntoa(*reinterpret_cast<in_addr*>(&clientAddress.sin_addr));
-    clients.emplace(clientSocket, std::make_shared<TCPIP::ConnectedClient>(clientSocket, clientIP, htons(clientAddress.sin_port))).first->second;
+    clients.emplace(clientSocket, std::make_shared<TCPIP::ConnectedClient>(clientSocket, clientIP)).first->second;
 
     if (logger)
     {
@@ -109,10 +113,10 @@ void TCPIP::TCPIPServer::receiveData(int clientSocket)
     // If the attempt has failed, leave and try next time
     if (!client->currentRequest)
     {
-        client->currentRequest = std::make_shared<TCPIP::ClientRequest>(client);
+        client->createRequest();
     }
 
-    if (!client->currentRequest->buffer)
+    if (!client->isBufferAvailable() )
     {
         if (!tryGetClientBuffer(clientSocket))
         {
@@ -151,10 +155,10 @@ bool TCPIP::TCPIPServer::tryGetClientBuffer(int clientSocket)
 
     if (!client->currentRequest)
     {
-        client->currentRequest = std::make_shared<TCPIP::ClientRequest>(client);
+        client->createRequest();
     }
 
-    if (client->currentRequest->buffer)
+    if (client->isBufferAvailable())
     {
         if (logger)
         {
@@ -164,7 +168,7 @@ bool TCPIP::TCPIPServer::tryGetClientBuffer(int clientSocket)
     else if (auto rv = queue->getFreeBufferNonBlock(); rv.has_value())
     {
         client->currentRequest->buffer = std::make_shared<TCPIP::Buffer>(std::move(rv.value()));
-        client->currentRequest->buffer->owningClientID = client->socket;
+        client->currentRequest->buffer->setOwnerID(client->socket);
         return true;
     }
 
@@ -184,7 +188,7 @@ void TCPIP::TCPIPServer::clientDisconnected(int clientSocket)
             logger->log("Client {} has disconnected", clients[clientSocket]->clientIP);
         }
 
-        if (clients[clientSocket]->currentRequest && clients[clientSocket]->currentRequest->buffer)
+        if (clients[clientSocket]->isBufferAvailable())
         {
             queue->releaseBuffer(std::move(*clients[clientSocket]->currentRequest->buffer));
         }
@@ -214,7 +218,6 @@ void TCPIP::TCPIPServer::handleEpollEvents()
             }
             else
             {
-                auto &client = clients[events[i].data.fd];
                 receiveData(events[i].data.fd);
             }
         }
@@ -264,6 +267,10 @@ void TCPIP::TCPIPServer::fileWriteFinished(int clientSocket)
 
 TCPIP::TCPIPServer::~TCPIPServer()
 {
+    /// stop thread before closing clients sockets
+    serverThread.request_stop();
+    serverThread.join();
+
     for (auto &client : clients)
     {
         epoll_ctl(epollFD, EPOLL_CTL_DEL, client.first, nullptr);

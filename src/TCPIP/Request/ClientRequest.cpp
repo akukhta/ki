@@ -2,9 +2,9 @@
 
 std::unordered_map<TCPIP::RequestState, std::function<bool(TCPIP::ClientRequest&)>> TCPIP::ClientRequest::stateHandlers =
 {
-        {RequestState::NEW, std::bind(&TCPIP::ClientRequest::newStateHandler, std::placeholders::_1)},
-        {RequestState::RECEIVING, std::bind(&TCPIP::ClientRequest::receivingStateHandler, std::placeholders::_1)},
-        {RequestState::RECEIVED, std::bind(&TCPIP::ClientRequest::receivedStateHandler, std::placeholders::_1)},
+        {RequestState::NEW, [](TCPIP::ClientRequest& request){return request.newStateHandler();}},
+        {RequestState::RECEIVING, [](TCPIP::ClientRequest& request){return request.receivingStateHandler();}},
+        {RequestState::RECEIVED, [](TCPIP::ClientRequest& request){return request.receivedStateHandler();}},
 };
 
 TCPIP::ClientRequest::ClientRequest(std::shared_ptr<struct ConnectedClient> ownerClient)

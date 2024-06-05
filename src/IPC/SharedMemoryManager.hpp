@@ -30,7 +30,7 @@ class SharedMemoryManager : public std::enable_shared_from_this<SharedMemoryMana
 {
 public:
 
-    explicit SharedMemoryManager(std::string const& shObjName);
+    explicit SharedMemoryManager(std::string shObjName);
     ~SharedMemoryManager();
 
     /// Creates or Finds and returns a pointer to the queue

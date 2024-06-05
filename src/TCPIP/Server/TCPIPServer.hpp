@@ -25,13 +25,13 @@ namespace TCPIP
     {
     public:
         TCPIPServer(std::shared_ptr<FixedBufferQueue> queue, std::unique_ptr<IRequestHandler> requestHandler, std::shared_ptr<FileLogger> logger = nullptr);
-        ~TCPIPServer();
+        ~TCPIPServer() override;
 
         /// Starts the server in its own thread
-        virtual void run() override;
+        void run() override;
 
     private:
-        void runFunction();
+        void runFunction(std::stop_token stopToken);
 
         friend class ::ToolFactory;
         /// Function to notify client when file writing fnished
@@ -59,7 +59,7 @@ namespace TCPIP
         void addSocketToEpoll(int socket);
         void handleEpollEvents();
         void handleScheduledClients();
-        void sendResponse(TCPIP::ServerResponse response, int socket);
+        static void sendResponse(TCPIP::ServerResponse response, int socket);
 
         /// Non blocking function to try to obtain a buffer for client's request
         bool tryGetClientBuffer(int clientSocket);

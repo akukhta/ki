@@ -20,10 +20,7 @@ public:
         ;
     }
 
-    ~FileLogger()
-    {
-        out.close();
-    }
+    ~FileLogger() = default;
 
     template <typename... Args>
     void log(std::format_string<Args...> format, Args&&... args)

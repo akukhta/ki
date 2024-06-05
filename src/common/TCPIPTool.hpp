@@ -31,11 +31,11 @@ public:
     {
     }
 
-    ~TCPIPTool()
+    ~TCPIPTool() override
     {
         if (memoryPoolUsageBar)
         {
-            guiStopToken.request_stop();
+            stopSource.request_stop();
         }
     }
 
@@ -56,7 +56,7 @@ public:
 
                 queue->open();
                 queue->startReading();
-                auto readingTask = std::async(std::launch::async, &TCPIPTool::read, this, file);
+                auto readingTask = std::async(std::launch::async, &TCPIPTool::readFile, this, file);
                 client->sendFile(file);
                 readingTask.get();
             }
@@ -72,11 +72,11 @@ public:
             }
 
             server->run();
-            writingFunction();
+            writeFiles();
 
             if (guiTask.valid())
             {
-                guiStopToken.request_stop();
+                stopSource.request_stop();
                 guiTask.wait();
             }
         }
@@ -94,12 +94,12 @@ private:
     std::unique_ptr<UI::CLIProgressBar> progressBar;
     std::vector<std::string> filesToSend;
     std::jthread fileioThread;
-    std::stop_source guiStopToken;
+    std::stop_source stopSource;
 
     bool showMemoryPoolUsage = false;
     int indicatorRefreshRate = 0;
 
-    void read(std::string const &file)
+    void readFile(std::string const &file)
     {
         fileReader->startReading(file);
 
@@ -113,22 +113,26 @@ private:
         queue->close();
     }
 
-    void writingFunction()
+    void writeFiles()
     {
         queue->open();
 
-        while (true)
+        while (!stopSource.stop_requested())
         {
             fileWriter->write();
         }
+
+        queue->close();
     }
 
     void updateLoadIndicator()
     {
         // Since queue is not polymorphic, no dynamic_cast/dynamic_pointer_cast allowed
+        // static assertion to check that cast is safe (see static_cast conversion, point 1, at cppreference)
+        static_assert(std::is_base_of_v<typename decltype(queue)::element_type, TCPIP::FixedBufferQueue> == true, "Unsafe cast operation");
         auto serverQeuee = static_cast<TCPIP::FixedBufferQueue*>(queue.get());
 
-        while (!guiStopToken.stop_requested())
+        while (!stopSource.stop_requested())
         {
             memoryPoolUsageBar->setValue(serverQeuee->getFreeBuffersAmount());
             memoryPoolUsageBar->draw();
@@ -136,7 +140,7 @@ private:
         }
     }
 
-    void updateProgressBar(size_t value)
+    void updateProgressBar(int value)
     {
         progressBar->addToValue(value);
         progressBar->draw();

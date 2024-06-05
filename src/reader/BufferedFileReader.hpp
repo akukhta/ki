@@ -17,8 +17,6 @@
 template <class Tag>
 class BufferedReader : public IFileReader<void>
 {
-private:
-    using QueueType = FixedBufferQueue<Tag>;
 public:
     explicit BufferedReader(std::string fileName,
                             typename Tag::QueueType queue) :

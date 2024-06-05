@@ -3,7 +3,7 @@
 
 SiblingProcessObserver::SiblingProcessObserver(ProcInfo *processInfo, ProcessType processesToObserve,
     std::function<void()> stopwatchCallback)
-        : processInfo(processInfo), processesToObserve(processesToObserve), stopwatchCallback(std::move(stopwatchCallback))
+        : processInfo(processInfo), stopwatchCallback(std::move(stopwatchCallback))
 {
     if (processesToObserve == ProcessType::WriterProcess)
     {

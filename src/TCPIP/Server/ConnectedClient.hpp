@@ -10,7 +10,7 @@ namespace TCPIP
     class ConnectedClient : public std::enable_shared_from_this<ConnectedClient>
     {
     public:
-        ConnectedClient(int socket, std::string clientIP, int clientPort);
+        ConnectedClient(int socket, std::string clientIP);
         ConnectedClient();
 
         /// Check if the client has a buffer to use

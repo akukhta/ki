@@ -81,12 +81,12 @@ public:
         return isServer;
     }
 
-    virtual std::vector<std::string> getFilesToSend() const
+    [[nodiscard]] std::vector<std::string> getFilesToSend() const override
     {
         return files;
     }
 
-    virtual std::string getSettingsPath() const override
+    [[nodiscard]] virtual std::string getSettingsPath() const override
     {
         return settings;
     }

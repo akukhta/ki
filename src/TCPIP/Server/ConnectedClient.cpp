@@ -1,6 +1,6 @@
 #include "ConnectedClient.hpp"
 
-TCPIP::ConnectedClient::ConnectedClient(int socket, std::string clientIP, int clientPort)
+TCPIP::ConnectedClient::ConnectedClient(int socket, std::string clientIP)
     : socket(socket), clientIP(std::move(clientIP))
     {}
 

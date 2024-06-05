@@ -43,13 +43,12 @@ private:
     std::jthread observerThread;
 
     bool stopwatchStarted = false;
-    ProcessType processesToObserve;
 
     /// Time to wait before shutdown/callback call
     std::chrono::seconds waitingTime = std::chrono::seconds{10};
 
     std::chrono::time_point<std::chrono::high_resolution_clock> prevCheck;
-    std::chrono::milliseconds stopwatch;
+    std::chrono::milliseconds stopwatch{};
     size_t ProcInfo::* counterMember;
 
     /// Update/poll time interval

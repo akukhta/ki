@@ -26,7 +26,7 @@ struct ProcInfo
     /// Being used to reduce unnecessary command line arguments
     /// Since we start reader process and it already has all the necessary info
     /// there is no need to pass it to writer process
-    std::string getDst() const
+    [[nodiscard]] std::string getDst() const
     {
         return dst;
     }

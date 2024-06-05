@@ -1,5 +1,4 @@
 #include "RequestCreator.hpp"
-#include <filesystem>
 #include "../../common/Serializer.hpp"
 #include "../Common/FileInfo.hpp"
 
@@ -19,8 +18,8 @@ std::vector<unsigned char> TCPIP::RequestCreator::createFileInfoRequest(const st
 
 TCPIP::Buffer &TCPIP::RequestCreator::createFileChunkRequest(TCPIP::Buffer &buffer)
 {
-    auto ptr = buffer.getData();
-    Serializer<SerializerType::NoBuffer>::overwrite(ptr, 0, std::to_underlying(TCPIP::RequestType::FILE_CHUNK_RECEIVED));
-    Serializer<SerializerType::NoBuffer>::overwrite(ptr, sizeof(RequestHeader::type), static_cast<short>(buffer.bytesUsed));
+    auto requestData = buffer.getData();
+    Serializer<SerializerType::NoBuffer>::overwrite(requestData, 0, std::to_underlying(TCPIP::RequestType::FILE_CHUNK_RECEIVED));
+    Serializer<SerializerType::NoBuffer>::overwrite(requestData, sizeof(RequestHeader::type), static_cast<short>(buffer.bytesUsed));
     return buffer;
 }

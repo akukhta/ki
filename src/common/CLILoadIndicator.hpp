@@ -8,8 +8,8 @@ namespace UI
     class CLILoadIndicator
     {
     public:
-        CLILoadIndicator(std::string const &label, size_t maxValue = 100, size_t currentValue = 0, size_t barWidth = 20)
-            : maxValue(maxValue), currentValue(currentValue), barWidth(barWidth), label(label)
+        explicit CLILoadIndicator(std::string label, size_t maxValue = 100, size_t currentValue = 0, size_t barWidth = 20)
+            : maxValue(maxValue), currentValue(currentValue), barWidth(barWidth), label(std::move(label))
         {
             step = 100 / barWidth;
         }
@@ -25,7 +25,7 @@ namespace UI
 
         void draw() {
             std::cout << "\r" << label << "\t[";
-            int percent = std::min(static_cast<int>(((static_cast<float>(currentValue) / maxValue) * 100)), 100);
+            int percent = std::min(static_cast<int>(((static_cast<float>(currentValue) / static_cast<float>(maxValue)) * 100)), 100);
             size_t filled = percent / step;
 
             fmt::color barColor;
@@ -34,7 +34,7 @@ namespace UI
             {
                 barColor = fmt::color::red;
             }
-            else if (percent > 33 && percent <= 66)
+            else if (percent <= 66)
             {
                 barColor = fmt::color::yellow;
             }

@@ -20,17 +20,17 @@ namespace TCPIP {
     public:
         static std::shared_ptr<JsonSettingsParser> getInstance();
 
-        std::string getServerIP() const;
+        [[nodiscard]] std::string getServerIP() const;
 
-        int getServerPort() const;
+        [[nodiscard]] int getServerPort() const;
 
-        std::string getStorageDirectory() const;
+        [[nodiscard]] std::string getStorageDirectory() const;
 
         void setSettingsPath(std::string settingsPath);
 
-        int loadInidicatorRefreshRate() const;
+        [[nodiscard]] int loadInidicatorRefreshRate() const;
 
-        bool loadIndicatorEnabled() const;
+        [[nodiscard]] bool loadIndicatorEnabled() const;
     private:
         JsonSettingsParser();
 

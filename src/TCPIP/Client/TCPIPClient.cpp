@@ -17,18 +17,15 @@ TCPIP::TCPIPClient::TCPIPClient(std::unique_ptr<IClientCommunication> clientComm
 
 void TCPIP::TCPIPClient::sendFileChunk(TCPIP::Buffer &buffer)
 {
-    auto ptr = buffer.getData();
-    Serializer<SerializerType::NoBuffer>::overwrite(ptr, 0, std::to_underlying(TCPIP::RequestType::FILE_CHUNK_RECEIVED));
-    Serializer<SerializerType::NoBuffer>::overwrite(ptr, sizeof(RequestHeader::type), static_cast<short>(buffer.bytesUsed));
-
-    auto bytesSent = clientCommunication->send(ptr, buffer.bytesUsed + RequestHeader::noAligmentSize());
-
-    sendFinishedCallback(bytesSent);
+    auto requestData = RequestCreator::createFileChunkRequest(buffer).getData();
+    auto bytesSent = clientCommunication->send(requestData, buffer.bytesUsed + RequestHeader::noAligmentSize());
 
     if (receiveResponse() == ServerResponse::CRITICAL_ERROR)
     {
         throw std::runtime_error("Internal Server Error");
     }
+
+    sendFinishedCallback(bytesSent);
 }
 
 void TCPIP::TCPIPClient::sendFileInfo(std::string const& fileName)
@@ -81,5 +78,5 @@ TCPIP::TCPIPClient::~TCPIPClient()
 
 void TCPIP::TCPIPClient::setSendFinishedCallback(std::function<void(size_t)> callback)
 {
-    sendFinishedCallback = callback;
+    sendFinishedCallback = std::move(callback);
 }

@@ -1,12 +1,13 @@
 #include "RequestHandler.hpp"
 #include "../Server/ConnectedClient.hpp"
 
-std::unordered_map<TCPIP::RequestType, std::function<void(TCPIP::RequestHandler&, std::shared_ptr<TCPIP::ClientRequest>)>> TCPIP::RequestHandler::handlerFunctions =
+std::unordered_map<TCPIP::RequestType, std::function<void(TCPIP::RequestHandler&, std::shared_ptr<TCPIP::ClientRequest>&)>> TCPIP::RequestHandler::handlerFunctions =
 {
     {TCPIP::RequestType::FILE_INFO_RECEIVED,
-     std::bind(&TCPIP::RequestHandler::fileInfoReceived, std::placeholders::_1, std::placeholders::_2)},
+            [](RequestHandler& handler, std::shared_ptr<ClientRequest> &request){handler.fileInfoReceived(request);}},
+
     {TCPIP::RequestType::FILE_CHUNK_RECEIVED,
-     std::bind(&TCPIP::RequestHandler::fileChunkReceived, std::placeholders::_1, std::placeholders::_2)}
+            [](RequestHandler& handler, std::shared_ptr<ClientRequest> &request){handler.fileChunkReceived(request);}}
 };
 
 
@@ -58,7 +59,7 @@ TCPIP::RequestHandler::~RequestHandler()
     handlingThread.request_stop();
 }
 
-void TCPIP::RequestHandler::fileInfoReceived(std::shared_ptr<ClientRequest> request)
+void TCPIP::RequestHandler::fileInfoReceived(std::shared_ptr<ClientRequest>& request)
 {
     auto &buffer = request->buffer;
     FileInfo fileInfo = FileInfo::deserialize(buffer->getRequestData());
@@ -74,7 +75,7 @@ void TCPIP::RequestHandler::fileInfoReceived(std::shared_ptr<ClientRequest> requ
     }
 }
 
-void TCPIP::RequestHandler::fileChunkReceived(std::shared_ptr<ClientRequest> request)
+void TCPIP::RequestHandler::fileChunkReceived(std::shared_ptr<ClientRequest>& request)
 {
     queue->returnBuffer(std::move(*request->buffer));
 }
