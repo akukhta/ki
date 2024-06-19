@@ -48,7 +48,7 @@ public:
 
                 if (auto tcpClient = dynamic_cast<TCPIP::TCPIPClient*>(client.get()))
                 {
-                    progressBar = std::make_unique<UI::CLIProgressBar>(TCPIP::Utiles::getFileNameOnly(file),
+                    progressBar = std::make_unique<ki::UI::CLIProgressBar>(TCPIP::Utiles::getFileNameOnly(file),
                         TCPIP::Utiles::getFileSize(file));
 
                     tcpClient->setSendFinishedCallback(std::bind(&TCPIPTool::updateProgressBar, this, std::placeholders::_1));
@@ -67,7 +67,7 @@ public:
 
             if (showMemoryPoolUsage)
             {
-                memoryPoolUsageBar = std::make_unique<UI::CLILoadIndicator>("Buffers available:", TCP_BUFFERS_IN_QUEUE, TCP_BUFFERS_IN_QUEUE);
+                memoryPoolUsageBar = std::make_unique<ki::UI::CLILoadIndicator>("Buffers available:", TCP_BUFFERS_IN_QUEUE, TCP_BUFFERS_IN_QUEUE);
                 guiTask = std::async(std::launch::async, &TCPIPTool::updateLoadIndicator, this);
             }
 
@@ -90,8 +90,8 @@ private:
     std::shared_ptr<FixedBufferQueue<TCPIPTag>> queue;
     std::unique_ptr<TCPIP::IServer> server;
     std::unique_ptr<TCPIP::IClient> client;
-    std::unique_ptr<UI::CLILoadIndicator> memoryPoolUsageBar;
-    std::unique_ptr<UI::CLIProgressBar> progressBar;
+    std::unique_ptr<ki::UI::CLILoadIndicator> memoryPoolUsageBar;
+    std::unique_ptr<ki::UI::CLIProgressBar> progressBar;
     std::vector<std::string> filesToSend;
     std::jthread fileioThread;
     std::stop_source stopSource;

@@ -8,6 +8,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 
 find_package(Boost 1.82.0 REQUIRED)
 find_package(fmt REQUIRED)
+find_package(OpenSSL REQUIRED)
 
 add_executable(${PROJECT_NAME}
 		src/main.cpp
@@ -69,6 +70,18 @@ add_executable(${PROJECT_NAME}
 		src/TCPIP/Client/TCPClientCommunication.hpp
 		src/common/FileLogger.hpp
 		src/common/CLILoadIndicator.hpp
+		src/TCPIP/SecureClient/SecureClient.cpp
+		src/TCPIP/SecureClient/SecureClient.hpp
+		src/TCPIP/Security/IKeyGenerator.hpp
+		src/TCPIP/Security/RSAKey.cpp
+		src/TCPIP/Security/RSAKey.hpp
+		src/TCPIP/Security/IEncryption.hpp
+		src/TCPIP/Security/IKeyManager.hpp
+		src/TCPIP/Security/AbstractKey.hpp
+		src/TCPIP/Security/RSAEncryption.cpp
+		src/TCPIP/Security/RSAEncryption.hpp
+		src/TCPIP/Security/RSAKeyManager.cpp
+		src/TCPIP/Security/RSAKeyManager.hpp
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
@@ -77,4 +90,6 @@ elseif(CMAKE_BUILD_TYPE MATCHES Release)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC DEBUG=0)
 endif()
 
-target_link_libraries(${PROJECT_NAME} Boost::program_options stdc++fs fmt::fmt)
+target_include_directories(${PROJECT_NAME} PRIVATE ${OPENSSL_INCLUDE_DIR})
+
+target_link_libraries(${PROJECT_NAME} PRIVATE Boost::program_options stdc++fs fmt::fmt  OpenSSL::SSL OpenSSL::Crypto)

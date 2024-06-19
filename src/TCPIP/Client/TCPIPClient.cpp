@@ -61,6 +61,7 @@ void TCPIP::TCPIPClient::sendFile(const std::string &fileName)
     {
         auto buffer = queue->getFilledBuffer().value();
         sendFileChunk(buffer);
+        prepareBufferToSend(buffer);
         sent += buffer.bytesUsed;
         queue->returnBuffer(std::move(buffer));
     }

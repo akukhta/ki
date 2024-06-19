@@ -21,6 +21,11 @@ namespace TCPIP
         void sendFile(std::string const &fileName) override;
         void setSendFinishedCallback(std::function<void(size_t)> callback);
 
+    protected:
+        /// Template method function that is being called before sending a buffer to the server
+        /// Can be used, for example, to encrypt the data before sending
+        /// \param buffer reference to a buffer is going to be sent
+        virtual void prepareBufferToSend(TCPIP::Buffer &buffer) {};
     private:
 
         void sendFileChunk(TCPIP::Buffer &buffer);

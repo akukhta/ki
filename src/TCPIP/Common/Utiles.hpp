@@ -2,6 +2,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <filesystem>
+#include <openssl/err.h>
+#define MAX_OPENSSL_ERR_LEN 256
 
 namespace TCPIP
 {
@@ -28,6 +30,29 @@ namespace TCPIP
         static size_t getFileSize(std::string const& fileName)
         {
             return std::filesystem::file_size(fileName);
+        }
+
+        template<typename T>
+        static T satCeilingSub(T x, T y)
+        {
+            auto res = (x / y);
+            return res != 0 ? ((x / y) + (x % y != 0 ? 1 : 0)) : 1;
+        }
+
+        static std::string getOpenSSLError()
+        {
+            auto errorCode = ERR_get_error();
+
+            if (errorCode == 0)
+            {
+                throw std::runtime_error("No error");
+            }
+
+            std::string errorDescription(MAX_OPENSSL_ERR_LEN, '\0');
+            ERR_error_string_n(errorCode, errorDescription.data(), MAX_OPENSSL_ERR_LEN);
+            errorDescription.resize(errorDescription.length());
+
+            return errorDescription;
         }
     };
 }
