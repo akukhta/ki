@@ -90,8 +90,6 @@ public:
             }
     };
 
-    ~FixedBufferQueue() = default;
-
     /// Function to get a free/unused buffer to read data into
     /// \return Returns free buffer or std::nullopt if buffer can`t be given
     std::optional<typename Tag::BufferType> getFreeBuffer()

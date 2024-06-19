@@ -6,7 +6,7 @@ namespace TCPIP {
     /// Underlying communication protocol interface
     class IClientCommunication {
     public:
-        ~IClientCommunication() = default;
+        virtual ~IClientCommunication() = default;
 
         virtual bool connect() {return true;};
         virtual size_t send(unsigned char *data, size_t size) = 0;
