@@ -11,5 +11,8 @@ namespace TCPIP
         virtual void addRequest(std::shared_ptr<class ClientRequest> request) = 0;
         virtual void startHandling() = 0;
         ~IRequestHandler() = default;
+
+    protected:
+        virtual void handle(std::stop_token token) = 0;
     };
 }

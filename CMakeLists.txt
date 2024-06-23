@@ -72,7 +72,6 @@ add_executable(${PROJECT_NAME}
 		src/common/CLILoadIndicator.hpp
 		src/TCPIP/SecureClient/SecureClient.cpp
 		src/TCPIP/SecureClient/SecureClient.hpp
-		src/TCPIP/Security/IKeyGenerator.hpp
 		src/TCPIP/Security/RSAKey.cpp
 		src/TCPIP/Security/RSAKey.hpp
 		src/TCPIP/Security/IEncryption.hpp
@@ -80,8 +79,16 @@ add_executable(${PROJECT_NAME}
 		src/TCPIP/Security/AbstractKey.hpp
 		src/TCPIP/Security/RSAEncryption.cpp
 		src/TCPIP/Security/RSAEncryption.hpp
-		src/TCPIP/Security/RSAKeyManager.cpp
-		src/TCPIP/Security/RSAKeyManager.hpp
+		src/TCPIP/Security/KeyManager.cpp
+		src/TCPIP/Security/KeyManager.hpp
+		src/TCPIP/Security/SecureRequestHandler.cpp
+		src/TCPIP/Security/SecureRequestHandler.hpp
+		src/TCPIP/Security/Chacha20Key.cpp
+		src/TCPIP/Security/Chacha20Key.hpp
+		src/TCPIP/Security/ChaCha20Encryption.cpp
+		src/TCPIP/Security/ChaCha20Encryption.hpp
+		src/TCPIP/SecureServer/SecureTCPIPServer.cpp
+		src/TCPIP/SecureServer/SecureTCPIPServer.hpp
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
@@ -91,5 +98,7 @@ elseif(CMAKE_BUILD_TYPE MATCHES Release)
 endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${OPENSSL_INCLUDE_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/external/cryptopp/include)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Boost::program_options stdc++fs fmt::fmt  OpenSSL::SSL OpenSSL::Crypto)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/external/cryptopp/lib/libcryptopp.a)

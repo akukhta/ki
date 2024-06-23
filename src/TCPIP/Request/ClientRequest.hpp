@@ -33,8 +33,10 @@ namespace TCPIP {
 
     private:
         friend class RequestHandler;
+        friend class SecureRequestHandler;
         friend class ConnectedClient;
         friend class TCPIPServer;
+
 
         /// Request's buffer
         std::shared_ptr<TCPIP::Buffer> buffer;

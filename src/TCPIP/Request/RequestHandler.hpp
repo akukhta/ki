@@ -39,15 +39,12 @@ namespace TCPIP
         /// Start handling thread
         void startHandling() override;
 
-    private:
+    protected:
         void handle(std::stop_token token);
 
         // Sync
         std::mutex mutex;
         std::condition_variable cv;
-
-        /// Requests queue
-        std::queue<std::shared_ptr<ClientRequest>> requests;
 
         /// Queue (memory pool) to return used buffers into
         std::shared_ptr<TCPIP::FixedBufferQueue> queue;
@@ -67,5 +64,9 @@ namespace TCPIP
         /// I've not used the class COR intentionally
         /// Since it requires iteration through the chain of handlers ( == O(n) complexity vs O(1) complexity)
         static std::unordered_map<TCPIP::RequestType, std::function<void(TCPIP::RequestHandler&, std::shared_ptr<ClientRequest>&)>> handlerFunctions;
+
+    private:
+        /// Requests queue
+        std::queue<std::shared_ptr<ClientRequest>> requests;
     };
 }
