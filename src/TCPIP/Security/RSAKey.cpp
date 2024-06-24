@@ -80,3 +80,22 @@ TCPIP::RSAKey::RSAKeyPtr TCPIP::RSAKey::getInternalKey()
 {
     return rsaKeyInternal;
 }
+
+std::vector<char> TCPIP::RSAKey::getPublicKeyBin()
+{
+    BIO* buffer = BIO_new(BIO_s_mem());
+    PEM_write_bio_RSA_PUBKEY(buffer, rsaKeyInternal);
+
+    char* ptrToBuf;
+    BIO_get_mem_ptr(buffer, ptrToBuf);
+    std::vector<char> res(ptrToBuf, ptrToBuf + BIO_pending(buffer));
+
+    BIO_free(buffer);
+    return res;
+}
+
+TCPIP::RSAKey::RSAKey(TCPIP::RSAKey &&other)
+{
+    this->rsaKeyInternal = other.rsaKeyInternal;
+    other.rsaKeyInternal = nullptr;
+}

@@ -30,6 +30,11 @@ namespace TCPIP
         /// Starts the server in its own thread
         void run() override;
 
+    protected:
+        /// New client connects to the server
+        virtual void connectClient();
+        int lastConnectedClient;
+
     private:
         void runFunction(std::stop_token stopToken);
 
@@ -48,9 +53,6 @@ namespace TCPIP
         sockaddr_in socketAddress;
 
         std::jthread serverThread;
-
-        /// New client connects to the server
-        void connectClient();
 
         /// Process received data
         void processReceivedData(int clientSocket);

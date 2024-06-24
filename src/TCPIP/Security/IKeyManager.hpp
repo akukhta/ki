@@ -10,5 +10,6 @@ namespace TCPIP
         virtual void addKey(unsigned int id, AbstractKey key) = 0;
         virtual AbstractKey& getKey(unsigned int id) = 0;
         virtual void eraseKey(unsigned int id) = 0;
+        virtual bool keyExists(unsigned int id) = 0;
     };
 }

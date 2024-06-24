@@ -25,6 +25,8 @@
 #include "../TCPIP/Client/TCPClientCommunication.hpp"
 #include "../TCPIP/SecureClient/SecureClient.hpp"
 #include "../TCPIP/Security/ChaCha20Encryption.hpp"
+#include "../TCPIP/Security/SecureRequestHandler.hpp"
+#include "../TCPIP/Security/KeyManager.hpp"
 
 /// Factory that creates proper copy tool based on passed arguments
 class ToolFactory
@@ -166,8 +168,9 @@ public:
                     auto fileLogger = std::make_shared<FileLogger>();
                     auto queue = std::make_shared<TCPIP::FixedBufferQueue>();
                     writer = std::make_shared<TCPIP::MultiFileWriter>(queue, fileLogger);
-                    auto requestHandler = std::make_unique<TCPIP::RequestHandler>(queue, writer, fileLogger);
-                    server = std::make_unique<TCPIP::TCPIPServer>(queue, std::move(requestHandler), fileLogger);
+                    auto keyManager = std::make_shared<TCPIP::KeyManager>();
+                    auto secureRequestHandler = std::make_unique<TCPIP::SecureRequestHandler>(queue, writer, std::make_unique<TCPIP::ChaCha20Encryption>(), std::move(keyManager), fileLogger);
+                    server = std::make_unique<TCPIP::TCPIPServer>(queue, std::move(secureRequestHandler), fileLogger);
                     tool = std::make_unique<TCPIPTool>(writer, queue, std::move(server), settingsParser->loadIndicatorEnabled(), settingsParser->loadInidicatorRefreshRate());
                     writer->setFileWriteFinished(std::bind(&TCPIP::TCPIPServer::fileWriteFinished, server.get(), std::placeholders::_1));
                 }

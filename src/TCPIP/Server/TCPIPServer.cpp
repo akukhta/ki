@@ -65,17 +65,16 @@ void TCPIP::TCPIPServer::connectClient()
     sockaddr_in clientAddress;
     socklen_t addrLen = sizeof(clientAddress);
 
-    int clientSocket = accept(masterSocket, reinterpret_cast<sockaddr*>(&clientAddress), &addrLen);
-    TCPIP::Utiles::setSocketNonBlock(clientSocket);
-    addSocketToEpoll(clientSocket);
+    lastConnectedClient = accept(masterSocket, reinterpret_cast<sockaddr*>(&clientAddress), &addrLen);
+    TCPIP::Utiles::setSocketNonBlock(lastConnectedClient);
+    addSocketToEpoll(lastConnectedClient);
 
     auto clientIP = inet_ntoa(*reinterpret_cast<in_addr*>(&clientAddress.sin_addr));
-    clients.emplace(clientSocket, std::make_shared<TCPIP::ConnectedClient>(clientSocket, clientIP)).first->second;
+    clients.emplace(lastConnectedClient, std::make_shared<TCPIP::ConnectedClient>(lastConnectedClient, clientIP)).first->second;
 
     if (logger)
     {
         logger->log("New Client {}:{} connected", clientIP, htons(clientAddress.sin_port));
-
     }
 }
 

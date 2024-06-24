@@ -25,3 +25,8 @@ void TCPIP::KeyManager::eraseKey(unsigned int id)
         keys.erase(id);
     }
 }
+
+bool TCPIP::KeyManager::keyExists(unsigned int id)
+{
+    return keys.find(id) != keys.end();
+}

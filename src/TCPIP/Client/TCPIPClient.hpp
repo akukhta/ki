@@ -26,6 +26,8 @@ namespace TCPIP
         /// Can be used, for example, to encrypt the data before sending
         /// \param buffer reference to a buffer is going to be sent
         virtual void prepareBufferToSend(TCPIP::Buffer &buffer) {};
+        std::unique_ptr<IClientCommunication> clientCommunication;
+
     private:
 
         void sendFileChunk(TCPIP::Buffer &buffer);
@@ -33,7 +35,6 @@ namespace TCPIP
         TCPIP::ServerResponse receiveResponse();
 
         /// underlying implementation of communication protocol
-        std::unique_ptr<IClientCommunication> clientCommunication;
         std::shared_ptr<::FixedBufferQueue<TCPIPTag>> queue;
         std::function<void(size_t)> sendFinishedCallback;
     };
