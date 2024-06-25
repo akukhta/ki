@@ -31,6 +31,8 @@ void TCPIP::TCPIPClient::sendFileChunk(TCPIP::Buffer &buffer)
 void TCPIP::TCPIPClient::sendFileInfo(std::string const& fileName)
 {
     auto buffer = TCPIP::RequestCreator::createFileInfoRequest(fileName);
+    prepareBufferToSend(buffer.data(), buffer.size());
+
     clientCommunication->send(buffer.data(), buffer.size());
 
     if (receiveResponse() != ServerResponse::REQUEST_RECEIVED)

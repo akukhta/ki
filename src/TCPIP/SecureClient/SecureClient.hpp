@@ -15,13 +15,18 @@ namespace TCPIP {
 
     protected:
         void prepareBufferToSend(Buffer &buffer) override;
-        void receiveKey();
+        void receiveRsaPublicKey();
+        void sendKeyPair();
 
         std::vector<unsigned char> receive(size_t len);
 
     private:
+        std::vector<char> createKeyPairRequest();
+
         std::unique_ptr<IEncryption> encryption;
         std::unique_ptr<Chacha20Key> key;
         std::unique_ptr<RSAKey> rsaPublicKey;
+        std::unique_ptr<IEncryption> keyEncryption;
+
     };
 }

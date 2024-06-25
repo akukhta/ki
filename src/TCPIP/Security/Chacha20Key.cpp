@@ -28,14 +28,14 @@ TCPIP::Chacha20Key TCPIP::Chacha20Key::loadKeyFromMemory(const char *key, size_t
     return cKey;
 }
 
-CryptoPP::SecByteBlock &TCPIP::Chacha20Key::getKey()
+std::span<char> TCPIP::Chacha20Key::getKey()
 {
-    return key;
+    return {reinterpret_cast<char*>(key.BytePtr()), key.size()};
 }
 
-CryptoPP::SecByteBlock &TCPIP::Chacha20Key::getIV()
+std::span<char> TCPIP::Chacha20Key::getIV()
 {
-    return iv;
+    return {reinterpret_cast<char*>(iv.BytePtr()), iv.size()};
 }
 
 size_t TCPIP::Chacha20Key::getKeySize() const noexcept

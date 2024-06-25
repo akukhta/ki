@@ -26,6 +26,8 @@ namespace TCPIP
         /// Can be used, for example, to encrypt the data before sending
         /// \param buffer reference to a buffer is going to be sent
         virtual void prepareBufferToSend(TCPIP::Buffer &buffer) {};
+        virtual void prepareBufferToSend(unsigned char *data, size_t size) {};
+
         std::unique_ptr<IClientCommunication> clientCommunication;
 
     private:

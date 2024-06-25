@@ -1,10 +1,10 @@
 #include "SecureTCPIPServer.hpp"
 
 TCPIP::SecureTCPIPServer::SecureTCPIPServer(std::shared_ptr<FixedBufferQueue> queue,
-    std::unique_ptr<IRequestHandler> requestHandler, std::shared_ptr<RSAEncryption> rsaEncryption, std::shared_ptr<FileLogger> logger)
-        : TCPIPServer(queue, std::move(requestHandler), logger), rsaEncryption(std::move(rsaEncryption)), key(RSAKey::generateKey())
+    std::unique_ptr<IRequestHandler> requestHandler, std::shared_ptr<RSAEncryption> rsaEncryption, std::shared_ptr<RSAKey> serverRSAKey, std::shared_ptr<FileLogger> logger)
+        : TCPIPServer(queue, std::move(requestHandler), logger), rsaEncryption(std::move(rsaEncryption)), serverRSAKey(std::move(serverRSAKey))
 {
-    publicKeyBin = key.getPublicKeyBin();
+    publicKeyBin = this->serverRSAKey->getPublicKeyBin();
 }
 
 void TCPIP::SecureTCPIPServer::connectClient()

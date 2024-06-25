@@ -13,7 +13,7 @@ namespace TCPIP
     class SecureTCPIPServer : public TCPIPServer
     {
     public:
-        SecureTCPIPServer(std::shared_ptr<FixedBufferQueue> queue, std::unique_ptr<IRequestHandler> requestHandler, std::shared_ptr<RSAEncryption> rsaEncryption, std::shared_ptr<FileLogger> logger = nullptr);
+        SecureTCPIPServer(std::shared_ptr<FixedBufferQueue> queue, std::unique_ptr<IRequestHandler> requestHandler, std::shared_ptr<RSAEncryption> rsaEncryption, std::shared_ptr<RSAKey> serverRSAKey, std::shared_ptr<FileLogger> logger = nullptr);
 
     protected:
         void connectClient() override;
@@ -21,7 +21,7 @@ namespace TCPIP
     private:
         void sendPublicKey(int socket);
 
-        RSAKey key;
+        std::shared_ptr<RSAKey> serverRSAKey;
         std::vector<char> publicKeyBin;
         std::shared_ptr<RSAEncryption> rsaEncryption;
     };

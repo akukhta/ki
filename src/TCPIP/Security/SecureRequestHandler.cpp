@@ -1,11 +1,12 @@
 #include "SecureRequestHandler.hpp"
 
 TCPIP::SecureRequestHandler::SecureRequestHandler(std::shared_ptr<TCPIP::FixedBufferQueue> queue,
-    std::shared_ptr<MultiFileWriter> writer, std::unique_ptr<IEncryption> encryption, std::shared_ptr<IKeyManager> keyManager,
-    std::shared_ptr<FileLogger> logger)
-    : RequestHandler(std::move(queue), std::move(writer), std::move(logger)), encryption(std::move(encryption)), keyManager(std::move(keyManager))
+    std::shared_ptr<MultiFileWriter> writer, std::unique_ptr<IEncryption> encryption, std::shared_ptr<IEncryption> rsaEncryption, std::shared_ptr<IKeyManager> keyManager,
+    std::shared_ptr<RSAKey> serverRSAKey, std::shared_ptr<FileLogger> logger)
+    : RequestHandler(std::move(queue), std::move(writer), std::move(logger)),
+        encryption(std::move(encryption)), rsaEncryption(std::move(rsaEncryption)),
+        keyManager(std::move(keyManager)), serverRSAKey(serverRSAKey)
 {
-
 }
 
 void TCPIP::SecureRequestHandler::handle(std::stop_token token)
@@ -41,9 +42,17 @@ void TCPIP::SecureRequestHandler::handleEncryption(TCPIP::SecureRequestHandler::
     {
         case EncryptionState::DECRYPT:
         {
-            auto& encryptionKey = keyManager->getKey(getRequest(request)->buffer->owningClientID);
-            encryption->decrypt(*getRequest(request)->buffer.get(), encryptionKey);
-            return;
+            if (keyManager->keyExists(getRequest(request)->buffer->owningClientID))
+            {
+                TCPIP::AbstractKey &encryptionKey = keyManager->getKey(getRequest(request)->buffer->owningClientID);
+                encryption->decrypt(*getRequest(request)->buffer.get(), encryptionKey);
+            }
+            else
+            {
+                rsaEncryption->decrypt(*getRequest(request)->buffer.get(), *serverRSAKey.get());
+            }
+
+            break;
         }
 
         default:

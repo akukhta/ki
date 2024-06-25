@@ -11,5 +11,7 @@ namespace TCPIP
         virtual ~IEncryption() = default;
         virtual void encrypt(Buffer &buffer, AbstractKey &key) = 0;
         virtual void decrypt(Buffer &buffer, AbstractKey &key) = 0;
+        virtual void encrypt(char* data, size_t len, AbstractKey& key) = 0;
+        virtual void decrypt(char* data, size_t len, AbstractKey& key) = 0;
     };
 }

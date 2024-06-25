@@ -1,6 +1,7 @@
 #pragma once
 #include "AbstractKey.hpp"
 #include "cryptopp/secblock.h"
+#include <span>
 
 namespace TCPIP
 {
@@ -14,13 +15,13 @@ namespace TCPIP
         static Chacha20Key generateRandomKey();
         static Chacha20Key loadKeyFromMemory(char const* key, size_t keyLength, char const* iv, size_t ivLength);
 
-        CryptoPP::SecByteBlock& getKey();
-        CryptoPP::SecByteBlock& getIV();
+        std::span<char> getKey();
+        std::span<char> getIV();
 
         size_t getKeySize() const noexcept;
         size_t getIVSize() const noexcept;
     private:
-        CryptoPP::SecByteBlock key;
-        CryptoPP::SecByteBlock iv;
+        CryptoPP::SecByteBlock key{32};
+        CryptoPP::SecByteBlock iv{8};
     };
 }

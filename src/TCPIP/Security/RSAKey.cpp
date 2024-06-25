@@ -25,31 +25,14 @@ TCPIP::RSAKey::~RSAKey()
 
 TCPIP::RSAKey TCPIP::RSAKey::loadKeyFromMem(unsigned char *data, size_t size, TCPIP::RSAKey::KeyType type)
 {
-    static std::string_view pemPrivateKeyHeaderBeg = "-----BEGIN RSA PRIVATE KEY-----";
-    static std::string_view pemPrivateKeyHeaderEnd = "-----END RSA PRIVATE KEY-----";
-    static std::string_view pemPublicKeyHeaderBeg = "-----BEGIN RSA PUBLIC KEY-----";
-    static std::string_view pemPublicKeyHeaderEnd = "-----END RSA PUBLIC KEY-----";
-
     if (type == KeyType::PAIR)
     {
         throw std::runtime_error("Loading a pair of RSA keys from memory is not supported");
     }
 
-    std::vector<unsigned char> buffer;
-    buffer.reserve(KEYBITS + std::max(pemPrivateKeyHeaderBeg.size(), pemPublicKeyHeaderBeg.size())
-        + std::max(pemPrivateKeyHeaderEnd.size(), pemPublicKeyHeaderEnd.size()));
-
-    auto& headerBegin = type == KeyType::PRIVATE ? pemPrivateKeyHeaderBeg : pemPublicKeyHeaderBeg;
-    std::copy(headerBegin.begin(), headerBegin.end(), std::back_inserter(buffer));
-
-    std::copy(data, data + size, std::back_inserter(buffer));
-
-    auto& headerEnd = type == KeyType::PRIVATE ? pemPrivateKeyHeaderEnd : pemPublicKeyHeaderEnd;
-    std::copy(headerEnd.begin(), headerEnd.end(), std::back_inserter(buffer));
-
     RSAKeyPtr rsaKey = nullptr;
 
-    BIO* bufio = BIO_new_mem_buf(buffer.data(), buffer.size());
+    BIO* bufio = BIO_new_mem_buf(data, size);
 
     if (type == KeyType::PUBLIC)
     {
@@ -83,15 +66,22 @@ TCPIP::RSAKey::RSAKeyPtr TCPIP::RSAKey::getInternalKey()
 
 std::vector<char> TCPIP::RSAKey::getPublicKeyBin()
 {
-    BIO* buffer = BIO_new(BIO_s_mem());
-    PEM_write_bio_RSA_PUBKEY(buffer, rsaKeyInternal);
+    BIO* mem = BIO_new(BIO_s_mem());
+    if (!mem) {
+        throw std::runtime_error("Failed to create BIO");
+    }
 
-    char* ptrToBuf;
-    BIO_get_mem_ptr(buffer, ptrToBuf);
-    std::vector<char> res(ptrToBuf, ptrToBuf + BIO_pending(buffer));
+    if (!PEM_write_bio_RSA_PUBKEY(mem, rsaKeyInternal)) {
+        BIO_free(mem);
+        throw std::runtime_error("Failed to write RSA public key to BIO");
+    }
 
-    BIO_free(buffer);
-    return res;
+    BUF_MEM* mem_ptr;
+    BIO_get_mem_ptr(mem, &mem_ptr);
+    std::vector<char> buffer(mem_ptr->data, mem_ptr->data + mem_ptr->length);
+
+    BIO_free(mem);
+    return buffer;
 }
 
 TCPIP::RSAKey::RSAKey(TCPIP::RSAKey &&other)

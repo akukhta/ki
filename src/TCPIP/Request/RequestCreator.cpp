@@ -23,3 +23,16 @@ TCPIP::Buffer &TCPIP::RequestCreator::createFileChunkRequest(TCPIP::Buffer &buff
     Serializer<SerializerType::NoBuffer>::overwrite(requestData, sizeof(RequestHeader::type), static_cast<short>(buffer.bytesUsed));
     return buffer;
 }
+
+std::vector<unsigned char> TCPIP::RequestCreator::createKeyPairRequest(std::span<char> key, std::span<char> iv)
+{
+    Serializer<SerializerType::InternalBuffer> serializer;
+
+    serializer.serialize(std::to_underlying(TCPIP::RequestType::KEY_EXCHANGE));
+    serializer.serialize(short{0});
+    serializer.serialize(key);
+    serializer.serialize(iv);
+
+    serializer.overwrite(sizeof(RequestType), 2 * sizeof(size_t) + key.size() + iv.size());
+    return serializer.getBuffer();
+}
