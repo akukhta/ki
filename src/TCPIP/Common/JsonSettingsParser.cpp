@@ -42,3 +42,15 @@ bool TCPIP::JsonSettingsParser::loadIndicatorEnabled() const
 {
     return tree.get<bool>("settings.showIndicator");
 }
+
+std::vector<char> TCPIP::JsonSettingsParser::getEncryptionIV() const
+{
+    auto asStr = tree.get<std::string>("settings.encryption.IV");
+    return std::vector<char>(asStr.begin(), asStr.end());
+}
+
+std::vector<char> TCPIP::JsonSettingsParser::getEncryptionKey() const
+{
+    auto asStr = tree.get<std::string>("settings.encryption.key");
+    return std::vector<char>(asStr.begin(), asStr.end());
+}

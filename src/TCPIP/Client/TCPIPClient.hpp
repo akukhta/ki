@@ -27,6 +27,10 @@ namespace TCPIP
         void sendFileInfo(std::string const& fileName);
         TCPIP::ServerResponse receiveResponse();
 
+        /// Hooks/template method functions
+        virtual void dataReceived(unsigned char* data, size_t len);
+        virtual void dataProcessBeforeSend(unsigned char* data, size_t len);
+
         /// underlying implementation of communication protocol
         std::unique_ptr<IClientCommunication> clientCommunication;
         std::shared_ptr<::FixedBufferQueue<TCPIPTag>> queue;

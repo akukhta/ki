@@ -146,6 +146,7 @@ void TCPIP::TCPIPServer::receiveData(int clientSocket)
     }
 
     buffer->bytesUsed += bytesRead;
+    dataReceived(buffer->data, buffer->bytesUsed);
     processReceivedData(clientSocket);
 }
 
@@ -257,12 +258,13 @@ void TCPIP::TCPIPServer::handleScheduledClients()
 
 void TCPIP::TCPIPServer::sendResponse(TCPIP::ServerResponse response, int socket)
 {
+    dataProcessBeforeSend(reinterpret_cast<unsigned char*>(&response), sizeof(response));
     ::send(socket, &response, sizeof(response), MSG_NOSIGNAL);
 }
 
 void TCPIP::TCPIPServer::fileWriteFinished(int clientSocket)
 {
-    sendResponse(ServerResponse::FILE_RECEIVED, clientSocket);
+    this->sendResponse(ServerResponse::FILE_RECEIVED, clientSocket);
 }
 
 TCPIP::TCPIPServer::~TCPIPServer()
@@ -285,3 +287,8 @@ TCPIP::TCPIPServer::~TCPIPServer()
         logger->log("Server shutdown");
     }
 }
+
+void TCPIP::TCPIPServer::dataReceived(unsigned char *data, size_t len) {}
+
+void TCPIP::TCPIPServer::dataProcessBeforeSend(unsigned char *data, size_t len) {}
+

@@ -69,6 +69,15 @@ add_executable(${PROJECT_NAME}
 		src/TCPIP/Client/TCPClientCommunication.hpp
 		src/common/FileLogger.hpp
 		src/common/CLILoadIndicator.hpp
+		src/TCPIP/Security/IEncryption.hpp
+		src/TCPIP/Security/Chacha20Encryption.cpp
+		src/TCPIP/Security/Chacha20Encryption.hpp
+		src/TCPIP/Security/SecureTCPIPServer.cpp
+		src/TCPIP/Security/SecureTCPIPServer.hpp
+		src/TCPIP/Security/SecureTCPIPClient.cpp
+		src/TCPIP/Security/SecureTCPIPClient.hpp
+		src/TCPIP/Security/ClientEncryptionManager.cpp
+		src/TCPIP/Security/ClientEncryptionManager.hpp
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
@@ -77,4 +86,7 @@ elseif(CMAKE_BUILD_TYPE MATCHES Release)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC DEBUG=0)
 endif()
 
-target_link_libraries(${PROJECT_NAME} Boost::program_options stdc++fs fmt::fmt)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/external/cryptopp/include)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE Boost::program_options stdc++fs fmt::fmt)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/external/cryptopp/lib/libcryptopp.a)

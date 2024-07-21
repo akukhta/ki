@@ -10,7 +10,12 @@
 //  "serverPort": 0000,
 //  "storageDirectory": "~/storage",
 //  "showIndicator" : true,
-//  "loadIndicatorRefreshInMs" : 50
+//  "loadIndicatorRefreshInMs" : 50,
+//  "encryption":
+//  {
+//      "key" : "someKey",
+//      "IV" : "someIV"
+//  }
 //  }
 //}
 
@@ -31,6 +36,9 @@ namespace TCPIP {
         [[nodiscard]] int loadInidicatorRefreshRate() const;
 
         [[nodiscard]] bool loadIndicatorEnabled() const;
+
+        [[nodiscard]] std::vector<char> getEncryptionKey() const;
+        [[nodiscard]] std::vector<char> getEncryptionIV() const;
     private:
         JsonSettingsParser();
 

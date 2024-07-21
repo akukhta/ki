@@ -31,8 +31,13 @@ public:
     /// Opens the requested file for reading
     void open() override
     {
+        bool volatile exists = std::filesystem::exists(this->fileName);
+
         fileSize = std::filesystem::file_size(this->fileName);
         fileDesc = std::fopen(fileName.c_str(), "rb");
+
+        auto volatile err = errno;
+
         currentOffset = 0;
         readFinished.store(false);
 

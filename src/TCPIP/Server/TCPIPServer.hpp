@@ -59,7 +59,11 @@ namespace TCPIP
         void addSocketToEpoll(int socket);
         void handleEpollEvents();
         void handleScheduledClients();
-        static void sendResponse(TCPIP::ServerResponse response, int socket);
+        void sendResponse(TCPIP::ServerResponse response, int socket);
+
+        /// Hook/template method functions
+        virtual void dataReceived(unsigned char* data, size_t len);
+        virtual void dataProcessBeforeSend(unsigned char* data, size_t len);
 
         /// Non blocking function to try to obtain a buffer for client's request
         bool tryGetClientBuffer(int clientSocket);
