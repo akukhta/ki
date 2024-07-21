@@ -75,11 +75,9 @@ add_executable(${PROJECT_NAME}
 		src/TCPIP/Security/RSAKey.cpp
 		src/TCPIP/Security/RSAKey.hpp
 		src/TCPIP/Security/IEncryption.hpp
-		src/TCPIP/Security/IKeyManager.hpp
-		src/TCPIP/Security/AbstractKey.hpp
+        src/TCPIP/Security/AbstractKey.hpp
 		src/TCPIP/Security/RSAEncryption.cpp
 		src/TCPIP/Security/RSAEncryption.hpp
-		src/TCPIP/Security/KeyManager.cpp
 		src/TCPIP/Security/KeyManager.hpp
 		src/TCPIP/Security/SecureRequestHandler.cpp
 		src/TCPIP/Security/SecureRequestHandler.hpp
@@ -89,6 +87,8 @@ add_executable(${PROJECT_NAME}
 		src/TCPIP/Security/ChaCha20Encryption.hpp
 		src/TCPIP/SecureServer/SecureTCPIPServer.cpp
 		src/TCPIP/SecureServer/SecureTCPIPServer.hpp
+		src/TCPIP/Common/EncryptedBuffer.hpp
+		src/TCPIP/Request/SecureClientRequest.hpp
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)

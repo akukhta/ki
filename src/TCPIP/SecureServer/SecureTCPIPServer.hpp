@@ -3,6 +3,8 @@
 #include "../Server/TCPIPServer.hpp"
 #include "../Security/RSAKey.hpp"
 #include "../Security/RSAEncryption.hpp"
+#include "../Security/Chacha20Key.hpp"
+#include "../Security/KeyManager.hpp"
 
 namespace TCPIP
 {
@@ -13,10 +15,12 @@ namespace TCPIP
     class SecureTCPIPServer : public TCPIPServer
     {
     public:
-        SecureTCPIPServer(std::shared_ptr<FixedBufferQueue> queue, std::unique_ptr<IRequestHandler> requestHandler, std::shared_ptr<RSAEncryption> rsaEncryption, std::shared_ptr<RSAKey> serverRSAKey, std::shared_ptr<FileLogger> logger = nullptr);
+        SecureTCPIPServer(std::shared_ptr<FixedBufferQueue> queue, std::unique_ptr<IRequestHandler> requestHandler, std::shared_ptr<IEncryption> chachaEncryption, std::shared_ptr<RSAEncryption> rsaEncryption, std::shared_ptr<RSAKey> serverRSAKey, std::shared_ptr<KeyManager<Chacha20Key>> keyManager, std::shared_ptr<FileLogger> logger = nullptr);
 
     protected:
         void connectClient() override;
+
+        void dataReceived(std::shared_ptr<TCPIP::ClientRequest> &request) override;
 
     private:
         void sendPublicKey(int socket);
@@ -24,5 +28,7 @@ namespace TCPIP
         std::shared_ptr<RSAKey> serverRSAKey;
         std::vector<char> publicKeyBin;
         std::shared_ptr<RSAEncryption> rsaEncryption;
+        std::shared_ptr<IEncryption> chacha20Encryption;
+        std::shared_ptr<KeyManager<Chacha20Key>> keyManager;
     };
 }

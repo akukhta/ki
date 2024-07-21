@@ -1,18 +1,39 @@
 #pragma once
 #include <unordered_map>
-#include "IKeyManager.hpp"
 
 namespace TCPIP
 {
-    class KeyManager : public IKeyManager
+    template <typename KeyType>
+    class KeyManager
     {
     public:
-        void addKey(unsigned int id, AbstractKey key) override;
-        AbstractKey& getKey(unsigned int id) override;
-        void eraseKey(unsigned int id) override;
-        bool keyExists(unsigned int id) override;
+        void addKey(unsigned int id, KeyType key)
+        {
+            keys.insert({id, std::move(key)});
+        }
+
+        KeyType& getKey(unsigned int id)
+        {
+            if (keys.find(id) != keys.end())
+            {
+                return keys[id];
+            }
+        }
+
+        void eraseKey(unsigned int id)
+        {
+            if (keys.find(id) != keys.end())
+            {
+                keys.erase(id);
+            }
+        }
+
+        bool keyExists(unsigned int id)
+        {
+            return keys.find(id) == keys.end();
+        }
 
     private:
-        std::unordered_map<unsigned int, AbstractKey> keys;
+        std::unordered_map<unsigned int, KeyType> keys;
     };
 }

@@ -138,6 +138,8 @@ void TCPIP::TCPIPServer::receiveData(int clientSocket)
     bytesRead = recv(clientSocket, buffer->appendBufferData(), BUFFER_SIZE - buffer->bytesUsed,
                      MSG_NOSIGNAL);
 
+    dataReceived(clients[clientSocket]->currentRequest);
+
     if (!bytesRead && errno != EWOULDBLOCK && errno != EAGAIN)
     {
         clientDisconnected(clientSocket);

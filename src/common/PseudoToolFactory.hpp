@@ -168,14 +168,16 @@ public:
                 {
                     auto fileLogger = std::make_shared<FileLogger>();
                     auto queue = std::make_shared<TCPIP::FixedBufferQueue>();
+
                     writer = std::make_shared<TCPIP::MultiFileWriter>(queue, fileLogger);
 
-                    auto keyManager = std::make_shared<TCPIP::KeyManager>();
+                    auto chacha20keyManager = std::make_shared<TCPIP::KeyManager<TCPIP::Chacha20Key>>();
                     auto serverRSAKey = std::make_shared<TCPIP::RSAKey>(TCPIP::RSAKey::generateKey());
                     auto rsaEncryption = std::make_shared<TCPIP::RSAEncryption>();
-                    auto secureRequestHandler = std::make_unique<TCPIP::SecureRequestHandler>(queue, writer, std::make_unique<TCPIP::ChaCha20Encryption>(), rsaEncryption, std::move(keyManager), serverRSAKey, fileLogger);
-                    server = std::make_unique<TCPIP::SecureTCPIPServer>(queue, std::move(secureRequestHandler), std::make_shared<TCPIP::RSAEncryption>(), serverRSAKey, fileLogger);
+                    auto chachaEncryption = std::shared_ptr<TCPIP::ChaCha20Encryption>();
+                    auto secureRequestHandler = std::make_unique<TCPIP::SecureRequestHandler>(queue, writer, chachaEncryption, rsaEncryption, chacha20keyManager, serverRSAKey, fileLogger);
 
+                    server = std::make_unique<TCPIP::SecureTCPIPServer>(queue, std::move(secureRequestHandler), chachaEncryption, std::make_shared<TCPIP::RSAEncryption>(), serverRSAKey, chacha20keyManager, fileLogger);
                     tool = std::make_unique<TCPIPTool>(writer, queue, std::move(server), settingsParser->loadIndicatorEnabled(), settingsParser->loadInidicatorRefreshRate());
                     writer->setFileWriteFinished(std::bind(&TCPIP::TCPIPServer::fileWriteFinished, server.get(), std::placeholders::_1));
                 }
@@ -185,6 +187,7 @@ public:
                     auto files = parser.getFilesToSend();
                     auto queue = std::make_shared<FixedBufferQueue<TCPIPTag>>();
                     auto reader = std::make_unique<TCPIP::BufferedReader>(queue);
+
                     client = std::make_unique<TCPIP::SecureTCPIPClient>(std::move(tcpCommunication), queue, std::make_unique<TCPIP::ChaCha20Encryption>(), std::make_unique<TCPIP::Chacha20Key>(TCPIP::Chacha20Key::generateRandomKey()));
                     tool = std::make_unique<TCPIPTool>(std::move(reader), queue, std::move(client), std::move(files));
                 }

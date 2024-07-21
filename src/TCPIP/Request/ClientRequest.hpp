@@ -17,7 +17,7 @@ namespace TCPIP {
         explicit ClientRequest(std::shared_ptr<class ConnectedClient> ownerClient);
 
         /// Parse request header
-        void parseHeader();
+        virtual void parseHeader();
 
         /// Function to update the request state
         /// Since the request may be huge and may not be received by one read from socket operation
@@ -36,7 +36,7 @@ namespace TCPIP {
         friend class SecureRequestHandler;
         friend class ConnectedClient;
         friend class TCPIPServer;
-
+        friend class SecureTCPIPServer;
 
         /// Request's buffer
         std::shared_ptr<TCPIP::Buffer> buffer;

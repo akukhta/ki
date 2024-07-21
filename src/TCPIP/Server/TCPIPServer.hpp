@@ -34,6 +34,7 @@ namespace TCPIP
         /// New client connects to the server
         virtual void connectClient();
         int lastConnectedClient;
+        virtual void dataReceived(std::shared_ptr<TCPIP::ClientRequest> &request) {};
 
     private:
         void runFunction(std::stop_token stopToken);

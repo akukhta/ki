@@ -14,6 +14,7 @@
 #include "../TCPIP/Common/Buffer.hpp"
 #include "../common/Logger.hpp"
 #include <format>
+#include "../TCPIP/Common/EncryptedBuffer.hpp"
 
 struct NonIPCTag
 {
@@ -42,6 +43,18 @@ struct TCPIPTag
     using MutexType = std::mutex;
     using ConditionType = std::condition_variable;
     using BufferType = TCPIP::Buffer;
+    using RAIILockType = std::unique_lock<MutexType>;
+    using DequeType = std::deque<BufferType>;
+    using QueueType = std::shared_ptr<FixedBufferQueue<TCPIPTag>>;
+
+    std::vector<std::vector<unsigned char>> buffers = std::vector<std::vector<unsigned char>>{TCP_BUFFERS_IN_QUEUE, std::vector<unsigned char>(BUFFER_SIZE)};
+};
+
+struct SecureTCPIPTag
+{
+    using MutexType = std::mutex;
+    using ConditionType = std::condition_variable;
+    using BufferType = TCPIP::EncryptedBuffer;
     using RAIILockType = std::unique_lock<MutexType>;
     using DequeType = std::deque<BufferType>;
     using QueueType = std::shared_ptr<FixedBufferQueue<TCPIPTag>>;

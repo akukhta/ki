@@ -13,7 +13,7 @@ TCPIP::Chacha20Key TCPIP::Chacha20Key::generateRandomKey()
     return key;
 }
 
-TCPIP::Chacha20Key::Chacha20Key(TCPIP::Chacha20Key &&other)
+TCPIP::Chacha20Key::Chacha20Key(TCPIP::Chacha20Key &&other) noexcept
     : key(std::move(other.key)), iv(std::move(other.iv))
 {
 }

@@ -1,7 +1,20 @@
 #include "SecureRequestHandler.hpp"
+#include "../Security/Chacha20Key.hpp"
+
+std::unordered_map<TCPIP::RequestType, std::function<void(TCPIP::SecureRequestHandler&, std::shared_ptr<TCPIP::ClientRequest>&)>> TCPIP::SecureRequestHandler::handlerFunctions =
+{
+        {TCPIP::RequestType::FILE_INFO_RECEIVED,
+                [](SecureRequestHandler& handler, std::shared_ptr<ClientRequest> &request){handler.fileInfoReceived(request);}},
+
+        {TCPIP::RequestType::FILE_CHUNK_RECEIVED,
+                [](SecureRequestHandler& handler, std::shared_ptr<ClientRequest> &request){handler.fileChunkReceived(request);}},
+
+        {TCPIP::RequestType::KEY_EXCHANGE,
+                [](SecureRequestHandler& handler, std::shared_ptr<ClientRequest> &request){handler.keyExchange(request);}}
+};
 
 TCPIP::SecureRequestHandler::SecureRequestHandler(std::shared_ptr<TCPIP::FixedBufferQueue> queue,
-    std::shared_ptr<MultiFileWriter> writer, std::unique_ptr<IEncryption> encryption, std::shared_ptr<IEncryption> rsaEncryption, std::shared_ptr<IKeyManager> keyManager,
+    std::shared_ptr<MultiFileWriter> writer, std::shared_ptr<IEncryption> encryption, std::shared_ptr<IEncryption> rsaEncryption, std::shared_ptr<KeyManager<Chacha20Key>> keyManager,
     std::shared_ptr<RSAKey> serverRSAKey, std::shared_ptr<FileLogger> logger)
     : RequestHandler(std::move(queue), std::move(writer), std::move(logger)),
         encryption(std::move(encryption)), rsaEncryption(std::move(rsaEncryption)),
@@ -77,4 +90,12 @@ void TCPIP::SecureRequestHandler::handleRequests(TCPIP::SecureRequestHandler::En
             logger->log("Incorrect handler");
         }
     }
+}
+
+void TCPIP::SecureRequestHandler::keyExchange(std::shared_ptr<ClientRequest> &request)
+{
+    auto &buffer = request->buffer;
+
+    Chacha20Key key = Chacha20Key::loadKeyFromMemory(reinterpret_cast<char*>(buffer->data), 32, reinterpret_cast<char*>(buffer->data + 32), 8);
+    keyManager->addKey(request->buffer->owningClientID, std::move(key));
 }

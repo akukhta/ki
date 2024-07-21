@@ -9,7 +9,7 @@ namespace TCPIP
     {
     public:
         Chacha20Key() = default;
-        Chacha20Key(Chacha20Key&& other);
+        Chacha20Key(Chacha20Key&& other) noexcept;
         ~Chacha20Key() = default;
 
         static Chacha20Key generateRandomKey();
