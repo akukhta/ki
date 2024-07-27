@@ -38,7 +38,7 @@ public:
 
         std::vector<unsigned char> content;
 
-        for (size_t i = 0; i < fileSize; i++)
+        for (size_t i = 0; i < fileSize; ++i)
         {
             unsigned char val = rand();
             

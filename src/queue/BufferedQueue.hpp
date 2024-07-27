@@ -82,7 +82,7 @@ public:
             // Get shared memory char allocator
             auto rawAllocator = shMemManager->getRawAllocator();
 
-            for (size_t i = 0; i < BUFFERS_IN_QUEUE; i++)
+            for (size_t i = 0; i < BUFFERS_IN_QUEUE; ++i)
             {
                 // Allocate buffer within shared memory and put it to the reader buffers
                 auto allocated = rawAllocator->allocate(BUFFER_SIZE);
