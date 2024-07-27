@@ -146,6 +146,7 @@ void TCPIP::TCPIPServer::receiveData(int clientSocket)
     }
 
     buffer->bytesUsed += bytesRead;
+    dataReceived(buffer->data, buffer->bytesUsed);
     processReceivedData(clientSocket);
 }
 
@@ -257,6 +258,7 @@ void TCPIP::TCPIPServer::handleScheduledClients()
 
 void TCPIP::TCPIPServer::sendResponse(TCPIP::ServerResponse response, int socket)
 {
+    dataReadyToSend(reinterpret_cast<unsigned char*>(&response), sizeof(response));
     ::send(socket, &response, sizeof(response), MSG_NOSIGNAL);
 }
 

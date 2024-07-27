@@ -18,6 +18,8 @@ TCPIP::TCPIPClient::TCPIPClient(std::unique_ptr<IClientCommunication> clientComm
 void TCPIP::TCPIPClient::sendFileChunk(TCPIP::Buffer &buffer)
 {
     auto requestData = RequestCreator::createFileChunkRequest(buffer).getData();
+    dataReadyToSend(requestData, buffer.bytesUsed + RequestHeader::noAligmentSize());
+
     auto bytesSent = clientCommunication->send(requestData, buffer.bytesUsed + RequestHeader::noAligmentSize());
 
     if (receiveResponse() == ServerResponse::CRITICAL_ERROR)
@@ -31,6 +33,8 @@ void TCPIP::TCPIPClient::sendFileChunk(TCPIP::Buffer &buffer)
 void TCPIP::TCPIPClient::sendFileInfo(std::string const& fileName)
 {
     auto buffer = TCPIP::RequestCreator::createFileInfoRequest(fileName);
+    dataReadyToSend(buffer.data(), buffer.size());
+
     clientCommunication->send(buffer.data(), buffer.size());
 
     if (receiveResponse() != ServerResponse::REQUEST_RECEIVED)
@@ -41,6 +45,7 @@ void TCPIP::TCPIPClient::sendFileInfo(std::string const& fileName)
 
 TCPIP::ServerResponse TCPIP::TCPIPClient::receiveResponse() {
     auto buffer = clientCommunication->receive(sizeof(ServerResponse));
+    dataReceived(buffer.data(), buffer.size());
 
     if (buffer.size() == sizeof(ServerResponse))
     {

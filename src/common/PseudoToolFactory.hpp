@@ -23,6 +23,8 @@
 #include "../TCPIP/Request/RequestHandler.hpp"
 #include "../TCPIP/Common/JsonSettingsParser.hpp"
 #include "../TCPIP/Client/TCPClientCommunication.hpp"
+#include "../TCPIP/PseudoSecurity/SecureTCPIPClient.hpp"
+#include "../TCPIP/PseudoSecurity/SecureTCPIPServer.hpp"
 
 /// Factory that creates proper copy tool based on passed arguments
 class ToolFactory
@@ -133,8 +135,8 @@ public:
                     writer = std::make_shared<TCPIP::MultiFileWriter>(queue, fileLogger);
                     auto requestHandler = std::make_unique<TCPIP::RequestHandler>(queue, writer, fileLogger);
                     server = std::make_unique<TCPIP::TCPIPServer>(queue, std::move(requestHandler), fileLogger);
-                    tool = std::make_unique<TCPIPTool>(writer, queue, std::move(server), settingsParser->loadIndicatorEnabled(), settingsParser->loadInidicatorRefreshRate());
                     writer->setFileWriteFinished(std::bind(&TCPIP::TCPIPServer::fileWriteFinished, server.get(), std::placeholders::_1));
+                    tool = std::make_unique<TCPIPTool>(writer, queue, std::move(server), settingsParser->loadIndicatorEnabled(), settingsParser->loadInidicatorRefreshRate());
                 }
                 else
                 {
@@ -149,6 +151,38 @@ public:
                 break;
             }
 
+            case ToolType::SECURETCPIP:
+            {
+                std::shared_ptr<TCPIP::MultiFileWriter> writer = nullptr;
+
+                std::unique_ptr<TCPIP::TCPIPServer> server = nullptr;
+                std::unique_ptr<TCPIP::IClient> client = nullptr;
+
+                auto settingsParser = TCPIP::JsonSettingsParser::getInstance();
+                settingsParser->setSettingsPath(std::move(parser.getSettingsPath()));
+
+                if (parser.getIsServer())
+                {
+                    auto fileLogger = std::make_shared<FileLogger>();
+                    auto queue = std::make_shared<TCPIP::FixedBufferQueue>();
+                    writer = std::make_shared<TCPIP::MultiFileWriter>(queue, fileLogger);
+                    auto requestHandler = std::make_unique<TCPIP::RequestHandler>(queue, writer, fileLogger);
+                    server = std::make_unique<TCPIP::SecureTCPIPServer>(queue, std::move(requestHandler), fileLogger);
+                    writer->setFileWriteFinished(std::bind(&TCPIP::TCPIPServer::fileWriteFinished, server.get(), std::placeholders::_1));
+                    tool = std::make_unique<TCPIPTool>(writer, queue, std::move(server), settingsParser->loadIndicatorEnabled(), settingsParser->loadInidicatorRefreshRate());
+                }
+                else
+                {
+                    auto tcpCommunication = std::make_unique<TCPIP::TCPClientCommunication>(std::move(settingsParser->getServerIP()), settingsParser->getServerPort());
+                    auto files = parser.getFilesToSend();
+                    auto queue = std::make_shared<FixedBufferQueue<TCPIPTag>>();
+                    auto reader = std::make_unique<TCPIP::BufferedReader>(queue);
+                    client = std::make_unique<TCPIP::SecureTCPIPClient>(std::move(tcpCommunication), queue);
+                    tool = std::make_unique<TCPIPTool>(std::move(reader), queue, std::move(client), std::move(files));
+                }
+
+                break;
+            }
             default:
             {
                 std::cerr << "Unknown tool bufferType" << std::endl;

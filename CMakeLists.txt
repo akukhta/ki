@@ -69,6 +69,11 @@ add_executable(${PROJECT_NAME}
 		src/TCPIP/Client/TCPClientCommunication.hpp
 		src/common/FileLogger.hpp
 		src/common/CLILoadIndicator.hpp
+		src/TCPIP/PseudoSecurity/SecureTCPIPServer.cpp
+		src/TCPIP/PseudoSecurity/SecureTCPIPServer.hpp
+		src/TCPIP/PseudoSecurity/SecureTCPIPClient.cpp
+		src/TCPIP/PseudoSecurity/SecureTCPIPClient.hpp
+		src/TCPIP/PseudoSecurity/XorEncryption.hpp
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)

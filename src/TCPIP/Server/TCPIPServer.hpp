@@ -59,10 +59,14 @@ namespace TCPIP
         void addSocketToEpoll(int socket);
         void handleEpollEvents();
         void handleScheduledClients();
-        static void sendResponse(TCPIP::ServerResponse response, int socket);
+        void sendResponse(TCPIP::ServerResponse response, int socket);
 
         /// Non blocking function to try to obtain a buffer for client's request
         bool tryGetClientBuffer(int clientSocket);
+
+        /// Hooks
+        virtual void dataReceived(unsigned char* data, size_t len) {};
+        virtual void dataReadyToSend(unsigned char* data, size_t len) {};
 
         std::unordered_map<int, TCPIP::RequestHeader> headerCache;
         std::unordered_map<int, std::shared_ptr<TCPIP::ConnectedClient>> clients;

@@ -28,7 +28,7 @@ public:
         store(parse_command_line(argc, argv, desc), vm);
         notify(vm);
 
-        if (vm.count ("help") || ((!vm.count ("src") || !vm.count("dst")) && (type != "ipc" && type != "tcpip")) || (vm.count("type") && !vm.count("shobj")))
+        if (vm.count ("help") || ((!vm.count ("src") || !vm.count("dst")) && (type != "ipc" && type != "tcpip" && type != "securetcpip")) || (vm.count("type") && !vm.count("shobj")))
         {
             std::cerr << desc << "\n";
 
@@ -65,6 +65,10 @@ public:
         {
             return TCPIPTOOL;
         }
+        else if (type == "securetcpip")
+        {
+            return SECURETCPIP;
+        }
         else
         {
             throw std::runtime_error("incorrect tool type");
@@ -90,7 +94,6 @@ public:
     {
         return settings;
     }
-
 
     ~OptionsParser() override = default;
 private:

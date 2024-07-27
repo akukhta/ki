@@ -21,6 +21,11 @@ namespace TCPIP
         void sendFile(std::string const &fileName) override;
         void setSendFinishedCallback(std::function<void(size_t)> callback);
 
+    protected:
+        /// Hooks
+        virtual void dataReadyToSend(unsigned char* data, size_t len) {};
+        virtual void dataReceived(unsigned char* data, size_t len) {};
+
     private:
 
         void sendFileChunk(TCPIP::Buffer &buffer);
